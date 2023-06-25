@@ -23,7 +23,7 @@ import GraphCard from "../../components/Cards/GraphCard";
 // import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useNavigation } from "@react-navigation/native";
 // state(redux)
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { chartConfig } from "../../components/Charts/chartConfig";
 // import OtherNavigation from "../../navigation/OtherNavigation";
 import InfoCard from "./InfoCard";
@@ -31,13 +31,13 @@ import { MaterialIcons } from "@expo/vector-icons";
 const screenWidth = Dimensions.get("window").width;
 // const DashboardStack = createNativeStackNavigator();
 import { useFocusEffect } from "@react-navigation/native";
-// import { ApiService } from "../../lib/axios";
+import { ApiService } from "../../lib/axios";
 
 // import PieChartComponent from "../../components/Charts/PieChartComponent";
 // import Mandals from "../Mandals";
 const Dashboard = () => {
   const navigation = useNavigation();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const data = [
     {
       name: "Total Voters",
@@ -54,19 +54,29 @@ const Dashboard = () => {
       legendFontSize: 15,
     },
   ];
-  // const GetMandals = () => {
-  //   ApiService.getMLADashboard().then((e) => {
-  //     // console.log(e);
-  //     // let splitData = e.data.slice(0, 10);
-  //     // setLists(splitData);
-  //     console.log("Data - ", e?.data);
-  //   });
-  // };
-
+  const GetProfile = () => {
+    ApiService.getProfile().then((e) => {
+      // console.log(e);
+      // let splitData = e.data.slice(0, 10);
+      // setLists(splitData);
+      console.log("Data - ", e);
+      // dispatch(resetAuthData());
+    });
+  };
+  const GetDashboard = () => {
+    ApiService.getDashboard().then((e) => {
+      // console.log(e);
+      // let splitData = e.data.slice(0, 10);
+      // setLists(splitData);
+      console.log("Data - ", e);
+      // dispatch(resetAuthData());
+    });
+  };
   useFocusEffect(
     useCallback(() => {
       // Do something when the screen is focused
-      // GetMandals();
+      GetProfile();
+      GetDashboard();
       return () => {
         // Do something when the screen is unfocused
         // Useful for cleanup functions

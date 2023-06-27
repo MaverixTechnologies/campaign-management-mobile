@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from "react";
 import {
   Text,
-  // Heading,
   Box,
   FlatList,
   VStack,
@@ -10,26 +9,19 @@ import {
   Pressable,
   Spacer,
 } from "native-base";
-// import UserAvatar from "react-native-user-avatar";
 import { ApiService } from "../../lib/axios";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-// import { Text } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 const AllMandals = ({ navigation: { goBack } }) => {
   const [lists, setLists] = useState();
-  // const linkTo = useLinkTo();
   const navigation = useNavigation();
+  const GetMandals = async () => {
+    const e = await ApiService.getMandals();
+    setLists(e.data);
 
-  const GetMandals = () => {
-    ApiService.getMandals()
-      .then((e) => {
-        // console.log(e);
-        let splitData = e.data.slice(0, 10);
-        setLists(splitData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // ApiService.getMandals().then((e) => {
+    //   setLists(e.data);
+    // });
   };
 
   useFocusEffect(
@@ -44,9 +36,6 @@ const AllMandals = ({ navigation: { goBack } }) => {
   );
   return (
     <Box>
-      {/* <Heading fontSize="xl" p="4" pb="3">
-        Inbox
-      </Heading> */}
       <HStack justifyContent={"flex-start"} alignItems={"center"}>
         <IconButton
           size={"md"}
@@ -85,7 +74,7 @@ const AllMandals = ({ navigation: { goBack } }) => {
             <Pressable
               onPress={() =>
                 navigation.navigate("MandalDashboard", {
-                  itemId: item.id,
+                  itemId: item?.id,
                 })
               }
               _dark={{
@@ -113,7 +102,7 @@ const AllMandals = ({ navigation: { goBack } }) => {
                       }}
                       bold
                     >
-                      {item.name}
+                      {item?.name}
                     </Text>
                   </VStack>
                   <Spacer />
@@ -123,6 +112,7 @@ const AllMandals = ({ navigation: { goBack } }) => {
                       _dark={{
                         color: "warmGray.200",
                       }}
+                      alignSelf="flex-end"
                     >
                       Mandal Incharge -
                     </Text>
@@ -131,11 +121,11 @@ const AllMandals = ({ navigation: { goBack } }) => {
                       _dark={{
                         color: "warmGray.50",
                       }}
-                      alignSelf="flex-start"
+                      alignSelf="flex-end"
                       bold
                     >
-                      {item.mandalincharge
-                        ? item.mandalincharge?.full_name
+                      {item?.mandalincharge
+                        ? item?.mandalincharge?.full_name
                         : "Not Added Yet"}
                     </Text>
                   </VStack>
@@ -144,7 +134,7 @@ const AllMandals = ({ navigation: { goBack } }) => {
             </Pressable>
           </Box>
         )}
-        keyExtractor={(item, i) => i}
+        keyExtractor={(item) => item.id}
       />
     </Box>
   );

@@ -1,6 +1,6 @@
 import React from "react";
-import { Box, Stack, Heading, Text, HStack, Divider } from "native-base";
-const InfoCard = ({ screenWidth }) => {
+import { Box, VStack, Heading, Text, HStack, Divider } from "native-base";
+const InfoCard = ({ screenWidth, data }) => {
   return (
     <Box
       w={screenWidth > 800 ? "800" : screenWidth - 20}
@@ -22,8 +22,14 @@ const InfoCard = ({ screenWidth }) => {
       }}
       px="2"
     >
-      <HStack alignItems={"center"}>
-        <Stack px="4" py="4" space={2} alignItems={"flex-start"} w={"50%"}>
+      <VStack>
+        <HStack
+          px="4"
+          py="4"
+          justifyContent={"space-between"}
+          space={2}
+          alignItems={"center"}
+        >
           <Heading
             size="xs"
             ml="-1"
@@ -34,10 +40,10 @@ const InfoCard = ({ screenWidth }) => {
               color: "gray.50",
             }}
           >
-            Vidhansabha
+            Booth
           </Heading>
           <Text
-            fontSize="xl"
+            fontSize="lg"
             _light={{
               color: "gray.800",
             }}
@@ -48,17 +54,22 @@ const InfoCard = ({ screenWidth }) => {
             ml="-0.5"
             mt="-1"
           >
-            Sanchi
+            {data?.pollingbooth_name}
           </Text>
-        </Stack>
+        </HStack>
         <Divider
-          orientation="vertical"
+          orientation="horizontal"
           thickness={"0.5"}
-          h={"80%"}
           alignSelf={"center"}
-          mr={2}
+          // mr={2}
         />
-        <Stack px="4" py="4" space={2} alignItems={"flex-start"} w={"48%"}>
+        <HStack
+          px="4"
+          py="4"
+          justifyContent={"space-between"}
+          space={2}
+          alignItems={"center"}
+        >
           <Heading
             size="xs"
             ml="-1"
@@ -69,10 +80,10 @@ const InfoCard = ({ screenWidth }) => {
               color: "gray.50",
             }}
           >
-            MLA
+            BLA
           </Heading>
           <Text
-            fontSize="xl"
+            fontSize="lg"
             _light={{
               color: "gray.800",
             }}
@@ -83,10 +94,219 @@ const InfoCard = ({ screenWidth }) => {
             ml="-0.5"
             mt="-1"
           >
-            Some MLA
+            {data?.bla_name ? data?.bla_name : "Not added"}
           </Text>
-        </Stack>
-      </HStack>
+        </HStack>
+        <Divider
+          orientation="horizontal"
+          thickness={"0.5"}
+          alignSelf={"center"}
+          // mr={2}
+        />
+        <HStack
+          px="4"
+          py="4"
+          justifyContent={"space-between"}
+          space={2}
+          alignItems={"center"}
+        >
+          <Heading
+            size="xs"
+            ml="-1"
+            _light={{
+              color: "gray.500",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+          >
+            Sector
+          </Heading>
+          <Text
+            textTransform={"capitalize"}
+            fontSize="lg"
+            _light={{
+              color: "gray.800",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+            fontWeight="500"
+            ml="-0.5"
+            mt="-1"
+          >
+            {data?.sector_name ? data?.sector_name : "Not added"}
+          </Text>
+        </HStack>
+        <Divider
+          orientation="horizontal"
+          thickness={"0.5"}
+          alignSelf={"center"}
+          // mr={2}
+        />
+        <HStack
+          px="4"
+          py="4"
+          justifyContent={"space-between"}
+          space={2}
+          alignItems={"center"}
+        >
+          <Heading
+            size="xs"
+            ml="-1"
+            _light={{
+              color: "gray.500",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+          >
+            Sector Incharge
+          </Heading>
+          <Text
+            textTransform={"capitalize"}
+            fontSize="lg"
+            _light={{
+              color: "gray.800",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+            fontWeight="500"
+            ml="-0.5"
+            mt="-1"
+          >
+            {data?.sectorincharge_name
+              ? data?.sectorincharge_name
+              : "Not added"}
+          </Text>
+        </HStack>
+        <Divider
+          orientation="horizontal"
+          thickness={"0.5"}
+          alignSelf={"center"}
+          // mr={2}
+        />
+        <HStack
+          px="4"
+          py="4"
+          justifyContent={"space-between"}
+          space={2}
+          alignItems={"center"}
+        >
+          <Heading
+            size="xs"
+            ml="-1"
+            _light={{
+              color: "gray.500",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+          >
+            Sector Incharge Contact
+          </Heading>
+          <Text
+            textTransform={"capitalize"}
+            fontSize="lg"
+            _light={{
+              color: "gray.800",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+            fontWeight="500"
+            ml="-0.5"
+            mt="-1"
+          >
+            {data?.sectorincharge_contact
+              ? data?.sectorincharge_contact
+              : "Not added"}
+          </Text>
+        </HStack>
+        <Divider
+          orientation="horizontal"
+          thickness={"0.5"}
+          alignSelf={"center"}
+          // mr={2}
+        />
+        <HStack
+          px="4"
+          py="4"
+          justifyContent={"space-between"}
+          space={2}
+          alignItems={"center"}
+        >
+          <Heading
+            size="xs"
+            ml="-1"
+            _light={{
+              color: "gray.500",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+          >
+            BLO
+          </Heading>
+          <Text
+            fontSize="lg"
+            _light={{
+              color: "gray.800",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+            fontWeight="500"
+            ml="-0.5"
+            textTransform={"capitalize"}
+            mt="-1"
+          >
+            {data?.blo_name ? data?.blo_name : "Not added"}
+          </Text>
+        </HStack>
+        <Divider
+          orientation="horizontal"
+          thickness={"0.5"}
+          alignSelf={"center"}
+          // mr={2}
+        />
+        <HStack
+          px="4"
+          py="4"
+          justifyContent={"space-between"}
+          space={2}
+          alignItems={"center"}
+        >
+          <Heading
+            size="xs"
+            ml="-1"
+            _light={{
+              color: "gray.500",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+          >
+            BLO Contact
+          </Heading>
+          <Text
+            fontSize="lg"
+            _light={{
+              color: "gray.800",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+            fontWeight="500"
+            ml="-0.5"
+            mt="-1"
+            textTransform={"capitalize"}
+          >
+            {data?.blo_contact ? data?.blo_contact : "Not added"}
+          </Text>
+        </HStack>
+      </VStack>
     </Box>
   );
 };

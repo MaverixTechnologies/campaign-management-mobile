@@ -1,12 +1,6 @@
 import React from "react";
 import { Box, VStack, Heading, Text, HStack, Divider } from "native-base";
-const InfoCard = ({ screenWidth }) => {
-  // const info = [
-  //   {
-  //     h1: "Mandal",
-  //     h2: "2",
-  //   },
-  // ];
+const InfoCard = ({ screenWidth, data }) => {
   return (
     <Box
       w={screenWidth > 800 ? "800" : screenWidth - 20}
@@ -60,14 +54,13 @@ const InfoCard = ({ screenWidth }) => {
             ml="-0.5"
             mt="-1"
           >
-            8
+            {data?.mandal_name}
           </Text>
         </HStack>
         <Divider
           orientation="horizontal"
           thickness={"0.5"}
           alignSelf={"center"}
-          // mr={2}
         />
         <HStack
           px="4"
@@ -100,7 +93,9 @@ const InfoCard = ({ screenWidth }) => {
             ml="-0.5"
             mt="-1"
           >
-            John Doe
+            {data?.mandalincharge_name
+              ? data?.mandalincharge_name
+              : "Not added"}
           </Text>
         </HStack>
         <Divider
@@ -140,7 +135,9 @@ const InfoCard = ({ screenWidth }) => {
             ml="-0.5"
             mt="-1"
           >
-            +91 9898785645
+            {data?.mandalincharge_contact
+              ? data?.mandalincharge_contact
+              : "Not added"}
           </Text>
         </HStack>
       </VStack>

@@ -11,18 +11,23 @@ import {
   Button,
 } from "native-base";
 import UserAvatar from "react-native-user-avatar";
+//axios
+import { apiClient } from "../lib/axios";
 // navigation
 import { useNavigation } from "@react-navigation/native";
 // state(redux)
-import { useDispatch } from "react-redux";
-import { resetAuthData } from "../lib/redux/reducers/authReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { reset } from "../lib/redux/reducers/authReducer";
 
 global.__reanimatedWorkletInit = () => {};
 export default function NavigationContent(props) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const { userProfile } = useSelector((state) => state.auth);
   const doLogout = () => {
-    dispatch(resetAuthData());
+    // Clear the interceptor and reset the auth data
+    apiClient.interceptors.request.eject(apiClient.interceptors.request);
+    dispatch(reset());
     navigation.navigate("Signin");
   };
 
@@ -31,15 +36,15 @@ export default function NavigationContent(props) {
       <VStack h={"full"} my="2" mx="1">
         <VStack justifyContent={"space-between"} space="6">
           <HStack space={4} px={4} alignItems={"center"}>
-            <UserAvatar size={48} name={"John Doe"} />
+            <UserAvatar size={48} name={userProfile?.full_name} />
             <VStack>
               <Text
-                fontSize="xl"
+                fontSize="lg"
                 color="gray.700"
                 fontWeight="600"
                 textTransform={"capitalize"}
               >
-                john doe
+                {userProfile?.full_name}
               </Text>
               <Text
                 fontSize="xs"
@@ -47,7 +52,7 @@ export default function NavigationContent(props) {
                 fontWeight="500"
                 textTransform={"capitalize"}
               >
-                Admin
+                {userProfile?.role}
               </Text>
             </VStack>
           </HStack>

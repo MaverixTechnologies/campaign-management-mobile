@@ -51,6 +51,7 @@ const AddVoter = () => {
           })
       : console.log("Validation Failed");
   };
+
   return (
     <ScrollView>
       <VStack

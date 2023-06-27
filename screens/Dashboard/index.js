@@ -1,81 +1,72 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Center,
   ScrollView,
-  HStack,
+  // HStack,
   VStack,
-  Stack,
-  // IconButton,
-  Heading,
-  Icon,
-  Pressable,
-  // Image,
 } from "native-base";
-import StatsCard from "../../components/Cards/StatsCard";
+import MLACardsStack from "./CardsStack";
+import MICardsStack from "../Mandals/CardsStack";
+import SICardsStack from "../Sectors/CardsStack";
+import BLACardsStack from "../Booths/BLACardsStack";
+
 import { PieChart } from "react-native-chart-kit";
-import {
-  Dimensions,
-  //  ImageBackground
-} from "react-native";
+import { Dimensions } from "react-native";
 import GraphCard from "../../components/Cards/GraphCard";
-// import bgImage from "../../assets/bg.jpg";
-// navigation
-// import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useNavigation } from "@react-navigation/native";
-// state(redux)
-import { useDispatch } from "react-redux";
 import { chartConfig } from "../../components/Charts/chartConfig";
-// import OtherNavigation from "../../navigation/OtherNavigation";
-import InfoCard from "./InfoCard";
-import { MaterialIcons } from "@expo/vector-icons";
+import MLAInfoCard from "./InfoCard";
+import MIInfoCard from "../Mandals/InfoCard";
+import SIInfoCard from "../Sectors/InfoCard";
+import BLAInfoCard from "../Booths/InfoCard";
 const screenWidth = Dimensions.get("window").width;
-// const DashboardStack = createNativeStackNavigator();
 import { useFocusEffect } from "@react-navigation/native";
 import { ApiService } from "../../lib/axios";
+import { useSelector } from "react-redux";
 
-// import PieChartComponent from "../../components/Charts/PieChartComponent";
-// import Mandals from "../Mandals";
 const Dashboard = () => {
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
+  // const navigation = useNavigation();
+  // const dispatch = useDispatch();
+  const [dashboardData, setDashboardData] = useState({});
+  // const [userProfile, setProfile] = useState({});
+  const { userProfile } = useSelector((state) => state.auth);
+  // console.log("userProfile : ", userProfile);
   const data = [
     {
-      name: "Total Voters",
-      population: 1203203,
+      name: "Remaining Voters",
+      population: 170568 - 1,
       color: "rgba(131, 167, 234, 1)",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
     },
     {
       name: "Voters Added",
-      population: 23404,
-      color: "#F00",
+      population: 1,
+      // dashboardData?.total_voters_added === 0
+      //   ? 1
+      //   : dashboardData?.total_voters_added,
+      color: "green",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
     },
   ];
-  const GetProfile = () => {
-    ApiService.getProfile().then((e) => {
-      // console.log(e);
-      // let splitData = e.data.slice(0, 10);
-      // setLists(splitData);
-      console.log("Data - ", e);
-      // dispatch(resetAuthData());
-    });
-  };
+  // const GetProfile = () => {
+  //   ApiService.getProfile().then((e) => {
+  //     dispatch(setUserProfile(e.data));
+  //   });
+  // };
   const GetDashboard = () => {
     ApiService.getDashboard().then((e) => {
       // console.log(e);
       // let splitData = e.data.slice(0, 10);
       // setLists(splitData);
-      console.log("Data - ", e);
+      setDashboardData(e.data);
       // dispatch(resetAuthData());
     });
   };
   useFocusEffect(
     useCallback(() => {
       // Do something when the screen is focused
-      GetProfile();
+      // GetProfile();
       GetDashboard();
       return () => {
         // Do something when the screen is unfocused
@@ -85,139 +76,30 @@ const Dashboard = () => {
   );
   return (
     <ScrollView bgColor={"coolGray.100"}>
-      {/* <DashboardStack.Navigator>
-        <DashboardStack.Screen
-          name="others"
-          component={OtherNavigation}
-          options={{ headerMode: "none", headerShown: false }}
-        />
-      </DashboardStack.Navigator> */}
-      {/* <ImageBackground
-        source={bgImage}
-        resizeMode="cover"
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          // opacity: "1",
-        }}
-      > */}
       <VStack alignSelf={"center"} p={2} space={4} maxWidth={"600"}>
         <Center>
-          <InfoCard screenWidth={screenWidth} />
+          {userProfile?.role === "MLA" || userProfile?.role === "ADMIN" ? (
+            <MLAInfoCard screenWidth={screenWidth} data={dashboardData} />
+          ) : userProfile?.role === "MANDAL_INCHARGE" ? (
+            <MIInfoCard screenWidth={screenWidth} data={dashboardData} />
+          ) : userProfile?.role === "SECTOR_INCHARGE" ? (
+            <SIInfoCard screenWidth={screenWidth} data={dashboardData} />
+          ) : userProfile?.role === "BOOTH_LEVEL_AGENT" ? (
+            <BLAInfoCard screenWidth={screenWidth} data={dashboardData} />
+          ) : null}
         </Center>
         <Center>
-          <Stack
-            flexDirection={screenWidth > 300 ? "row" : "column"}
-            justifyContent={screenWidth > 300 ? "space-between" : "center"}
-            alignItems={screenWidth > 300 ? "space-between" : "center"}
-            space={6}
-            w={screenWidth > 800 ? "800" : screenWidth - 20}
-          >
-            <StatsCard
-              heading={"Voters"}
-              text={1203203}
-              width={
-                screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
-              }
-              bg="white"
-            />
-            <StatsCard
-              heading={"Added Voters"}
-              text={23404}
-              width={
-                screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
-              }
-              bg="white"
-            />
-          </Stack>
+          {userProfile?.role === "MLA" || userProfile?.role === "ADMIN" ? (
+            <MLACardsStack screenWidth={screenWidth} data={dashboardData} />
+          ) : userProfile?.role === "MANDAL_INCHARGE" ? (
+            <MICardsStack screenWidth={screenWidth} data={dashboardData} />
+          ) : userProfile?.role === "SECTOR_INCHARGE" ? (
+            <SICardsStack screenWidth={screenWidth} data={dashboardData} />
+          ) : userProfile?.role === "BOOTH_LEVEL_AGENT" ? (
+            <BLACardsStack screenWidth={screenWidth} data={dashboardData} />
+          ) : null}
         </Center>
-        <Center>
-          <Stack
-            flexDirection={screenWidth > 300 ? "row" : "column"}
-            justifyContent={screenWidth > 300 ? "space-between" : "center"}
-            alignItems={screenWidth > 300 ? "space-between" : "center"}
-            space={6}
-            w={screenWidth > 800 ? "800" : screenWidth - 20}
-          >
-            <StatsCard
-              heading={"Mandals"}
-              text={"12/21"}
-              width={
-                screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
-              }
-            />
-            <StatsCard
-              heading={"Sectors"}
-              text={"32/50"}
-              width={
-                screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
-              }
-            />
-          </Stack>
-        </Center>
-        <Center>
-          <Stack
-            flexDirection={screenWidth > 300 ? "row" : "column"}
-            justifyContent={screenWidth > 300 ? "space-between" : "center"}
-            alignItems={screenWidth > 300 ? "space-between" : "center"}
-            space={6}
-            w={screenWidth > 800 ? "800" : screenWidth - 20}
-          >
-            <StatsCard
-              heading={"Booths"}
-              text={"220/329"}
-              width={
-                screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
-              }
-            />
-            <StatsCard
-              heading={"Pollings"}
-              text={"400/658"}
-              width={
-                screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
-              }
-            />
-          </Stack>
-        </Center>
-        <Center>
-          <Pressable
-            onPress={() => {
-              navigation.navigate("AddNewMember");
-            }}
-            w={screenWidth > 800 ? "800" : screenWidth - 20}
-            rounded={"full"}
-            bg="coolGray.100"
-          >
-            <HStack
-              bg="primary.100"
-              alignItems={"center"}
-              justifyContent={"space-between"}
-              py="4"
-              rounded={"full"}
-              px="8"
-            >
-              <Heading
-                size="md"
-                ml="-1"
-                _light={{
-                  color: "gray.700",
-                }}
-                _dark={{
-                  color: "gray.50",
-                }}
-              >
-                Add New Member
-              </Heading>
-              <Icon
-                color={"primary"}
-                variant={"ghost"}
-                as={MaterialIcons}
-                name="person-add-alt-1"
-                size={"lg"}
-              />
-            </HStack>
-          </Pressable>
-        </Center>
+
         <Center>
           <GraphCard heading={"Constituency Distribution"}>
             <PieChart
@@ -232,7 +114,6 @@ const Dashboard = () => {
           </GraphCard>
         </Center>
       </VStack>
-      {/* </ImageBackground> */}
     </ScrollView>
   );
 };

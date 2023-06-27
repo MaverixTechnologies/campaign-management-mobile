@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
 const Stack = createNativeStackNavigator();
 
 export default function Navigator({ theme }) {
-  const { user, token, userRole } = useSelector((state) => state.auth);
+  const { user, token } = useSelector((state) => state.auth);
   let initialRoute = "app";
   return (
     <>

@@ -1,13 +1,6 @@
 import React from "react";
 import { Box, VStack, Heading, Text, HStack, Divider } from "native-base";
 const InfoCard = ({ screenWidth, data }) => {
-  // const info = [
-  //   {
-  //     h1: "Mandal",
-  //     h2: "2",
-  //   },
-  // ];
-  console.log("data  ; ", data);
   return (
     <Box
       w={screenWidth > 800 ? "800" : screenWidth - 20}
@@ -61,7 +54,7 @@ const InfoCard = ({ screenWidth, data }) => {
             ml="-0.5"
             mt="-1"
           >
-            {data?.name}
+            {data?.sector_name}
           </Text>
         </HStack>
         <Divider
@@ -87,7 +80,7 @@ const InfoCard = ({ screenWidth, data }) => {
               color: "gray.50",
             }}
           >
-            Incharge
+            Sector Incharge
           </Heading>
           <Text
             fontSize="lg"
@@ -101,8 +94,8 @@ const InfoCard = ({ screenWidth, data }) => {
             ml="-0.5"
             mt="-1"
           >
-            {data?.sectorincahrge
-              ? data?.sectorincahrge?.full_name
+            {data?.sectorincharge_name
+              ? data?.sectorincharge_name
               : "Not added"}
           </Text>
         </HStack>
@@ -129,7 +122,7 @@ const InfoCard = ({ screenWidth, data }) => {
               color: "gray.50",
             }}
           >
-            Contact No
+            Mandal
           </Heading>
           <Text
             fontSize="lg"
@@ -143,7 +136,49 @@ const InfoCard = ({ screenWidth, data }) => {
             ml="-0.5"
             mt="-1"
           >
-            +91 9898785645
+            {data?.mandal_name}
+          </Text>
+        </HStack>
+        <Divider
+          orientation="horizontal"
+          thickness={"0.5"}
+          alignSelf={"center"}
+          // mr={2}
+        />
+        <HStack
+          px="4"
+          py="4"
+          justifyContent={"space-between"}
+          space={2}
+          alignItems={"center"}
+        >
+          <Heading
+            size="xs"
+            ml="-1"
+            _light={{
+              color: "gray.500",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+          >
+            Mandal Incharge
+          </Heading>
+          <Text
+            fontSize="lg"
+            _light={{
+              color: "gray.800",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+            fontWeight="500"
+            ml="-0.5"
+            mt="-1"
+          >
+            {data?.mandalincharge_name
+              ? data?.mandalincharge_name
+              : "Not added"}
           </Text>
         </HStack>
       </VStack>

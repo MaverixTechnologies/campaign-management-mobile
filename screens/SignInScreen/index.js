@@ -1,5 +1,4 @@
-import * as React from "react";
-
+import React from "react";
 // api
 import { apiClient, ApiService } from "../../lib/axios";
 import { useToast } from "native-base";
@@ -23,9 +22,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setUser,
   setToken,
-  setLoginEmail,
+  setLoginInfo,
   setUserId,
 } from "../../lib/redux/reducers/authReducer";
+import { setUserProfile } from "../../lib/redux/reducers/authReducer";
 import jwt_decode from "jwt-decode";
 export const SignInScreen = () => {
   const dispatch = useDispatch();
@@ -36,21 +36,24 @@ export const SignInScreen = () => {
   const [rememberMe, setRememberMe] = React.useState(!!loginInfo?.username);
   const toast = useToast();
   const navigation = useNavigation();
+  const GetProfile = () => {
+    // const e = await ApiService.getProfile();
+    ApiService.getProfile().then((e) => {
+      dispatch(setUserProfile(e.data));
+    });
+    // dispatch(setUserProfile(e.data));
+  };
   const onPressSigninButton = async () => {
     const values = {
       username,
       password,
     };
-    console.log("Values -- ", values);
     ApiService.signin(values)
       .then((res) => {
-        console.log("res", res);
         let userId = jwt_decode(res.data.access).user_id;
-        // dispatch(setUser(res.data.user));
         dispatch(setToken(res.data));
         dispatch(setUser(username));
         dispatch(setUserId(userId));
-        // dispatch(setToken("user@1212"));
         // Set auth token
         apiClient.interceptors.request.use((config) => {
           if (config.headers) {
@@ -58,10 +61,12 @@ export const SignInScreen = () => {
           }
           return config;
         });
+        GetProfile();
+
         // If remember me checked, then save user data to storage
         if (rememberMe) {
           dispatch(
-            setLoginEmail({
+            setLoginInfo({
               username: username,
               password: password,
             })
@@ -69,18 +74,16 @@ export const SignInScreen = () => {
         }
         navigation.navigate("Dashboard");
       })
-      .catch((err) => {
-        console.log("Errror", err);
+      .catch((error) => {
+        console.log("Errror", error);
+        const errorMessage = error.response?.data?.message || error.message;
         toast.show({
           title: "Error",
           placement: "top-right",
-          description: err.message,
+          description: errorMessage,
         });
       });
   };
-  //   const onPressSignupLink = () => {
-  //     props.navigation.navigate("Signup");
-  //   };
   return (
     <Center width="100%">
       <Box safeArea p="2" py="8" w="90%">
@@ -114,10 +117,6 @@ export const SignInScreen = () => {
           <Button onPress={onPressSigninButton} mt="2">
             Sign in
           </Button>
-          {/* <Row mt="6" justifyContent="center">
-            <Text>I&apos;m a new user. </Text>
-            <Link onPress={onPressSignupLink}>Sign Up</Link>
-          </Row> */}
         </Column>
       </Box>
     </Center>

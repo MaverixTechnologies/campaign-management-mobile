@@ -6,23 +6,25 @@ import {
   FlatList,
   VStack,
   HStack,
-  // Avatar,
+  IconButton,
   Pressable,
   Spacer,
 } from "native-base";
 // import UserAvatar from "react-native-user-avatar";
 import { ApiService } from "../../lib/axios";
-import { useFocusEffect, useLinkTo } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 // import { Text } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
-const AllSectors = () => {
+const AllSectors = ({ navigation: { goBack } }) => {
   const [lists, setLists] = useState();
-  const linkTo = useLinkTo();
+  const navigation = useNavigation();
+
   const GetSectors = () => {
     ApiService.getBooths().then((e) => {
       // console.log(e);
-      let splitData = e.data.slice(0, 10);
-      setLists(splitData);
+      // let splitData = e.data.slice(0, 10);
+      setLists(e.data);
     });
   };
 
@@ -41,6 +43,27 @@ const AllSectors = () => {
       {/* <Heading fontSize="xl" p="4" pb="3">
         Inbox
       </Heading> */}
+      <HStack justifyContent={"flex-start"} alignItems={"center"}>
+        <IconButton
+          size={"md"}
+          variant="ghost"
+          _icon={{
+            as: MaterialIcons,
+            name: "arrow-back",
+          }}
+          onPress={() => goBack()}
+          title="Go back"
+        />
+        <Text
+          color="coolGray.600"
+          _dark={{
+            color: "warmGray.200",
+          }}
+          bold
+        >
+          Go back
+        </Text>
+      </HStack>
       <FlatList
         data={lists}
         space="4"
@@ -56,7 +79,11 @@ const AllSectors = () => {
             borderColor="muted.500"
           >
             <Pressable
-              onPress={() => linkTo("/dashboard")}
+              onPress={() =>
+                navigation.navigate("BoothDashboard", {
+                  itemId: item.id,
+                })
+              }
               _dark={{
                 bg: "coolGray.800",
               }}
@@ -74,7 +101,7 @@ const AllSectors = () => {
                       }}
                       bold
                     >
-                      {item.name}
+                      {item.name} - #{item.number}
                     </Text>
                     <Text
                       color="coolGray.600"
@@ -82,8 +109,7 @@ const AllSectors = () => {
                         color: "warmGray.200",
                       }}
                     >
-                      {/* {item.recentText} */}
-                      BC - John Doe
+                      BLA - {item.boothlevelagent?.full_name}
                     </Text>
                   </VStack>
                   <Spacer />
@@ -94,17 +120,18 @@ const AllSectors = () => {
                       _dark={{
                         color: "warmGray.50",
                       }}
-                      alignSelf="flex-start"
+                      alignSelf="flex-end"
                     >
-                      Booth - {item.number}
+                      Sector - {item.sector?.name}
                     </Text>
                     <Text
                       color="coolGray.600"
                       _dark={{
                         color: "warmGray.200",
                       }}
+                      alignSelf="flex-end"
                     >
-                      Voters - {item.total_voters}
+                      SI - {item.sector?.sectorincharge?.full_name}
                     </Text>
                   </VStack>
                 </HStack>

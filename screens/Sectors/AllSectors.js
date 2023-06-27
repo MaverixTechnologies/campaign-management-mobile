@@ -24,8 +24,8 @@ const AllSectors = ({ navigation }) => {
     ApiService.getSectors()
       .then((e) => {
         // console.log(e);
-        let splitData = e.data.slice(0, 10);
-        setLists(splitData);
+        // let splitData = e.data.slice(0, 10);
+        setLists(e.data);
       })
       .catch((err) => {
         console.log(err);
@@ -124,7 +124,7 @@ const AllSectors = ({ navigation }) => {
                       _dark={{
                         color: "warmGray.50",
                       }}
-                      alignSelf="flex-start"
+                      alignSelf="flex-end"
                     >
                       Mandal - {item.mandal.name}
                     </Text>
@@ -133,6 +133,7 @@ const AllSectors = ({ navigation }) => {
                       _dark={{
                         color: "warmGray.200",
                       }}
+                      alignSelf="flex-end"
                     >
                       MI -
                       {item.mandal.mandalincharge

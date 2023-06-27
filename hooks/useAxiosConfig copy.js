@@ -13,7 +13,7 @@ export default function usePusherNotification() {
   const toast = useToast();
   const dispatch = useDispatch();
   useEffect(() => {
-    const initActionOfTokenExpired = async () => {
+    const initActionOfTokenExpired = () => {
       // Set auth token
       apiClient.interceptors.request.use((config) => {
         if (token && config.headers) {

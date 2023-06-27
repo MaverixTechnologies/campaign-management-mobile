@@ -15,41 +15,41 @@ import { Dimensions } from "react-native";
 import { chartConfig } from "../../components/Charts/chartConfig";
 // import InfoCard from "./InfoCard";
 import GraphCard from "../../components/Cards/GraphCard";
-import CardsStack from "./CardsStack";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import { ApiService } from "../../lib/axios";
 import InfoCard from "./InfoCard";
+import BLACardsStack from "./BLACardsStack";
 const screenWidth = Dimensions.get("window").width;
 
-const MandalDashboard = ({ route, navigation }) => {
+const BoothDashboard = ({ route, navigation }) => {
   // const navigation = useNavigation();
-  const [mandalInfo, setMandalInfo] = useState();
+  const [boothInfo, setBoothInfo] = useState();
   const { itemId } = route.params;
   const { goBack } = navigation;
   const data = [
     {
       name: "Remaining Voters",
-      population: 8877 - 1,
+      population: 478 - 1,
       color: "rgba(131, 167, 234, 1)",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
     },
     {
       name: "Voters Added",
-      // population: mandalInfo?.total_voters_added,
+      // population: boothInfo?.total_voters_added,
       population: 1,
       color: "green",
       legendFontColor: "#7F7F7F",
       legendFontSize: 15,
     },
   ];
-  const GetMandal = () => {
-    ApiService.getMandalDashboard(itemId)
+  const GetBooth = () => {
+    ApiService.getBoothDashboard(itemId)
       .then((e) => {
         // console.log(e);
         // let splitData = e.data.slice(0, 10);
-        setMandalInfo(e?.data);
+        setBoothInfo(e.data);
       })
       .catch((err) => {
         console.log(err);
@@ -59,7 +59,7 @@ const MandalDashboard = ({ route, navigation }) => {
   useFocusEffect(
     useCallback(() => {
       // Do something when the screen is focused
-      GetMandal();
+      GetBooth();
       return () => {
         // Do something when the screen is unfocused
         // Useful for cleanup functions
@@ -91,54 +91,54 @@ const MandalDashboard = ({ route, navigation }) => {
           </Text>
         </HStack>
         <Center>
-          <InfoCard data={mandalInfo} screenWidth={screenWidth} />
+          <InfoCard data={boothInfo} screenWidth={screenWidth} />
         </Center>
         <Center>
-          <CardsStack screenWidth={screenWidth} data={mandalInfo} />
-          {mandalInfo?.mandalincharge_name ? null : (
-            <Center>
-              <Pressable
-                onPress={() => {
-                  navigation.navigate("AddMandalIncharge", {
-                    itemId: itemId,
-                  });
-                }}
-                w={screenWidth > 800 ? "800" : screenWidth - 20}
-                rounded={"full"}
-                bg="coolGray.100"
-              >
-                <HStack
-                  bg="primary.100"
-                  alignItems={"center"}
-                  justifyContent={"space-between"}
-                  py="4"
-                  rounded={"full"}
-                  px="8"
-                >
-                  <Heading
-                    size="md"
-                    ml="-1"
-                    _light={{
-                      color: "gray.700",
-                    }}
-                    _dark={{
-                      color: "gray.50",
-                    }}
-                  >
-                    Add New Member
-                  </Heading>
-                  <Icon
-                    color={"primary"}
-                    variant={"ghost"}
-                    as={MaterialIcons}
-                    name="person-add-alt-1"
-                    size={"lg"}
-                  />
-                </HStack>
-              </Pressable>
-            </Center>
-          )}
+          <BLACardsStack data={boothInfo} screenWidth={screenWidth} />
         </Center>
+        {boothInfo?.bla_name ? null : (
+          <Center>
+            <Pressable
+              onPress={() => {
+                navigation.navigate("AddBLA", {
+                  itemId: itemId,
+                });
+              }}
+              w={screenWidth > 800 ? "800" : screenWidth - 20}
+              rounded={"full"}
+              bg="coolGray.100"
+            >
+              <HStack
+                bg="primary.100"
+                alignItems={"center"}
+                justifyContent={"space-between"}
+                py="4"
+                rounded={"full"}
+                px="8"
+              >
+                <Heading
+                  size="md"
+                  ml="-1"
+                  _light={{
+                    color: "gray.700",
+                  }}
+                  _dark={{
+                    color: "gray.50",
+                  }}
+                >
+                  Add New Member
+                </Heading>
+                <Icon
+                  color={"primary"}
+                  variant={"ghost"}
+                  as={MaterialIcons}
+                  name="person-add-alt-1"
+                  size={"lg"}
+                />
+              </HStack>
+            </Pressable>
+          </Center>
+        )}
         <Center>
           <GraphCard heading={"Constituency Distribution"}>
             <PieChart
@@ -157,4 +157,4 @@ const MandalDashboard = ({ route, navigation }) => {
   );
 };
 
-export default MandalDashboard;
+export default BoothDashboard;

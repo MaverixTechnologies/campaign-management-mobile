@@ -10,7 +10,9 @@ import MICardsStack from "../Mandals/CardsStack";
 import SICardsStack from "../Sectors/CardsStack";
 import BLACardsStack from "../Booths/BLACardsStack";
 
-import { PieChart } from "react-native-chart-kit";
+import { PieChart, BarChart } from "react-native-chart-kit";
+// import { PieChart as gfPieChart } from "react-native-gifted-charts";
+
 import { Dimensions } from "react-native";
 import GraphCard from "../../components/Cards/GraphCard";
 import { chartConfig } from "../../components/Charts/chartConfig";
@@ -49,6 +51,14 @@ const Dashboard = () => {
       legendFontSize: 15,
     },
   ];
+  const data2 = {
+    labels: ["January", "February", "March", "April", "May", "June"],
+    datasets: [
+      {
+        data: [20, 45, 28, 80, 99, 43],
+      },
+    ],
+  };
   // const GetProfile = () => {
   //   ApiService.getProfile().then((e) => {
   //     dispatch(setUserProfile(e.data));
@@ -111,6 +121,26 @@ const Dashboard = () => {
               backgroundColor={"transparent"}
               paddingLeft={"15"}
             />
+          </GraphCard>
+          <GraphCard heading={"Previous Election"}>
+            <BarChart
+              data={data2}
+              width={screenWidth > 800 ? 800 : screenWidth - 40}
+              height={200}
+              // style={graphStyle}
+              yAxisLabel="$"
+              chartConfig={chartConfig}
+              verticalLabelRotation={30}
+            />
+            {/* <gfPieChart
+              data={data}
+              width={screenWidth > 800 ? 800 : screenWidth - 40}
+              height={200}
+              chartConfig={chartConfig}
+              accessor={"population"}
+              backgroundColor={"transparent"}
+              paddingLeft={"15"}
+            /> */}
           </GraphCard>
         </Center>
       </VStack>

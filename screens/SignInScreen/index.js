@@ -1,7 +1,9 @@
 import React from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // api
-import { apiClient, ApiService } from "../../lib/axios";
+import { ApiService } from "../../lib/axios";
 import { useToast } from "native-base";
+// import AlertMsg from "../../components/Feedback/Alert";
 //components
 import {
   Box,
@@ -48,41 +50,41 @@ export const SignInScreen = () => {
       username,
       password,
     };
-    ApiService.signin(values)
-      .then((res) => {
-        let userId = jwt_decode(res.data.access).user_id;
-        dispatch(setToken(res.data));
-        dispatch(setUser(username));
-        dispatch(setUserId(userId));
-        // Set auth token
-        apiClient.interceptors.request.use((config) => {
-          if (config.headers) {
-            config.headers.Authorization = `Bearer ${res?.data?.access}`;
-          }
-          return config;
-        });
-        GetProfile();
-
-        // If remember me checked, then save user data to storage
-        if (rememberMe) {
-          dispatch(
-            setLoginInfo({
-              username: username,
-              password: password,
-            })
-          );
-        }
-        navigation.navigate("Dashboard");
-      })
-      .catch((error) => {
-        console.log("Errror", error);
-        const errorMessage = error.response?.data?.message || error.message;
-        toast.show({
-          title: "Error",
-          placement: "top-right",
-          description: errorMessage,
-        });
+    try {
+      const response = await ApiService.signin(values);
+      const { access, refresh } = response.data;
+      let userId = jwt_decode(access).user_id;
+      await AsyncStorage.setItem("token", access);
+      await AsyncStorage.setItem("refreshToken", refresh);
+      dispatch(setUser(username));
+      dispatch(setUserId(userId));
+      dispatch(setToken(access));
+      // apiClient.interceptors.request.use((config) => {
+      //   if (config.headers) {
+      //     config.headers.Authorization = `Bearer ${res?.data?.access}`;
+      //   }
+      //   return config;
+      // });
+      GetProfile();
+      if (rememberMe) {
+        dispatch(
+          setLoginInfo({
+            username: username,
+            password: password,
+          })
+        );
+      }
+      navigation.navigate("Dashboard");
+    } catch (error) {
+      console.error("Login failed:", error.message);
+      // Handle error and display appropriate message
+      const errorMessage = error.response?.data?.message || error.message;
+      toast.show({
+        title: "Error",
+        placement: "top-right",
+        description: errorMessage,
       });
+    }
   };
   return (
     <Center width="100%">

@@ -1,59 +1,82 @@
-import { apiClient, ApiService } from "../lib/axios";
-import { useToast } from "native-base";
-// redux
-import { useDispatch, useSelector } from "react-redux";
-import { resetAuthData, setToken } from "../lib/redux/reducers/authReducer";
 import { useEffect, useState } from "react";
+import { apiClient } from "../lib/axios";
+// import { useToast } from "native-base";
+import { Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+// redux
+import { useDispatch } from "react-redux";
+import { logout, setToken } from "../lib/redux/reducers/authReducer";
 // const { manifest } = Constants;
 
 // const uri = `http://${manifest.debuggerHost.split(':').shift()}:4000`;
-export default function usePusherNotification() {
+export default function useAxiosConfig() {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
-  const { token } = useSelector((state) => state.auth);
-  const toast = useToast();
+  // const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
   useEffect(() => {
-    const initActionOfTokenExpired = async () => {
-      // Set auth token
-      apiClient.interceptors.request.use((config) => {
-        if (token && config.headers) {
-          config.headers.Authorization = `Bearer ${token.access}`;
+    // Request interceptor to attach the token to the headers
+    const requestInterceptor = apiClient.interceptors.request.use(
+      async (config) => {
+        const token = await AsyncStorage.getItem("token");
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
-      });
-      apiClient.interceptors.response.use(
-        (response) => {
-          return response;
-        },
-        async (error) => {
-          if (error.response && error.response.status === 401) {
-            // Token expired, refresh the token
-            try {
-              const refreshedToken = await ApiService.refreshToken(
-                token.refresh
-              ); // Call a function to refresh the token
-              dispatch(setToken(refreshedToken)); // Update the token in the Redux store
-              // Retry the failed request with the new token
-              error.config.headers.Authorization = `Bearer ${refreshedToken.access}`;
-              return apiClient.request(error.config);
-            } catch (refreshError) {
-              // Failed to refresh token, sign out the user
-              dispatch(resetAuthData());
-              toast.show({
-                title: "Error",
-                placement: "top",
-                description: "Failed to refresh token.",
-              });
-            }
-          }
-          return Promise.reject(error);
-        }
-      );
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
 
-      setLoadingComplete(true);
+    // Response interceptor to handle token refresh and errors
+    const responseInterceptor = apiClient.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const originalRequest = error.config;
+
+        if (error.response.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true;
+
+          const refreshToken = await AsyncStorage.getItem("refreshToken");
+          if (refreshToken) {
+            try {
+              const response = await apiClient.post("/api/token/refresh", {
+                refresh: refreshToken,
+              });
+
+              const newToken = response.data.access;
+              await AsyncStorage.setItem("token", newToken);
+
+              dispatch(setToken(newToken));
+
+              originalRequest.headers.Authorization = `Bearer ${newToken}`;
+              return apiClient(originalRequest);
+            } catch (error) {
+              // Token refresh failed, log out the user
+              dispatch(logout());
+            }
+          } else {
+            // Refresh token not found, log out the user
+            dispatch(logout());
+          }
+        }
+
+        // Display error message in an Alert
+        Alert.alert("Error", error.message);
+
+        return Promise.reject(error);
+      }
+    );
+    setLoadingComplete(true);
+    return () => {
+      apiClient.interceptors.request.eject(requestInterceptor);
+      apiClient.interceptors.response.eject(responseInterceptor);
     };
-    initActionOfTokenExpired();
-  }, []);
+  }, [dispatch]);
 
   return isLoadingComplete;
 }

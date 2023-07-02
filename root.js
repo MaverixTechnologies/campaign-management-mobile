@@ -3,26 +3,29 @@ import React from "react";
 import { StatusBar } from "expo-status-bar";
 
 // components & theme
-import { Spinner } from "native-base";
+import { Spinner, View } from "native-base";
 
 // hooks
 import useCachedResources from "./hooks/useCachedResources";
 import useAxiosConfig from "./hooks/useAxiosConfig";
 
 // navigation
-import Navigation from "./navigation";
+import Navigator from "./navigation";
 
 export const Root = ({ theme }) => {
   const isLoadingComplete = useCachedResources();
   const isAxiosSetupComplete = useAxiosConfig();
+  console.log("ROOT");
   return (
     <>
       {!isLoadingComplete && !isAxiosSetupComplete ? (
-        <Spinner size="lg" />
+        <View justifyContent={"center"} alignItems={"center"} h={"full"}>
+          <Spinner alignSelf={"center"} size="lg" />
+        </View>
       ) : null}
       {isLoadingComplete && isAxiosSetupComplete ? (
         <>
-          <Navigation theme={theme} />
+          <Navigator theme={theme} />
           <StatusBar />
         </>
       ) : null}

@@ -12,23 +12,29 @@ import {
 } from "native-base";
 import UserAvatar from "react-native-user-avatar";
 //axios
-import { apiClient } from "../lib/axios";
+// import { apiClient } from "../lib/axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+// import { logoutAction } from "../lib/redux/reducers/authReducer";
 // navigation
-import { useNavigation } from "@react-navigation/native";
+// import { useNavigation } from "@react-navigation/native";
 // state(redux)
 import { useDispatch, useSelector } from "react-redux";
-import { reset } from "../lib/redux/reducers/authReducer";
+import { logout } from "../lib/redux/reducers/authReducer";
 
 global.__reanimatedWorkletInit = () => {};
 export default function NavigationContent(props) {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const dispatch = useDispatch();
   const { userProfile } = useSelector((state) => state.auth);
-  const doLogout = () => {
+  const doLogout = async () => {
     // Clear the interceptor and reset the auth data
-    apiClient.interceptors.request.eject(apiClient.interceptors.request);
-    dispatch(reset());
-    navigation.navigate("Signin");
+    // apiClient.interceptors.request.eject(apiClient.interceptors.request);
+    // dispatch(logout());
+    await AsyncStorage.removeItem("token");
+    await AsyncStorage.removeItem("refreshToken");
+
+    dispatch(logout());
+    // navigation.navigate("Signin");
   };
 
   return (

@@ -16,6 +16,7 @@ const config = {
   },
 };
 export default function App() {
+  console.log("APP");
   return (
     <NativeBaseProvider config={config}>
       <ReduxProvider store={store}>

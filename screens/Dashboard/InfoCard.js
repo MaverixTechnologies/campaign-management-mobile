@@ -1,102 +1,118 @@
-import React from "react";
-import { Box, VStack, Heading, Text, HStack, Divider } from "native-base";
+import React, { useState } from "react";
+import { Box, VStack, Heading, HStack, IconButton } from "native-base";
+import { AntDesign } from "@expo/vector-icons";
 const InfoCard = ({ screenWidth, data }) => {
+  const [cardShow, setCardShow] = useState(false);
+  const toggleCard = () => {
+    setCardShow(!cardShow);
+  };
   return (
     <Box
       w={screenWidth > 800 ? "800" : screenWidth - 20}
+      mt={2}
       rounded="lg"
       overflow="scroll"
-      borderColor="coolGray.200"
-      borderWidth="1"
+      borderWidth={1}
       _dark={{
-        borderColor: "coolGray.600",
-        backgroundColor: "gray.700",
+        backgroundColor: "primary.300",
+        borderColor: "primary.100",
       }}
       _web={{
         shadow: 2,
         borderWidth: 0,
       }}
       _light={{
-        backgroundColor: "coolGray.50",
-        borderColor: "coolGray.200",
+        backgroundColor: "secondary.100",
+        borderColor: "secondary.200",
       }}
       px="2"
     >
-      <VStack>
+      <VStack px="4" space={3} py="4">
         <HStack
-          px="4"
-          py="4"
           justifyContent={"space-between"}
           space={2}
           alignItems={"center"}
         >
-          <Heading
-            size="xs"
-            ml="-1"
-            _light={{
-              color: "gray.500",
+          <HStack justifyContent={"flex-start"} space={2} alignItems={"center"}>
+            <Heading
+              size="sm"
+              _light={{
+                color: "gray.600",
+              }}
+              _dark={{
+                color: "gray.50",
+              }}
+            >
+              VIDHANSABHA -
+            </Heading>
+            <Heading
+              size="sm"
+              _light={{
+                color: "gray.600",
+              }}
+              _dark={{
+                color: "gray.50",
+              }}
+            >
+              #{data?.vidhansabha_number}
+            </Heading>
+            <Heading
+              size="sm"
+              _light={{
+                color: "secondary.500",
+              }}
+              _dark={{
+                color: "gray.50",
+              }}
+              fontWeight="600"
+              // textTransform={"uppercase"}
+            >
+              {data?.vidhansabha_name}
+            </Heading>
+          </HStack>
+          <IconButton
+            h={4}
+            w={4}
+            onPress={toggleCard}
+            variant="ghost"
+            // borderRadius="full"
+            // p={3}
+            _icon={{
+              as: AntDesign,
+              name: cardShow ? "up" : "down",
             }}
-            _dark={{
-              color: "gray.50",
-            }}
-          >
-            Vidhansabha
-          </Heading>
-          <Text
-            fontSize="lg"
-            _light={{
-              color: "gray.800",
-            }}
-            _dark={{
-              color: "gray.50",
-            }}
-            fontWeight="500"
-            ml="-0.5"
-            mt="-1"
-          >
-            {data?.vidhansabha_name}
-          </Text>
+          />
         </HStack>
-        <Divider
-          orientation="horizontal"
-          thickness={"0.5"}
-          alignSelf={"center"}
-          // mr={2}
-        />
-        <HStack
-          px="4"
-          py="4"
-          justifyContent={"space-between"}
-          space={2}
-          alignItems={"center"}
-        >
-          <Heading
-            size="xs"
-            ml="-1"
-            _light={{
-              color: "gray.500",
-            }}
-            _dark={{
-              color: "gray.50",
-            }}
-          >
-            Siting MLA
-          </Heading>
-          <Text
-            fontSize="lg"
-            _light={{
-              color: "gray.800",
-            }}
-            _dark={{
-              color: "gray.50",
-            }}
-            fontWeight="500"
-            ml="-0.5"
-            mt="-1"
-          >
-            {data?.sitting_mla_name}
-          </Text>
-        </HStack>
+        {cardShow ? (
+          <HStack justifyContent={"flex-start"} space={2} alignItems={"center"}>
+            <Heading
+              size="sm"
+              _light={{
+                color: "gray.600",
+              }}
+              _dark={{
+                color: "gray.50",
+              }}
+              textTransform={"uppercase"}
+            >
+              Siting MLA -
+            </Heading>
+            <Heading
+              size="sm"
+              _light={{
+                color: "gray.800",
+              }}
+              _dark={{
+                color: "gray.50",
+              }}
+              fontWeight="500"
+            >
+              {/* {data?.sitting_mla_name}
+               */}
+              {`Sanjay Shah "makrai"`}
+            </Heading>
+          </HStack>
+        ) : null}
       </VStack>
     </Box>
   );

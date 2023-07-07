@@ -2,14 +2,14 @@
   "expo": {
     "name": "campaign-management-mobile",
     "slug": "campaign-management-mobile",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "myapp",
+    "scheme": "cms",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0061A3"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -18,19 +18,19 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.sampleapp",
+      "bundleIdentifier": "com.campaign-management-mobile",
       "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.sampleapp",
+      "package": "com.campaign-management-mobile",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/android/icon.png",
+        "backgroundColor": "#0061A3"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/web/icon-192.png"
     },
     "extra": {
       "eas": {

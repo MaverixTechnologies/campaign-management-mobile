@@ -3,22 +3,22 @@ import {
   Center,
   ScrollView,
   HStack,
-  VStack,
+  // VStack,
   IconButton,
   Text,
   Heading,
   Icon,
   Pressable,
 } from "native-base";
-import { PieChart } from "react-native-chart-kit";
+// import { PieChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
-import { chartConfig } from "../../components/Charts/chartConfig";
+// import { chartConfig } from "../../components/Charts/chartConfig";
 // import InfoCard from "./InfoCard";
-import GraphCard from "../../components/Cards/GraphCard";
+// import GraphCard from "../../components/Cards/GraphCard";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import { ApiService } from "../../lib/axios";
-import InfoCard from "./InfoCard";
+// import InfoCard from "./InfoCard";
 import BLACardsStack from "./BLACardsStack";
 const screenWidth = Dimensions.get("window").width;
 
@@ -27,23 +27,23 @@ const BoothDashboard = ({ route, navigation }) => {
   const [boothInfo, setBoothInfo] = useState();
   const { itemId } = route.params;
   const { goBack } = navigation;
-  const data = [
-    {
-      name: "Remaining Voters",
-      population: 478 - 1,
-      color: "rgba(131, 167, 234, 1)",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Voters Added",
-      // population: boothInfo?.total_voters_added,
-      population: 1,
-      color: "green",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-  ];
+  // const data = [
+  //   {
+  //     name: "Remaining Voters",
+  //     population: 478 - 1,
+  //     color: "rgba(131, 167, 234, 1)",
+  //     legendFontColor: "#7F7F7F",
+  //     legendFontSize: 15,
+  //   },
+  //   {
+  //     name: "Voters Added",
+  //     // population: boothInfo?.total_voters_added,
+  //     population: 1,
+  //     color: "green",
+  //     legendFontColor: "#7F7F7F",
+  //     legendFontSize: 15,
+  //   },
+  // ];
   const GetBooth = () => {
     ApiService.getBoothDashboard(itemId)
       .then((e) => {
@@ -68,91 +68,89 @@ const BoothDashboard = ({ route, navigation }) => {
   );
   return (
     <ScrollView>
-      <VStack alignSelf={"center"} p={2} space={4} maxWidth={"800"}>
-        <HStack justifyContent={"flex-start"} alignItems={"center"}>
-          <IconButton
-            size={"md"}
-            variant="ghost"
-            _icon={{
-              as: MaterialIcons,
-              name: "arrow-back",
+      <HStack
+        space={2}
+        p={1}
+        bgColor={"secondary.50"}
+        alignItems={"center"}
+        justifyContent={"flex-start"}
+        borderBottomColor={"primary.100"}
+        borderBottomWidth={1}
+        w={screenWidth > 800 ? "800" : screenWidth}
+      >
+        <IconButton
+          size={"md"}
+          variant="ghost"
+          _icon={{
+            as: MaterialIcons,
+            name: "arrow-back",
+          }}
+          onPress={() => goBack()}
+          title="Go back"
+        />
+        <Text
+          color="coolGray.600"
+          _dark={{
+            color: "warmGray.200",
+          }}
+          bold
+        >
+          Go back
+        </Text>
+      </HStack>
+      {/* <Center>
+        <InfoCard data={boothInfo} screenWidth={screenWidth} />
+      </Center> */}
+      <Center>
+        <BLACardsStack
+          itemId={itemId}
+          data={boothInfo}
+          screenWidth={screenWidth}
+        />
+      </Center>
+      {boothInfo?.bla_name ? null : (
+        <Center>
+          <Pressable
+            onPress={() => {
+              navigation.navigate("AddBLA", {
+                itemId: itemId,
+              });
             }}
-            onPress={() => goBack()}
-            title="Go back"
-          />
-          <Text
-            color="coolGray.600"
-            _dark={{
-              color: "warmGray.200",
-            }}
-            bold
+            w={screenWidth > 800 ? "800" : screenWidth - 20}
+            rounded={"full"}
+            bg="coolGray.100"
           >
-            Go back
-          </Text>
-        </HStack>
-        <Center>
-          <InfoCard data={boothInfo} screenWidth={screenWidth} />
-        </Center>
-        <Center>
-          <BLACardsStack data={boothInfo} screenWidth={screenWidth} />
-        </Center>
-        {boothInfo?.bla_name ? null : (
-          <Center>
-            <Pressable
-              onPress={() => {
-                navigation.navigate("AddBLA", {
-                  itemId: itemId,
-                });
-              }}
-              w={screenWidth > 800 ? "800" : screenWidth - 20}
+            <HStack
+              bg="primary.100"
+              alignItems={"center"}
+              justifyContent={"space-between"}
+              py="4"
               rounded={"full"}
-              bg="coolGray.100"
+              px="8"
             >
-              <HStack
-                bg="primary.100"
-                alignItems={"center"}
-                justifyContent={"space-between"}
-                py="4"
-                rounded={"full"}
-                px="8"
+              <Heading
+                size="md"
+                ml="-1"
+                _light={{
+                  color: "gray.700",
+                }}
+                _dark={{
+                  color: "gray.50",
+                }}
               >
-                <Heading
-                  size="md"
-                  ml="-1"
-                  _light={{
-                    color: "gray.700",
-                  }}
-                  _dark={{
-                    color: "gray.50",
-                  }}
-                >
-                  Add New Member
-                </Heading>
-                <Icon
-                  color={"primary"}
-                  variant={"ghost"}
-                  as={MaterialIcons}
-                  name="person-add-alt-1"
-                  size={"lg"}
-                />
-              </HStack>
-            </Pressable>
-          </Center>
-        )}
-        <Center>
-          <GraphCard heading={"Constituency Distribution"}>
-            <PieChart
-              data={data}
-              width={screenWidth > 800 ? 800 : screenWidth - 40}
-              height={200}
-              chartConfig={chartConfig}
-              accessor={"population"}
-              backgroundColor={"transparent"}
-              paddingLeft={"15"}
-            />
-          </GraphCard>
+                Add New Member
+              </Heading>
+              <Icon
+                color={"primary"}
+                variant={"ghost"}
+                as={MaterialIcons}
+                name="person-add-alt-1"
+                size={"lg"}
+              />
+            </HStack>
+          </Pressable>
         </Center>
-      </VStack>
+      )}
     </ScrollView>
   );
 };

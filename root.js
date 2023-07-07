@@ -12,7 +12,7 @@ import useAxiosConfig from "./hooks/useAxiosConfig";
 // navigation
 import Navigator from "./navigation";
 
-export const Root = ({ theme }) => {
+export const Root = () => {
   const isLoadingComplete = useCachedResources();
   const isAxiosSetupComplete = useAxiosConfig();
   console.log("ROOT");
@@ -25,7 +25,7 @@ export const Root = ({ theme }) => {
       ) : null}
       {isLoadingComplete && isAxiosSetupComplete ? (
         <>
-          <Navigator theme={theme} />
+          <Navigator />
           <StatusBar />
         </>
       ) : null}

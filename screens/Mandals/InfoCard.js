@@ -32,9 +32,9 @@ const InfoCard = ({ screenWidth, data }) => {
         >
           <Heading
             size="xs"
-            ml="-1"
+            //
             _light={{
-              color: "gray.500",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
@@ -43,16 +43,15 @@ const InfoCard = ({ screenWidth, data }) => {
             Mandalam
           </Heading>
           <Text
-            fontSize="lg"
+            textTransform={"capitalize"}
+            fontSize="md"
             _light={{
-              color: "gray.800",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
             }}
             fontWeight="500"
-            ml="-0.5"
-            mt="-1"
           >
             {data?.mandal_name}
           </Text>
@@ -71,9 +70,8 @@ const InfoCard = ({ screenWidth, data }) => {
         >
           <Heading
             size="xs"
-            ml="-1"
             _light={{
-              color: "gray.500",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
@@ -84,14 +82,12 @@ const InfoCard = ({ screenWidth, data }) => {
           <Text
             fontSize="lg"
             _light={{
-              color: "gray.800",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
             }}
             fontWeight="500"
-            ml="-0.5"
-            mt="-1"
           >
             {data?.mandalincharge_name
               ? data?.mandalincharge_name
@@ -113,9 +109,8 @@ const InfoCard = ({ screenWidth, data }) => {
         >
           <Heading
             size="xs"
-            ml="-1"
             _light={{
-              color: "gray.500",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
@@ -126,14 +121,12 @@ const InfoCard = ({ screenWidth, data }) => {
           <Text
             fontSize="lg"
             _light={{
-              color: "gray.800",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
             }}
             fontWeight="500"
-            ml="-0.5"
-            mt="-1"
           >
             {data?.mandalincharge_contact
               ? data?.mandalincharge_contact

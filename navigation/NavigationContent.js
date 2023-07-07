@@ -6,115 +6,123 @@ import {
   VStack,
   Text,
   HStack,
-  Divider,
   Icon,
   Button,
+  Box,
 } from "native-base";
 import UserAvatar from "react-native-user-avatar";
 //axios
-// import { apiClient } from "../lib/axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import { logoutAction } from "../lib/redux/reducers/authReducer";
-// navigation
-// import { useNavigation } from "@react-navigation/native";
 // state(redux)
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../lib/redux/reducers/authReducer";
 
 global.__reanimatedWorkletInit = () => {};
 export default function NavigationContent(props) {
-  // const navigation = useNavigation();
   const dispatch = useDispatch();
   const { userProfile } = useSelector((state) => state.auth);
   const doLogout = async () => {
-    // Clear the interceptor and reset the auth data
-    // apiClient.interceptors.request.eject(apiClient.interceptors.request);
-    // dispatch(logout());
     await AsyncStorage.removeItem("token");
     await AsyncStorage.removeItem("refreshToken");
-
     dispatch(logout());
-    // navigation.navigate("Signin");
   };
-
+  console.log("props  - ", props);
   return (
-    <DrawerContentScrollView {...props}>
-      <VStack h={"full"} my="2" mx="1">
-        <VStack justifyContent={"space-between"} space="6">
-          <HStack space={4} px={4} alignItems={"center"}>
-            <UserAvatar size={48} name={userProfile?.full_name} />
-            <VStack>
-              <Text
-                fontSize="lg"
-                color="gray.700"
-                fontWeight="600"
-                textTransform={"capitalize"}
-              >
-                {userProfile?.full_name}
-              </Text>
-              <Text
-                fontSize="xs"
-                color="gray.500"
-                fontWeight="500"
-                textTransform={"capitalize"}
-              >
-                {userProfile?.role}
-              </Text>
-            </VStack>
-          </HStack>
-          <VStack space="3">
-            {props.state.routeNames.map((name, index) => (
-              <Pressable
-                key={index}
-                px="5"
-                py="3"
-                rounded="md"
-                bg={
-                  index === props.state.index
-                    ? "rgba(6, 182, 212, 0.1)"
-                    : "transparent"
-                }
-                onPress={() => {
-                  props.navigation.navigate(name);
-                }}
-              >
-                <HStack space="7" alignItems="center">
-                  <Icon
-                    color={
-                      index === props.state.index ? "primary.500" : "gray.500"
-                    }
-                    size="5"
-                    as={<MaterialCommunityIcons name={getIcon(name)} />}
-                  />
-                  <Text
-                    fontWeight="500"
-                    color={
-                      index === props.state.index ? "primary.500" : "gray.700"
-                    }
-                  >
-                    {name}
-                  </Text>
-                </HStack>
-              </Pressable>
-            ))}
-          </VStack>
-        </VStack>
-        <VStack justifyContent={"space-between"} space="5">
-          <Divider />
-          <VStack space="3">
-            <Button
-              leftIcon={
-                <Icon as={Ionicons} name="cloud-upload-outline" size="sm" />
-              }
-              rounded={"full"}
-              onPress={() => doLogout()}
+    <Box flex={1} p={0} m={0}>
+      <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1 }}>
+        <HStack
+          space={4}
+          px={4}
+          py={3}
+          alignItems={"center"}
+          borderBottomWidth={1}
+          borderBottomColor={"primary.100"}
+          // backgroundColor={"primary.600"}
+        >
+          <UserAvatar size={48} name={userProfile?.full_name} />
+          <VStack>
+            <Text
+              fontSize="lg"
+              color="primary.600"
+              fontWeight="600"
+              textTransform={"capitalize"}
             >
-              Logout
-            </Button>
+              {userProfile?.full_name}
+            </Text>
+            <Text
+              fontSize="xs"
+              color="gray.400"
+              fontWeight="500"
+              textTransform={"capitalize"}
+            >
+              {userProfile?.role}
+            </Text>
+          </VStack>
+        </HStack>
+        <VStack mx="0" h={"80%"} pt={4} backgroundColor={"primary.50"}>
+          <VStack justifyContent={"space-between"} space="6">
+            <VStack space="3">
+              {/* // name !== "Filter Voters"  */}
+              {props.state.routeNames.map((name, index) =>
+                name !== "Voters Analytics" &&
+                name !== "Zone Analytics" &&
+                name !== "Previous Result" ? (
+                  <Pressable
+                    key={index}
+                    px="5"
+                    py="3"
+                    rounded="md"
+                    bg={
+                      index === props.state.index
+                        ? "secondary.100"
+                        : "transparent"
+                    }
+                    onPress={() => {
+                      props.navigation.navigate(name);
+                    }}
+                  >
+                    <HStack space="7" alignItems="center">
+                      <Icon
+                        color={
+                          index === props.state.index
+                            ? "secondary.500"
+                            : "gray.500"
+                        }
+                        size="8"
+                        as={<MaterialCommunityIcons name={getIcon(name)} />}
+                      />
+                      <Text
+                        fontWeight="500"
+                        fontSize={"lg"}
+                        color={
+                          index === props.state.index
+                            ? "secondary.500"
+                            : "gray.500"
+                        }
+                      >
+                        {name}
+                      </Text>
+                    </HStack>
+                  </Pressable>
+                ) : null
+              )}
+            </VStack>
           </VStack>
         </VStack>
-      </VStack>
-    </DrawerContentScrollView>
+        <VStack px={4}>
+          <Button
+            leftIcon={
+              <Icon as={Ionicons} name="cloud-upload-outline" size="sm" />
+            }
+            bg={"secondary.600"}
+            rounded={"full"}
+            onPress={() => doLogout()}
+          >
+            Logout
+          </Button>
+        </VStack>
+      </DrawerContentScrollView>
+    </Box>
   );
 }
 
@@ -154,8 +162,3 @@ const getIcon = (screenName) => {
       return undefined;
   }
 };
-// account-star
-// account-supervisor
-// account-tie
-// adjust
-// alpha-m-circle-outline

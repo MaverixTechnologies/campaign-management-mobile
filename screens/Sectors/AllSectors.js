@@ -1,21 +1,18 @@
 import React, { useCallback, useState } from "react";
 import {
   Text,
-  // Heading,
-  Box,
   FlatList,
   VStack,
   HStack,
   IconButton,
   Pressable,
-  Spacer,
+  ScrollView,
 } from "native-base";
-// import UserAvatar from "react-native-user-avatar";
 import { ApiService } from "../../lib/axios";
 import { useFocusEffect } from "@react-navigation/native";
-// import { Text } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-
+import { Dimensions } from "react-native";
+const screenWidth = Dimensions.get("window").width;
 const AllSectors = ({ navigation }) => {
   const [lists, setLists] = useState();
   // const linkTo = useLinkTo();
@@ -23,8 +20,6 @@ const AllSectors = ({ navigation }) => {
   const GetSectors = () => {
     ApiService.getSectors()
       .then((e) => {
-        // console.log(e);
-        // let splitData = e.data.slice(0, 10);
         setLists(e.data);
       })
       .catch((err) => {
@@ -43,8 +38,17 @@ const AllSectors = ({ navigation }) => {
     }, [])
   );
   return (
-    <Box>
-      <HStack justifyContent={"flex-start"} alignItems={"center"}>
+    <ScrollView bgColor={"primary.50"}>
+      <HStack
+        space={2}
+        p={1}
+        bgColor={"secondary.50"}
+        alignItems={"center"}
+        justifyContent={"flex-start"}
+        borderBottomColor={"primary.100"}
+        borderBottomWidth={1}
+        w={screenWidth > 800 ? "800" : screenWidth}
+      >
         <IconButton
           size={"md"}
           variant="ghost"
@@ -68,87 +72,135 @@ const AllSectors = ({ navigation }) => {
       <FlatList
         data={lists}
         space="4"
-        renderItem={({ item }) => (
-          <Box
-            bg="white"
+        px={2}
+        renderItem={({ item, index }) => (
+          <Pressable
             safeArea
             flex="1"
-            borderBottomWidth="1"
+            onPress={() =>
+              navigation.navigate("SectorDashboard", {
+                itemId: item.id,
+              })
+            }
             _dark={{
-              borderColor: "muted.50",
+              bg: "coolGray.800",
             }}
-            borderColor="muted.500"
+            _light={{
+              bgColor: "primary.50",
+            }}
+            borderBottomRadius={8}
+            borderBottomColor={"primary.100"}
+            borderBottomWidth={1}
           >
-            <Pressable
-              onPress={() =>
-                navigation.navigate("SectorDashboard", {
-                  itemId: item.id,
-                })
-              }
-              _dark={{
-                bg: "coolGray.800",
-              }}
-              _light={{
-                bg: "white",
-              }}
-            >
-              <Box pl="4" pr="5" py="2">
-                <HStack alignItems="center" space={3}>
-                  <VStack>
-                    <Text
-                      color="coolGray.800"
-                      _dark={{
-                        color: "warmGray.50",
-                      }}
-                      bold
-                    >
-                      {item.name}
-                    </Text>
-                    <Text
-                      color="coolGray.600"
-                      _dark={{
-                        color: "warmGray.200",
-                      }}
-                    >
-                      SI -
-                      {item.sectorincharge
-                        ? item.sectorincharge?.full_name
-                        : "Not added"}
-                    </Text>
-                  </VStack>
-                  <Spacer />
-                  <VStack>
+            <HStack alignItems="center" pl={2} w={"100%"}>
+              <Text
+                color="coolGray.800"
+                _dark={{
+                  color: "warmGray.50",
+                }}
+                bold
+                fontSize="lg"
+                w={"12%"}
+              >
+                #{index + 1}
+              </Text>
+              <VStack
+                pl="4"
+                pr="5"
+                py="2"
+                alignItems="flex-start"
+                justifyContent={"space-between"}
+                space={1}
+                w={"87%"}
+              >
+                <HStack
+                  w={"100%"}
+                  alignItems="center"
+                  justifyContent={"space-between"}
+                >
+                  <Text
+                    fontSize={"md"}
+                    color="coolGray.600"
+                    _dark={{
+                      color: "warmGray.200",
+                    }}
+                    bold
+                  >
+                    {item.name}
+                  </Text>
+                  <HStack
+                    alignItems="center"
+                    // space={3}
+                    borderRadius={"full"}
+                    backgroundColor={"secondary.200"}
+                    _dark={{
+                      backgroundColor: "secondary.200",
+                    }}
+                    px={2}
+                  >
                     <Text
                       fontSize="xs"
-                      color="coolGray.800"
+                      color="gray.900"
                       _dark={{
-                        color: "warmGray.50",
+                        color: "secondary.600",
                       }}
                       alignSelf="flex-end"
                     >
-                      Mandal - {item.mandal.name}
+                      {item.mandal.name}
                     </Text>
-                    <Text
-                      color="coolGray.600"
-                      _dark={{
-                        color: "warmGray.200",
-                      }}
-                      alignSelf="flex-end"
-                    >
-                      MI -
-                      {item.mandal.mandalincharge
-                        ? item.mandal?.mandalincharge?.full_name
-                        : "Not added"}
-                    </Text>
-                  </VStack>
+                  </HStack>
                 </HStack>
-              </Box>
-            </Pressable>
-          </Box>
+                <HStack alignItems="center" space={3}>
+                  <Text
+                    color="primary.800"
+                    _dark={{
+                      color: "warmGray.50",
+                    }}
+                    fontSize="xs"
+                  >
+                    Sector Incharge -
+                  </Text>
+                  <Text
+                    color="primary.800"
+                    _dark={{
+                      color: "warmGray.200",
+                    }}
+                    fontSize="xs"
+                  >
+                    {item.sectorincharge
+                      ? item.sectorincharge?.full_name
+                      : "Not added"}
+                  </Text>
+                </HStack>
+                <HStack alignItems="center" space={3}>
+                  <Text
+                    color="primary.800"
+                    _dark={{
+                      color: "warmGray.50",
+                    }}
+                    fontSize="xs"
+                  >
+                    Mandal Incharge -
+                  </Text>
+                  <Text
+                    color="primary.800"
+                    _dark={{
+                      color: "warmGray.200",
+                    }}
+                    fontSize="xs"
+                  >
+                    {item.mandal.mandalincharge
+                      ? item.mandal?.mandalincharge?.full_name
+                      : "Not added"}
+                  </Text>
+                </HStack>
+              </VStack>
+            </HStack>
+          </Pressable>
         )}
         keyExtractor={(item, i) => i}
       />
-    </Box>
+    </ScrollView>
   );
 };
 

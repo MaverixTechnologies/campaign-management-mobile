@@ -32,6 +32,12 @@ export const linking = {
       AllVoters: "all-voters",
       AddNewMember: "add-new-member",
       SearchVoters: "search-voters",
+
+      // Analytics
+      VotersAnalytics: "voters-analytics",
+      ZoneAnalytics: "Zone-analytics",
+      PreviousResults: "Previous-results",
+      FilterVoters: "filter-voters",
     },
   },
 };

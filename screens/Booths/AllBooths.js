@@ -1,29 +1,24 @@
 import React, { useCallback, useState } from "react";
 import {
   Text,
-  // Heading,
-  Box,
+  ScrollView,
   FlatList,
   VStack,
   HStack,
   IconButton,
   Pressable,
-  Spacer,
 } from "native-base";
-// import UserAvatar from "react-native-user-avatar";
 import { ApiService } from "../../lib/axios";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-// import { Text } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-
+import { Dimensions } from "react-native";
+const screenWidth = Dimensions.get("window").width;
 const AllSectors = ({ navigation: { goBack } }) => {
   const [lists, setLists] = useState();
   const navigation = useNavigation();
 
   const GetSectors = () => {
     ApiService.getBooths().then((e) => {
-      // console.log(e);
-      // let splitData = e.data.slice(0, 10);
       setLists(e.data);
     });
   };
@@ -39,11 +34,17 @@ const AllSectors = ({ navigation: { goBack } }) => {
     }, [])
   );
   return (
-    <Box>
-      {/* <Heading fontSize="xl" p="4" pb="3">
-        Inbox
-      </Heading> */}
-      <HStack justifyContent={"flex-start"} alignItems={"center"}>
+    <ScrollView bgColor={"primary.50"}>
+      <HStack
+        space={2}
+        p={1}
+        bgColor={"secondary.50"}
+        alignItems={"center"}
+        justifyContent={"flex-start"}
+        borderBottomColor={"primary.100"}
+        borderBottomWidth={1}
+        w={screenWidth > 800 ? "800" : screenWidth}
+      >
         <IconButton
           size={"md"}
           variant="ghost"
@@ -66,82 +67,136 @@ const AllSectors = ({ navigation: { goBack } }) => {
       </HStack>
       <FlatList
         data={lists}
+        px={1}
         space="4"
         renderItem={({ item }) => (
-          <Box
-            bg="white"
+          <Pressable
             safeArea
             flex="1"
-            borderBottomWidth="1"
+            onPress={() =>
+              navigation.navigate("BoothDashboard", {
+                itemId: item.id,
+              })
+            }
             _dark={{
-              borderColor: "muted.50",
+              bg: "coolGray.800",
             }}
-            borderColor="muted.500"
+            _light={{
+              bgColor: "primary.50",
+            }}
+            borderRadius={8}
+            borderBottomColor={"primary.100"}
+            borderBottomWidth={1}
           >
-            <Pressable
-              onPress={() =>
-                navigation.navigate("BoothDashboard", {
-                  itemId: item.id,
-                })
-              }
-              _dark={{
-                bg: "coolGray.800",
-              }}
-              _light={{
-                bg: "white",
-              }}
-            >
-              <Box pl="4" pr="5" py="2">
-                <HStack alignItems="center" space={3}>
-                  <VStack>
-                    <Text
-                      color="coolGray.800"
-                      _dark={{
-                        color: "warmGray.50",
-                      }}
-                      bold
-                    >
-                      {item.name} - #{item.number}
-                    </Text>
-                    <Text
-                      color="coolGray.600"
-                      _dark={{
-                        color: "warmGray.200",
-                      }}
-                    >
-                      BLA - {item.boothlevelagent?.full_name}
-                    </Text>
-                  </VStack>
-                  <Spacer />
-                  <VStack>
+            <HStack alignItems="center" pl={2} w={"100%"}>
+              <Text
+                color="coolGray.800"
+                _dark={{
+                  color: "warmGray.50",
+                }}
+                bold
+                fontSize="lg"
+                w={"12%"}
+              >
+                #{item?.number}
+              </Text>
+              <VStack
+                pl="4"
+                pr="5"
+                py="2"
+                alignItems="flex-start"
+                justifyContent={"space-between"}
+                space={1}
+                w={"87%"}
+              >
+                <HStack
+                  w={"100%"}
+                  alignItems="center"
+                  justifyContent={"space-between"}
+                >
+                  <Text
+                    fontSize={"md"}
+                    color="coolGray.600"
+                    _dark={{
+                      color: "warmGray.200",
+                    }}
+                    bold
+                  >
+                    {item.name}
+                  </Text>
+                  <HStack
+                    alignItems="center"
+                    space={3}
+                    borderRadius={"full"}
+                    backgroundColor={"rose.100"}
+                    _dark={{
+                      backgroundColor: "rose.200",
+                    }}
+                    px={2}
+                  >
                     <Text
                       fontSize="xs"
-                      color="coolGray.800"
+                      color="gray.900"
                       _dark={{
-                        color: "warmGray.50",
+                        color: "rose.600",
                       }}
                       alignSelf="flex-end"
                     >
-                      Sector - {item.sector?.name}
+                      {item.sector?.name}
                     </Text>
-                    <Text
-                      color="coolGray.600"
-                      _dark={{
-                        color: "warmGray.200",
-                      }}
-                      alignSelf="flex-end"
-                    >
-                      SI - {item.sector?.sectorincharge?.full_name}
-                    </Text>
-                  </VStack>
+                  </HStack>
                 </HStack>
-              </Box>
-            </Pressable>
-          </Box>
+                <HStack alignItems="center" space={3}>
+                  <Text
+                    color="primary.800"
+                    _dark={{
+                      color: "warmGray.50",
+                    }}
+                    fontSize="xs"
+                  >
+                    BLA -
+                  </Text>
+                  <Text
+                    color="primary.800"
+                    _dark={{
+                      color: "warmGray.200",
+                    }}
+                    fontSize="xs"
+                  >
+                    {item.boothlevelagent
+                      ? item.boothlevelagent?.full_name
+                      : "Not added"}
+                  </Text>
+                </HStack>
+                <HStack alignItems="center" space={3}>
+                  <Text
+                    color="primary.800"
+                    _dark={{
+                      color: "warmGray.50",
+                    }}
+                    fontSize="xs"
+                  >
+                    Sector Incharge -
+                  </Text>
+                  <Text
+                    color="primary.800"
+                    _dark={{
+                      color: "warmGray.200",
+                    }}
+                    fontSize="xs"
+                  >
+                    {item.sector.sectorincharge
+                      ? item.sector?.sectorincharge?.full_name
+                      : "Not added"}
+                  </Text>
+                </HStack>
+              </VStack>
+            </HStack>
+          </Pressable>
         )}
         keyExtractor={(item, i) => i}
       />
-    </Box>
+    </ScrollView>
   );
 };
 

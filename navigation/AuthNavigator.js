@@ -8,20 +8,20 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { linking } from "./linking";
 // theme
-import { navDarkTheme, navLightTheme } from "../lib/theme";
+// import { navDarkTheme, navLightTheme } from "../lib/theme";
 // routing
 import NavigationDrawer from "./NavigationDrawer";
 
 const Stack = createNativeStackNavigator();
 
-export default function AuthNavigator({ theme }) {
+export default function AuthNavigator() {
   let initialRoute = "app";
   return (
     <NavigationContainer
       linking={linking}
-      theme={
-        theme.config?.initialColorMode === "dark" ? navDarkTheme : navLightTheme
-      }
+      // theme={
+      //   theme.config?.initialColorMode === "dark" ? navDarkTheme : navLightTheme
+      // }
     >
       <Stack.Navigator initialRouteName={initialRoute} headerMode="screen">
         <Stack.Screen

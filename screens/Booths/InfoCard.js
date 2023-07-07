@@ -4,23 +4,21 @@ const InfoCard = ({ screenWidth, data }) => {
   return (
     <Box
       w={screenWidth > 800 ? "800" : screenWidth - 20}
-      rounded="lg"
       overflow="scroll"
-      borderColor="coolGray.200"
+      borderColor="primary.200"
       borderWidth="1"
+      borderBottomRadius={8}
+      borderTopRightRadius={8}
       _dark={{
-        borderColor: "coolGray.600",
-        backgroundColor: "gray.700",
+        backgroundColor: "primary.700",
       }}
       _web={{
-        shadow: 2,
+        shadow: 1,
         borderWidth: 0,
       }}
       _light={{
-        backgroundColor: "coolGray.50",
-        borderColor: "coolGray.200",
+        backgroundColor: "white",
       }}
-      px="2"
     >
       <VStack>
         <HStack
@@ -32,9 +30,8 @@ const InfoCard = ({ screenWidth, data }) => {
         >
           <Heading
             size="xs"
-            ml="-1"
             _light={{
-              color: "gray.500",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
@@ -43,16 +40,14 @@ const InfoCard = ({ screenWidth, data }) => {
             Booth
           </Heading>
           <Text
-            fontSize="lg"
+            fontSize="md"
             _light={{
-              color: "gray.800",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
             }}
             fontWeight="500"
-            ml="-0.5"
-            mt="-1"
           >
             {data?.pollingbooth_name}
           </Text>
@@ -61,6 +56,7 @@ const InfoCard = ({ screenWidth, data }) => {
           orientation="horizontal"
           thickness={"0.5"}
           alignSelf={"center"}
+          w={"90%"}
           // mr={2}
         />
         <HStack
@@ -72,9 +68,8 @@ const InfoCard = ({ screenWidth, data }) => {
         >
           <Heading
             size="xs"
-            ml="-1"
             _light={{
-              color: "gray.500",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
@@ -83,16 +78,14 @@ const InfoCard = ({ screenWidth, data }) => {
             BLA
           </Heading>
           <Text
-            fontSize="lg"
+            fontSize="md"
             _light={{
-              color: "gray.800",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
             }}
             fontWeight="500"
-            ml="-0.5"
-            mt="-1"
           >
             {data?.bla_name ? data?.bla_name : "Not added"}
           </Text>
@@ -101,6 +94,7 @@ const InfoCard = ({ screenWidth, data }) => {
           orientation="horizontal"
           thickness={"0.5"}
           alignSelf={"center"}
+          w={"90%"}
           // mr={2}
         />
         <HStack
@@ -112,9 +106,8 @@ const InfoCard = ({ screenWidth, data }) => {
         >
           <Heading
             size="xs"
-            ml="-1"
             _light={{
-              color: "gray.500",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
@@ -124,16 +117,14 @@ const InfoCard = ({ screenWidth, data }) => {
           </Heading>
           <Text
             textTransform={"capitalize"}
-            fontSize="lg"
+            fontSize="md"
             _light={{
-              color: "gray.800",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
             }}
             fontWeight="500"
-            ml="-0.5"
-            mt="-1"
           >
             {data?.sector_name ? data?.sector_name : "Not added"}
           </Text>
@@ -142,6 +133,7 @@ const InfoCard = ({ screenWidth, data }) => {
           orientation="horizontal"
           thickness={"0.5"}
           alignSelf={"center"}
+          w={"90%"}
           // mr={2}
         />
         <HStack
@@ -153,9 +145,8 @@ const InfoCard = ({ screenWidth, data }) => {
         >
           <Heading
             size="xs"
-            ml="-1"
             _light={{
-              color: "gray.500",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
@@ -165,16 +156,14 @@ const InfoCard = ({ screenWidth, data }) => {
           </Heading>
           <Text
             textTransform={"capitalize"}
-            fontSize="lg"
+            fontSize="md"
             _light={{
-              color: "gray.800",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
             }}
             fontWeight="500"
-            ml="-0.5"
-            mt="-1"
           >
             {data?.sectorincharge_name
               ? data?.sectorincharge_name
@@ -185,6 +174,7 @@ const InfoCard = ({ screenWidth, data }) => {
           orientation="horizontal"
           thickness={"0.5"}
           alignSelf={"center"}
+          w={"90%"}
           // mr={2}
         />
         <HStack
@@ -196,9 +186,8 @@ const InfoCard = ({ screenWidth, data }) => {
         >
           <Heading
             size="xs"
-            ml="-1"
             _light={{
-              color: "gray.500",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
@@ -208,16 +197,14 @@ const InfoCard = ({ screenWidth, data }) => {
           </Heading>
           <Text
             textTransform={"capitalize"}
-            fontSize="lg"
+            fontSize="md"
             _light={{
-              color: "gray.800",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
             }}
             fontWeight="500"
-            ml="-0.5"
-            mt="-1"
           >
             {data?.sectorincharge_contact
               ? data?.sectorincharge_contact
@@ -228,6 +215,7 @@ const InfoCard = ({ screenWidth, data }) => {
           orientation="horizontal"
           thickness={"0.5"}
           alignSelf={"center"}
+          w={"90%"}
           // mr={2}
         />
         <HStack
@@ -239,9 +227,8 @@ const InfoCard = ({ screenWidth, data }) => {
         >
           <Heading
             size="xs"
-            ml="-1"
             _light={{
-              color: "gray.500",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
@@ -250,17 +237,15 @@ const InfoCard = ({ screenWidth, data }) => {
             BLO
           </Heading>
           <Text
-            fontSize="lg"
+            fontSize="md"
             _light={{
-              color: "gray.800",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
             }}
             fontWeight="500"
-            ml="-0.5"
             textTransform={"capitalize"}
-            mt="-1"
           >
             {data?.blo_name ? data?.blo_name : "Not added"}
           </Text>
@@ -269,6 +254,7 @@ const InfoCard = ({ screenWidth, data }) => {
           orientation="horizontal"
           thickness={"0.5"}
           alignSelf={"center"}
+          w={"90%"}
           // mr={2}
         />
         <HStack
@@ -280,9 +266,8 @@ const InfoCard = ({ screenWidth, data }) => {
         >
           <Heading
             size="xs"
-            ml="-1"
             _light={{
-              color: "gray.500",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
@@ -291,16 +276,14 @@ const InfoCard = ({ screenWidth, data }) => {
             BLO Contact
           </Heading>
           <Text
-            fontSize="lg"
+            fontSize="md"
             _light={{
-              color: "gray.800",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
             }}
             fontWeight="500"
-            ml="-0.5"
-            mt="-1"
             textTransform={"capitalize"}
           >
             {data?.blo_contact ? data?.blo_contact : "Not added"}

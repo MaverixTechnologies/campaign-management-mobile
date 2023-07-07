@@ -1,27 +1,24 @@
 import React, { useCallback, useState } from "react";
 import {
   Text,
-  Box,
   FlatList,
   VStack,
   HStack,
   IconButton,
   Pressable,
-  Spacer,
+  ScrollView,
 } from "native-base";
 import { ApiService } from "../../lib/axios";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Dimensions } from "react-native";
+const screenWidth = Dimensions.get("window").width;
 const AllMandals = ({ navigation: { goBack } }) => {
   const [lists, setLists] = useState();
   const navigation = useNavigation();
   const GetMandals = async () => {
     const e = await ApiService.getMandals();
     setLists(e.data);
-
-    // ApiService.getMandals().then((e) => {
-    //   setLists(e.data);
-    // });
   };
 
   useFocusEffect(
@@ -35,8 +32,17 @@ const AllMandals = ({ navigation: { goBack } }) => {
     }, [])
   );
   return (
-    <Box>
-      <HStack justifyContent={"flex-start"} alignItems={"center"}>
+    <ScrollView bgColor={"primary.50"}>
+      <HStack
+        space={2}
+        p={1}
+        bgColor={"secondary.50"}
+        alignItems={"center"}
+        justifyContent={"flex-start"}
+        borderBottomColor={"primary.100"}
+        borderBottomWidth={1}
+        w={screenWidth > 800 ? "800" : screenWidth}
+      >
         <IconButton
           size={"md"}
           variant="ghost"
@@ -59,84 +65,84 @@ const AllMandals = ({ navigation: { goBack } }) => {
       </HStack>
       <FlatList
         data={lists}
-        space="4"
-        renderItem={({ item }) => (
-          <Box
-            bg="white"
+        bg="white"
+        px={2}
+        renderItem={({ item, index }) => (
+          <Pressable
             safeArea
             flex="1"
-            borderBottomWidth="1"
+            onPress={() =>
+              navigation.navigate("MandalDashboard", {
+                itemId: item?.id,
+              })
+            }
             _dark={{
-              borderColor: "muted.50",
+              bg: "coolGray.800",
             }}
-            borderColor="muted.500"
+            _light={{
+              bgColor: "primary.50",
+            }}
+            borderBottomRadius={8}
+            borderBottomColor={"primary.100"}
+            borderBottomWidth={1}
           >
-            <Pressable
-              onPress={() =>
-                navigation.navigate("MandalDashboard", {
-                  itemId: item?.id,
-                })
-              }
-              _dark={{
-                bg: "coolGray.800",
-              }}
-              _light={{
-                bg: "white",
-              }}
+            <HStack
+              pl="4"
+              pr="5"
+              py="2"
+              alignItems="center"
+              justifyContent={"space-between"}
+              space={3}
             >
-              <Box pl="4" pr="5" py="2">
-                <HStack alignItems="center" space={3}>
-                  <VStack>
-                    <Text
-                      color="coolGray.600"
-                      _dark={{
-                        color: "warmGray.200",
-                      }}
-                    >
-                      Mandal Name -
-                    </Text>
-                    <Text
-                      color="coolGray.600"
-                      _dark={{
-                        color: "warmGray.200",
-                      }}
-                      bold
-                    >
-                      {item?.name}
-                    </Text>
-                  </VStack>
-                  <Spacer />
-                  <VStack>
-                    <Text
-                      color="coolGray.600"
-                      _dark={{
-                        color: "warmGray.200",
-                      }}
-                      alignSelf="flex-end"
-                    >
-                      Mandal Incharge -
-                    </Text>
-                    <Text
-                      color="coolGray.800"
-                      _dark={{
-                        color: "warmGray.50",
-                      }}
-                      alignSelf="flex-end"
-                      bold
-                    >
-                      {item?.mandalincharge
-                        ? item?.mandalincharge?.full_name
-                        : "Not Added Yet"}
-                    </Text>
-                  </VStack>
-                </HStack>
-              </Box>
-            </Pressable>
-          </Box>
+              <HStack alignItems="center" space={3}>
+                <Text
+                  color="coolGray.600"
+                  _dark={{
+                    color: "warmGray.200",
+                  }}
+                  bold
+                >
+                  #{index + 1}
+                </Text>
+                <Text
+                  fontSize={"md"}
+                  color="coolGray.600"
+                  _dark={{
+                    color: "warmGray.200",
+                  }}
+                  bold
+                >
+                  {item?.name}
+                </Text>
+              </HStack>
+              <VStack alignItems={"flex-end"}>
+                <Text
+                  fontSize={"xs"}
+                  color="coolGray.700"
+                  _dark={{
+                    color: "warmGray.200",
+                  }}
+                >
+                  Mandal Incharge -
+                </Text>
+                <Text
+                  color="coolGray.700"
+                  _dark={{
+                    color: "warmGray.50",
+                  }}
+                  bold
+                >
+                  {item?.mandalincharge
+                    ? item?.mandalincharge?.full_name
+                    : "Not Added Yet"}
+                </Text>
+              </VStack>
+            </HStack>
+          </Pressable>
         )}
         keyExtractor={(item) => item.id}
       />
-    </Box>
+    </ScrollView>
   );
 };
 

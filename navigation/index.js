@@ -34,7 +34,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { linking } from "./linking";
 // theme
-import { navDarkTheme, navLightTheme } from "../lib/theme";
+// import { navDarkTheme, navLightTheme } from "../lib/theme";
 // routing
 import { SignInScreen } from "../screens/SignInScreen";
 // import SplashScreen from "../screens/SplashScreen";
@@ -45,7 +45,7 @@ import { useSelector } from "react-redux";
 
 const Stack = createNativeStackNavigator();
 
-export default function Navigator({ theme }) {
+export default function Navigator() {
   const { user, token } = useSelector((state) => state.auth);
   let initialRoute = "app";
   return (
@@ -54,11 +54,11 @@ export default function Navigator({ theme }) {
         // Authenticated users rooting
         <NavigationContainer
           linking={linking}
-          theme={
-            theme.config?.initialColorMode === "dark"
-              ? navDarkTheme
-              : navLightTheme
-          }
+          // theme={
+          //   theme.config?.initialColorMode === "dark"
+          //     ? navDarkTheme
+          //     : navLightTheme
+          // }
         >
           <Stack.Navigator initialRouteName={initialRoute} headerMode="screen">
             {/* <Stack.Screen
@@ -81,11 +81,11 @@ export default function Navigator({ theme }) {
         // NOT authenticated users rooting
         <NavigationContainer
           linking={linking}
-          theme={
-            theme.config?.initialColorMode === "dark"
-              ? navDarkTheme
-              : navLightTheme
-          }
+          // theme={
+          //   theme.config?.initialColorMode === "dark"
+          //     ? navDarkTheme
+          //     : navLightTheme
+          // }
         >
           <Stack.Navigator initialRouteName="Signin">
             <Stack.Screen

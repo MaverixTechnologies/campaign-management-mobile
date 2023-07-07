@@ -18,7 +18,7 @@ const config = {
 export default function App() {
   console.log("APP");
   return (
-    <NativeBaseProvider config={config}>
+    <NativeBaseProvider config={config} theme={theme}>
       <ReduxProvider store={store}>
         <PersistGate loading={<Spinner size="lg" />} persistor={persistor}>
           <SafeAreaProvider>

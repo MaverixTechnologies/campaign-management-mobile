@@ -1,6 +1,6 @@
 import React from "react";
-import { VStack, Text, Input, Icon, FormControl } from "native-base";
-import { MaterialIcons } from "@expo/vector-icons";
+import { VStack, Text, Input, FormControl } from "native-base";
+// import { MaterialIcons } from "@expo/vector-icons";
 
 const NameInput = ({
   // filter,
@@ -31,15 +31,15 @@ const NameInput = ({
         <Input
           placeholder={`Enter ${filterOn}`}
           width="100%"
-          InputRightElement={
-            <Icon
-              m="2"
-              ml="3"
-              size="6"
-              color="primary.600"
-              as={<MaterialIcons name="search" />}
-            />
-          }
+          // InputRightElement={
+          //   <Icon
+          //     m="2"
+          //     ml="3"
+          //     size="6"
+          //     color="primary.600"
+          //     as={<MaterialIcons name="search" />}
+          //   />
+          // }
           onChangeText={(value) =>
             setFormData({ ...formData, [searchKey]: value })
           }

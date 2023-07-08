@@ -15,25 +15,26 @@ import { ApiService } from "../../lib/axios";
 import { useSelector } from "react-redux";
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState({});
+  const [isLoaded, setIsLoaded] = useState(false);
   const { userProfile } = useSelector((state) => state.auth);
   const data = [
     {
-      name: "Male",
-      population: 80568,
+      name: "MALE",
+      population: 27566,
       color: "#5095D9",
       legendFontColor: "#5095D9",
       legendFontSize: 15,
     },
     {
-      name: "Female",
-      population: 70568,
+      name: "FEMALE",
+      population: 25452,
       color: "#FFB59F",
-      legendFontColor: "##FFB59F",
+      legendFontColor: "#FFB59F",
       legendFontSize: 15,
     },
     {
-      name: "Others",
-      population: 5568,
+      name: "THIRD",
+      population: 440,
       color: "#a855f7",
       legendFontColor: "#a855f7",
       legendFontSize: 15,
@@ -53,9 +54,14 @@ const Dashboard = () => {
   //   });
   // };
   const GetDashboard = () => {
-    ApiService.getDashboard().then((e) => {
-      setDashboardData(e.data);
-    });
+    ApiService.getDashboard()
+      .then((e) => {
+        setDashboardData(e.data);
+        setIsLoaded(true);
+      })
+      .catch(() => {
+        setIsLoaded(true);
+      });
   };
   useFocusEffect(
     useCallback(() => {
@@ -73,13 +79,29 @@ const Dashboard = () => {
       <VStack alignSelf={"center"} w={"100%"} space={2} maxWidth={"800"} pb={8}>
         <Center p={0}>
           {userProfile?.role === "MLA" || userProfile?.role === "ADMIN" ? (
-            <MLAInfoCard screenWidth={screenWidth} data={dashboardData} />
+            <MLAInfoCard
+              isLoaded={isLoaded}
+              screenWidth={screenWidth}
+              data={dashboardData}
+            />
           ) : userProfile?.role === "MANDAL_INCHARGE" ? (
-            <MIInfoCard screenWidth={screenWidth} data={dashboardData} />
+            <MIInfoCard
+              isLoaded={isLoaded}
+              screenWidth={screenWidth}
+              data={dashboardData}
+            />
           ) : userProfile?.role === "SECTOR_INCHARGE" ? (
-            <SIInfoCard screenWidth={screenWidth} data={dashboardData} />
+            <SIInfoCard
+              isLoaded={isLoaded}
+              screenWidth={screenWidth}
+              data={dashboardData}
+            />
           ) : userProfile?.role === "BOOTH_LEVEL_AGENT" ? (
-            <BLAInfoCard screenWidth={screenWidth} data={dashboardData} />
+            <BLAInfoCard
+              isLoaded={isLoaded}
+              screenWidth={screenWidth}
+              data={dashboardData}
+            />
           ) : null}
         </Center>
         <Center w={"100%"}>
@@ -88,13 +110,26 @@ const Dashboard = () => {
               screenWidth={screenWidth}
               data={dashboardData}
               chartData={data}
+              isLoaded={isLoaded}
             />
           ) : userProfile?.role === "MANDAL_INCHARGE" ? (
-            <MICardsStack screenWidth={screenWidth} data={dashboardData} />
+            <MICardsStack
+              isLoaded={isLoaded}
+              screenWidth={screenWidth}
+              data={dashboardData}
+            />
           ) : userProfile?.role === "SECTOR_INCHARGE" ? (
-            <SICardsStack screenWidth={screenWidth} data={dashboardData} />
+            <SICardsStack
+              isLoaded={isLoaded}
+              screenWidth={screenWidth}
+              data={dashboardData}
+            />
           ) : userProfile?.role === "BOOTH_LEVEL_AGENT" ? (
-            <BLACardsStack screenWidth={screenWidth} data={dashboardData} />
+            <BLACardsStack
+              isLoaded={isLoaded}
+              screenWidth={screenWidth}
+              data={dashboardData}
+            />
           ) : null}
         </Center>
       </VStack>

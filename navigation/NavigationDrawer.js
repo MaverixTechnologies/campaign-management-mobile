@@ -4,7 +4,7 @@ import { Box, useTheme } from "native-base";
 import NavigationContent from "./NavigationContent";
 import AddVoter from "../screens/Voters/AddVoter";
 import Dashboard from "../screens/Dashboard";
-import SearchVoters from "../screens/Voters/SearchVoters";
+// import SearchVoters from "../screens/Voters/SearchVoters";
 // import AddMandalIncharge from "../screens/Mandals/AddMandalIncharge";
 import Mandals from "../screens/Mandals";
 import Sectors from "../screens/Sectors";
@@ -63,7 +63,7 @@ export default function NavigationDrawer() {
         {userProfile?.role === "MLA" ? (
           <>
             <Drawer.Screen name="Filter Voters" component={Filters} />
-            <Drawer.Screen name="Search Voters" component={SearchVoters} />
+            {/* <Drawer.Screen name="Search Voters" component={SearchVoters} /> */}
             <Drawer.Screen name="Voters Analytics" component={Voters} />
             <Drawer.Screen name="Zone Analytics" component={Zone} />
             <Drawer.Screen name="Previous Result" component={Previous} />

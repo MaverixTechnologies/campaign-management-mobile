@@ -8,7 +8,7 @@ import GraphCard from "../../components/Cards/GraphCard";
 import TitleCard from "../../components/Cards/TitleCard";
 import FilterCard from "../../components/Cards/FilterCard";
 import { useNavigation } from "@react-navigation/native";
-const CardsStack = ({ screenWidth, data, chartData }) => {
+const CardsStack = ({ screenWidth, data, chartData, isLoaded }) => {
   const navigation = useNavigation();
   return (
     <VStack space={"0"} w={"100%"} alignItems={"center"}>
@@ -56,6 +56,7 @@ const CardsStack = ({ screenWidth, data, chartData }) => {
               screenWidth > 800 ? "380" : screenWidth > 300 ? "45%" : "full"
             }
             bg="white"
+            isLoaded={isLoaded}
           />
           <StatsCard
             heading={"Added Voters"}
@@ -64,11 +65,13 @@ const CardsStack = ({ screenWidth, data, chartData }) => {
               screenWidth > 800 ? "380" : screenWidth > 300 ? "45%" : "full"
             }
             bg="white"
+            isLoaded={isLoaded}
           />
         </Stack>
         <GraphCard
           heading={"Gender wise (total) voters distribution"}
           width={screenWidth > 800 ? 800 : screenWidth - 20}
+          isLoaded={isLoaded}
         >
           <PieChart
             data={chartData}
@@ -102,6 +105,7 @@ const CardsStack = ({ screenWidth, data, chartData }) => {
           iconColor={"secondary.400"}
           heading={"Zone Stats"}
           subheading={`Zonal statistics of the constituency`}
+
           // isMore={true}
         />
         <Stack
@@ -120,6 +124,7 @@ const CardsStack = ({ screenWidth, data, chartData }) => {
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }
+            isLoaded={isLoaded}
           />
           <StatsCardT2
             heading={"Sectors"}
@@ -130,6 +135,7 @@ const CardsStack = ({ screenWidth, data, chartData }) => {
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }
+            isLoaded={isLoaded}
           />
         </Stack>
 
@@ -149,6 +155,7 @@ const CardsStack = ({ screenWidth, data, chartData }) => {
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }
+            isLoaded={isLoaded}
           />
           <StatsCardT2
             heading={"Pollings"}
@@ -159,6 +166,7 @@ const CardsStack = ({ screenWidth, data, chartData }) => {
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }
+            isLoaded={isLoaded}
           />
         </Stack>
       </VStack>
@@ -202,6 +210,7 @@ const CardsStack = ({ screenWidth, data, chartData }) => {
                 filter: "first-name",
               })
             }
+            isLoaded={isLoaded}
           />
           <FilterCard
             heading={"By Last Name"}
@@ -214,6 +223,7 @@ const CardsStack = ({ screenWidth, data, chartData }) => {
                 filter: "last-name",
               })
             }
+            isLoaded={isLoaded}
           />
         </Stack>
         <Stack
@@ -288,7 +298,7 @@ const CardsStack = ({ screenWidth, data, chartData }) => {
           space={6}
           w={screenWidth > 800 ? "800" : screenWidth - 20}
         >
-          <FilterCard
+          {/* <FilterCard
             heading={"By Dead/Alive"}
             icon={"account-alert-outline"}
             width={
@@ -299,16 +309,27 @@ const CardsStack = ({ screenWidth, data, chartData }) => {
                 filter: "dead-alive",
               })
             }
-          />
-          <FilterCard
+          /> */}
+          {/* <FilterCard
             heading={"By Region"}
-            icon={"map-marker-account-outline"}
+            icon={"filter-plus-outline"}
             width={
-              screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
+              screenWidth > 800 ? "800" : screenWidth > 300 ? "48%" : "full"
             }
             onClick={() =>
               navigation.navigate("Filter Voters", {
                 filter: "region",
+              })
+            }
+          /> */}
+          <FilterCard
+            heading={"Advance"}
+            icon={"filter-plus-outline"}
+            width={"full"}
+            type={"advance"}
+            onClick={() =>
+              navigation.navigate("Filter Voters", {
+                filter: "advance",
               })
             }
           />

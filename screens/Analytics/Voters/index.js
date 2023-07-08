@@ -29,6 +29,7 @@ const Voters = ({ route, navigation }) => {
   const [politicalInclinationData, setPoliticalInclinationData] = useState([]);
   const [genderData, setGenderData] = useState([]);
   const [ageData, setAgeData] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
   // const [staunchSupporterData, setStaunchSupporterData] = useState([]);
   // const [voterStatsData, setVoterStatsData] = useState({});
   const { zone, zone_id } = route.params;
@@ -224,7 +225,6 @@ const Voters = ({ route, navigation }) => {
             legendFontSize: 15,
           }));
       setCategoryData(tempCategoryData);
-
       // set the caste data
       // Calculate the percentage for each caste
       const totalCount = Object.values(e.data?.added_voters_info?.caste).reduce(
@@ -308,12 +308,17 @@ const Voters = ({ route, navigation }) => {
         })
       );
       setAgeData(tempAgeData);
+      setIsLoaded(true);
     });
   };
   const GetDashboard = () => {
-    ApiService.getDashboard().then((e) => {
-      setDashboardData(e.data);
-    });
+    ApiService.getDashboard()
+      .then((e) => {
+        setDashboardData(e.data);
+      })
+      .catch(() => {
+        setIsLoaded(true);
+      });
   };
   useFocusEffect(
     useCallback(() => {
@@ -397,6 +402,7 @@ const Voters = ({ route, navigation }) => {
               screenWidth > 800 ? "380" : screenWidth > 300 ? "45%" : "full"
             }
             bg="white"
+            isLoaded={isLoaded}
           />
           <StatsCard
             heading={"Added Voters"}
@@ -405,6 +411,7 @@ const Voters = ({ route, navigation }) => {
               screenWidth > 800 ? "380" : screenWidth > 300 ? "45%" : "full"
             }
             bg="white"
+            isLoaded={isLoaded}
           />
         </Stack>
       </VStack>
@@ -431,9 +438,13 @@ const Voters = ({ route, navigation }) => {
           heading={"Gender Wise Voters Stats"}
           subheading={`Breakdown of voters based on gender`}
           // isMore={true}
+          isLoaded={isLoaded}
         />
 
-        <GraphCard width={screenWidth > 800 ? 800 : screenWidth - 20}>
+        <GraphCard
+          isLoaded={isLoaded}
+          width={screenWidth > 800 ? 800 : screenWidth - 20}
+        >
           <PieChart
             data={genderData}
             width={screenWidth > 800 ? 800 : screenWidth - 20}
@@ -447,6 +458,7 @@ const Voters = ({ route, navigation }) => {
             screenWidth={screenWidth}
             data={genderData}
             w={"100%"}
+            isLoaded={isLoaded}
           />
         </GraphCard>
       </VStack>
@@ -472,7 +484,10 @@ const Voters = ({ route, navigation }) => {
           heading={"Age wise"}
           subheading={`Voter's statistics based on age range`}
         />
-        <GraphCard width={screenWidth > 800 ? 800 : screenWidth - 20}>
+        <GraphCard
+          isLoaded={isLoaded}
+          width={screenWidth > 800 ? 800 : screenWidth - 20}
+        >
           <ProgressChart screenWidth={screenWidth} data={ageData} w={"100%"} />
         </GraphCard>
       </VStack>
@@ -500,7 +515,10 @@ const Voters = ({ route, navigation }) => {
           subheading={`Category based distribution of voters in the constituency`}
           // isMore={true}
         />
-        <GraphCard width={screenWidth > 800 ? 800 : screenWidth - 20}>
+        <GraphCard
+          isLoaded={isLoaded}
+          width={screenWidth > 800 ? 800 : screenWidth - 20}
+        >
           <PieChart
             data={categoryData}
             width={screenWidth > 800 ? 800 : screenWidth - 40}
@@ -540,7 +558,10 @@ const Voters = ({ route, navigation }) => {
           heading={"Caste Wise"}
           subheading={`Major castes of voters in the constituency`}
         />
-        <GraphCard width={screenWidth > 800 ? 800 : screenWidth - 20}>
+        <GraphCard
+          isLoaded={isLoaded}
+          width={screenWidth > 800 ? 800 : screenWidth - 20}
+        >
           <PieChart
             data={casteData}
             width={screenWidth > 800 ? 800 : screenWidth - 40}
@@ -574,7 +595,10 @@ const Voters = ({ route, navigation }) => {
           heading={"Political Inclination"}
           subheading={`Political inclination of voters in the constituency`}
         />
-        <GraphCard width={screenWidth > 800 ? 800 : screenWidth - 20}>
+        <GraphCard
+          isLoaded={isLoaded}
+          width={screenWidth > 800 ? 800 : screenWidth - 20}
+        >
           <ProgressChart
             screenWidth={screenWidth}
             data={politicalInclinationData}

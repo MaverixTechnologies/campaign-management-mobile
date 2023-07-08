@@ -62,8 +62,8 @@ export default function NavigationContent(props) {
         <VStack mx="0" h={"80%"} pt={4} backgroundColor={"primary.50"}>
           <VStack justifyContent={"space-between"} space="6">
             <VStack space="3">
-              {/* // name !== "Filter Voters"  */}
               {props.state.routeNames.map((name, index) =>
+                name !== "Filter Voters" &&
                 name !== "Voters Analytics" &&
                 name !== "Zone Analytics" &&
                 name !== "Previous Result" ? (

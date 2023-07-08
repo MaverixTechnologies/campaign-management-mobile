@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Heading, Text, Icon, VStack, Pressable } from "native-base";
+import { Heading, Text, Icon, Stack, Pressable } from "native-base";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const FilterCard = ({
@@ -10,6 +10,7 @@ const FilterCard = ({
   //   bg,
   onClick,
   icon,
+  type,
   //   iconColor,
 }) => {
   return (
@@ -19,36 +20,29 @@ const FilterCard = ({
       onPress={onClick}
       borderBottomRadius={8}
       borderTopRightRadius={8}
+      borderWidth={2}
+      borderColor={"gray.50"}
       overflow="scroll"
       _dark={{
         backgroundColor: "primary.700",
       }}
       _light={{
-        backgroundColor: "white",
+        backgroundColor: type === "advance" ? "secondary.50" : "white",
       }}
     >
-      {/* <Box
-        w={width}
-        borderBottomRadius={8}
-        borderTopRightRadius={8}
-        overflow="scroll"
-        _dark={{
-          backgroundColor: "primary.700",
-        }}
-        _light={{
-          backgroundColor: "white",
-        }}
-      > */}
-      <VStack py="3" px="4" space={2}>
+      <Stack
+        py={type === "advance" ? 5 : "3"}
+        px="4"
+        justifyContent={type === "advance" ? "center" : "center"}
+        space={type === "advance" ? 4 : 2}
+        direction={type === "advance" ? "row" : "column"}
+      >
         <Icon
           as={MaterialCommunityIcons}
           size={"lg"}
           name={icon}
           variant={"outline"}
           color={"secondary.600"}
-          //   _dark={{
-          //     color: "warmGray.50",
-          //   }}
         />
 
         <Heading
@@ -74,8 +68,7 @@ const FilterCard = ({
         >
           {text}
         </Text>
-      </VStack>
-      {/* </Box> */}
+      </Stack>
     </Pressable>
   );
 };

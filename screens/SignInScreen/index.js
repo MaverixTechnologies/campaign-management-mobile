@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // api
 import { ApiService } from "../../lib/axios";
@@ -44,9 +44,11 @@ export const SignInScreen = () => {
   const { loginInfo } = useSelector((state) => state.auth);
   const { toggleColorMode } = useColorMode();
   // const [email, onChangeEmail] = React.useState(loginInfo?.email);
-  const [username, onChangeUserName] = React.useState(loginInfo?.username);
-  const [password, onChangePassword] = React.useState(loginInfo?.password);
-  const [rememberMe, setRememberMe] = React.useState(!!loginInfo?.username);
+  const [username, onChangeUserName] = useState(loginInfo?.username);
+  const [password, onChangePassword] = useState(loginInfo?.password);
+  const [rememberMe, setRememberMe] = useState(!!loginInfo?.username);
+  const [isLoaded, setIsLoaded] = useState(true);
+
   const toast = useToast();
   const navigation = useNavigation();
   const GetProfile = () => {
@@ -55,6 +57,7 @@ export const SignInScreen = () => {
     });
   };
   const onPressSigninButton = async () => {
+    setIsLoaded(false);
     const values = {
       username,
       password,
@@ -77,6 +80,7 @@ export const SignInScreen = () => {
           })
         );
       }
+      setIsLoaded(true);
       navigation.navigate("Dashboard");
     } catch (error) {
       console.error("Login failed:", error.message);
@@ -87,6 +91,7 @@ export const SignInScreen = () => {
         placement: "top-right",
         description: errorMessage,
       });
+      setIsLoaded(true);
     }
   };
   return (
@@ -100,12 +105,10 @@ export const SignInScreen = () => {
       <Flex
         px={0}
         width={screenWidth > 800 ? "50%" : "100%"}
-        // h={"240px"}
         bg={"primary.600"}
         borderBottomRadius={8}
         h={screenWidth > 800 ? "100%" : "240px"}
         justifyContent={screenWidth > 800 ? "flex-end" : "space-between"}
-        // alignItems={screenWidth > 800 ? "center" : "center"}
         alignItems={"center"}
       >
         <Center
@@ -116,9 +119,10 @@ export const SignInScreen = () => {
           m={2}
         >
           <Image
-            source={{
-              uri: logo.toString(),
-            }}
+            // source={{
+            //   uri: logo.toString(),
+            // }}
+            source={logo}
             size={screenWidth > 800 ? "50%" : "xl"}
             h={screenWidth > 800 ? "60%" : "100px"}
             alt="cms logo"
@@ -142,7 +146,8 @@ export const SignInScreen = () => {
           </Text>
         </Center>
         <ImageBackground
-          source={{ uri: bgImg.toString() }}
+          // source={{ uri: bgImg.toString() }}
+          source={bgImg}
           resizeMode={screenWidth > 800 ? "cover" : "cover"}
           style={{
             width: "100%",
@@ -188,7 +193,7 @@ export const SignInScreen = () => {
               Forget Password?
             </Link>
           </Row>
-          <Button mt={8} onPress={onPressSigninButton}>
+          <Button isLoading={!isLoaded} mt={8} onPress={onPressSigninButton}>
             Sign in
           </Button>
         </Column>

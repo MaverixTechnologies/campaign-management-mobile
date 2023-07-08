@@ -1,19 +1,15 @@
 import React from "react";
-import { Box, Stack, Heading, Text, VStack } from "native-base";
-const GraphCard = ({ heading, text, children, width }) => {
+import { Box, Stack, Heading, Text, VStack, Skeleton } from "native-base";
+const GraphCard = ({ heading, text, children, width, isLoaded }) => {
   return (
     <Box
       w={width}
       rounded={8}
       overflow="scroll"
-      // _dark={{
-      //   backgroundColor: "gray.700",
-      // }}
       _light={{
         backgroundColor: "primary.50",
         borderColor: "primary.300",
       }}
-      // px="4"
     >
       <Stack
         py={4}
@@ -22,7 +18,9 @@ const GraphCard = ({ heading, text, children, width }) => {
         justifyContent={"center"}
         px={4}
       >
-        <Box>{children}</Box>
+        <Skeleton h="40" startColor={"blue.50"} isLoaded={isLoaded}>
+          <Box>{children}</Box>
+        </Skeleton>
         <VStack>
           <Heading
             size="sm"

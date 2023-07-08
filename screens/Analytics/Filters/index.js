@@ -9,6 +9,9 @@ import {
   Badge,
   Icon,
   // Alert,
+  useToast,
+  Spinner,
+  Center,
 } from "native-base";
 import { useFocusEffect } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -21,7 +24,12 @@ import DeadAliveFilter from "./DeadAliveFilter";
 import RegionFilter from "./RegionFilter";
 import { ApiService } from "../../../lib/axios";
 import VoterList from "../../../components/Lists/VoterList";
+import { Dimensions } from "react-native";
 import GenderFilter from "./GenderFilter";
+import AdvanceFilter from "./AdvanceFilter";
+import ToastAlert from "../../../components/Alert/ToastAlert";
+const screenHeight = Dimensions.get("window").height;
+
 const Filters = ({ screenWidth, route, navigation }) => {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
@@ -30,7 +38,8 @@ const Filters = ({ screenWidth, route, navigation }) => {
   const [enums, setEnums] = useState({});
   const { filter } = route.params;
   // const filter = "age-range";
-
+  const [isLoaded, setIsLoaded] = useState(true);
+  const toast = useToast();
   const filterOn =
     filter === "age-range"
       ? "Age Range"
@@ -44,30 +53,77 @@ const Filters = ({ screenWidth, route, navigation }) => {
       ? "Gender"
       : filter === "category"
       ? "Category"
-      : null;
+      : "Advance";
   const { goBack } = navigation;
   const onSubmit = () => {
+    setIsLoaded(false);
     const apidata = {
       filters: JSON.stringify(formData),
     };
-    ApiService.filterVoters(apidata).then((res) => {
-      console.log(res);
-      console.log("Submitted");
-      setResults(res.data?.results);
-    });
+    ApiService.filterVoters(apidata)
+      .then((res) => {
+        console.log(res);
+        console.log("Submitted");
+        // setResults(res.data?.results);
+        setIsLoaded(true);
+        !res.data?.results.length > 0
+          ? toast.show({
+              render: () => {
+                return (
+                  <ToastAlert
+                    title="No result found for the query!"
+                    variant="left-accent"
+                    description="Try searching another."
+                    isClosable={true}
+                    toast={toast}
+                  />
+                );
+              },
+              placement: "top-right",
+            })
+          : setResults(res.data?.results);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.show({
+          render: () => {
+            return (
+              <ToastAlert
+                title="Something Went Wrong!!"
+                variant="left-accent"
+                description="Please try again in sometime."
+                isClosable={true}
+                status="error"
+                toast={toast}
+              />
+            );
+          },
+          placement: "top-right",
+        });
+        setIsLoaded(true);
+        setFormData({});
+      });
   };
-  // console.log("Formdata : -", formData);
+  console.log("Formdata : -", formData);
   const GetEnums = () => {
+    setIsLoaded(false);
     ApiService.getEnums().then((e) => {
       setEnums(e.data);
+      setIsLoaded(true);
     });
   };
-  console.log("enums enums", enums);
+
+  const onResetFilter = () => {
+    setResults([]);
+    setFormData({});
+  };
   useFocusEffect(
     useCallback(() => {
       // Do something when the screen is focused
       // GetProfile();
-      GetEnums();
+      filterOn === "Caste" || filterOn === "Category" || filterOn === "Advance"
+        ? GetEnums()
+        : null;
       return () => {
         // Do something when the screen is unfocused
         // Useful for cleanup functions
@@ -107,129 +163,136 @@ const Filters = ({ screenWidth, route, navigation }) => {
         </Text>
       </HStack>
       {!results?.length > 0 ? (
-        <VStack
-          // bg={{
-          //   linearGradient: {
-          //     colors: ["primary.50", "emerald.100"],
-          //     start: [0, 0],
-          //     end: [0, 1],
-          //   },
-          // }}
-          space={"2"}
-          pt={4}
-          pb={4}
-          w={"100%"}
-          alignItems={"center"}
-        >
-          {filter === "first-name" || filter === "last-name" ? (
-            <NameInput
-              filter={filter}
-              formData={formData}
-              setFormData={setFormData}
-              show={show}
-              setShow={setShow}
-              errors={errors}
-              setErrors={setErrors}
-              filterOn={filterOn}
-              searchKey={
-                filter === "first-name"
-                  ? "first_name"
-                  : filter === "last-name"
-                  ? "last_name"
-                  : "full_name"
-              }
-            />
-          ) : filter === "age-range" ? (
-            <AgeRangeInput
-              filter={filter}
-              formData={formData}
-              setFormData={setFormData}
-              show={show}
-              setShow={setShow}
-              errors={errors}
-              setErrors={setErrors}
-              searchKey={"age"}
-              filterOn={filterOn}
-            />
-          ) : filter === "gender" ? (
-            <GenderFilter
-              filter={filter}
-              formData={formData}
-              setFormData={setFormData}
-              show={show}
-              setShow={setShow}
-              errors={errors}
-              setErrors={setErrors}
-              filterOn={filterOn}
-              searchKey={"gender"}
-            />
-          ) : filter === "caste" ? (
-            <CasteFilter
-              filter={filter}
-              formData={formData}
-              setFormData={setFormData}
-              show={show}
-              setShow={setShow}
-              errors={errors}
-              setErrors={setErrors}
-              filterOn={filterOn}
-              searchKey={"caste"}
-              options={
-                enums?.caste
-                  ? enums?.caste?.map((item) => ({
-                      label: item,
-                      value: item,
-                    }))
-                  : []
-              }
-            />
-          ) : filter === "category" ? (
-            <CategoryFilter
-              filter={filter}
-              formData={formData}
-              setFormData={setFormData}
-              show={show}
-              setShow={setShow}
-              errors={errors}
-              setErrors={setErrors}
-              filterOn={filterOn}
-              options={
-                enums?.category
-                  ? enums?.category?.map((item) => ({
-                      label: item,
-                      value: item,
-                    }))
-                  : []
-              }
-              searchKey={"category"}
-            />
-          ) : filter === "region" ? (
-            <RegionFilter
-              filter={filter}
-              formData={formData}
-              setFormData={setFormData}
-              show={show}
-              setShow={setShow}
-              errors={errors}
-              setErrors={setErrors}
-              filterOn={filterOn}
-            />
-          ) : filter === "dead-alive" ? (
-            <DeadAliveFilter
-              filter={filter}
-              formData={formData}
-              setFormData={setFormData}
-              show={show}
-              setShow={setShow}
-              errors={errors}
-              setErrors={setErrors}
-              filterOn={filterOn}
-            />
-          ) : null}
-          <Button borderRadius={8} onPress={onSubmit}>
-            Search
-          </Button>
-        </VStack>
+        <Center w={"100%"}>
+          {isLoaded ? (
+            <VStack space={"2"} pt={4} pb={4} w={"100%"} alignItems={"center"}>
+              {filter === "first-name" || filter === "last-name" ? (
+                <NameInput
+                  filter={filter}
+                  formData={formData}
+                  setFormData={setFormData}
+                  show={show}
+                  setShow={setShow}
+                  errors={errors}
+                  setErrors={setErrors}
+                  filterOn={filterOn}
+                  searchKey={
+                    filter === "first-name"
+                      ? "first_name"
+                      : filter === "last-name"
+                      ? "last_name"
+                      : "full_name"
+                  }
+                />
+              ) : filter === "age-range" ? (
+                <AgeRangeInput
+                  filter={filter}
+                  formData={formData}
+                  setFormData={setFormData}
+                  show={show}
+                  setShow={setShow}
+                  errors={errors}
+                  setErrors={setErrors}
+                  searchKey={"age"}
+                  filterOn={filterOn}
+                />
+              ) : filter === "gender" ? (
+                <GenderFilter
+                  filter={filter}
+                  formData={formData}
+                  setFormData={setFormData}
+                  show={show}
+                  setShow={setShow}
+                  errors={errors}
+                  setErrors={setErrors}
+                  filterOn={filterOn}
+                  searchKey={"gender"}
+                />
+              ) : filter === "caste" ? (
+                <CasteFilter
+                  filter={filter}
+                  formData={formData}
+                  setFormData={setFormData}
+                  show={show}
+                  setShow={setShow}
+                  errors={errors}
+                  setErrors={setErrors}
+                  filterOn={filterOn}
+                  searchKey={"caste"}
+                  options={
+                    enums?.caste
+                      ? enums?.caste?.map((item) => ({
+                          label: item,
+                          value: item,
+                        }))
+                      : []
+                  }
+                />
+              ) : filter === "category" ? (
+                <CategoryFilter
+                  filter={filter}
+                  formData={formData}
+                  setFormData={setFormData}
+                  show={show}
+                  setShow={setShow}
+                  errors={errors}
+                  setErrors={setErrors}
+                  filterOn={filterOn}
+                  options={
+                    enums?.category
+                      ? enums?.category?.map((item) => ({
+                          label: item,
+                          value: item,
+                        }))
+                      : []
+                  }
+                  searchKey={"category"}
+                />
+              ) : filter === "region" ? (
+                <RegionFilter
+                  filter={filter}
+                  formData={formData}
+                  setFormData={setFormData}
+                  show={show}
+                  setShow={setShow}
+                  errors={errors}
+                  setErrors={setErrors}
+                  filterOn={filterOn}
+                />
+              ) : filter === "dead-alive" ? (
+                <DeadAliveFilter
+                  filter={filter}
+                  formData={formData}
+                  setFormData={setFormData}
+                  show={show}
+                  setShow={setShow}
+                  errors={errors}
+                  setErrors={setErrors}
+                  filterOn={filterOn}
+                />
+              ) : (
+                <AdvanceFilter
+                  filter={filter}
+                  formData={formData}
+                  setFormData={setFormData}
+                  show={show}
+                  setShow={setShow}
+                  errors={errors}
+                  setErrors={setErrors}
+                  filterOn={filterOn}
+                  enums={enums}
+                />
+              )}
+              <Button borderRadius={8} onPress={onSubmit}>
+                Search
+              </Button>
+            </VStack>
+          ) : (
+            <Center h={screenHeight - 80}>
+              <Spinner size={"lg"} />
+            </Center>
+          )}
+        </Center>
       ) : (
         <VStack w={"100%"}>
           <HStack
@@ -239,14 +302,41 @@ const Filters = ({ screenWidth, route, navigation }) => {
             py={2}
           >
             <HStack space={4}>
-              <Badge rounded={"lg"} colorScheme="info">
-                {filterOn}
-              </Badge>
+              {/* {formData.values((value) => (
+                <Badge rounded={"lg"} colorScheme="info">
+                  {value}
+                </Badge>
+              ))} */}
+              {Object.keys(formData).map((key) => {
+                if (key === "age_min" || key === "age_max") {
+                  return (
+                    <Badge
+                      key={key}
+                      rounded={"lg"}
+                      colorScheme="secondary"
+                      mr={2}
+                    >
+                      {`${formData.age_min} - ${formData.age_max}`}
+                    </Badge>
+                  );
+                } else {
+                  return (
+                    <Badge
+                      rounded={"lg"}
+                      colorScheme="secondary"
+                      key={key}
+                      mr={2}
+                    >
+                      {formData[key]}
+                    </Badge>
+                  );
+                }
+              })}
             </HStack>
             <Button
               colorScheme="red"
               leftIcon={<Icon as={MaterialIcons} name="cancel" size="sm" />}
-              onPress={() => setResults([])}
+              onPress={() => onResetFilter()}
               rounded={"full"}
               size={"sm"}
             >

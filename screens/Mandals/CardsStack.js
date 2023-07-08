@@ -9,7 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 // import { PieChart } from "react-native-chart-kit";
 import InfoCard from "./InfoCard";
 
-const CardsStack = ({ screenWidth, data, itemId }) => {
+const CardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
   const navigation = useNavigation();
 
   return (
@@ -84,6 +84,7 @@ const CardsStack = ({ screenWidth, data, itemId }) => {
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "45%" : "full"
             }
+            isLoaded={isLoaded}
             bg="white"
           />
           <StatsCard
@@ -92,6 +93,7 @@ const CardsStack = ({ screenWidth, data, itemId }) => {
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "45%" : "full"
             }
+            isLoaded={isLoaded}
             bg="white"
           />
         </Stack>
@@ -135,6 +137,7 @@ const CardsStack = ({ screenWidth, data, itemId }) => {
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }
+            isLoaded={isLoaded}
           />
           <StatsCardT2
             heading={"Booths"}
@@ -145,6 +148,7 @@ const CardsStack = ({ screenWidth, data, itemId }) => {
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }
+            isLoaded={isLoaded}
           />
         </Stack>
 
@@ -164,6 +168,7 @@ const CardsStack = ({ screenWidth, data, itemId }) => {
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }
+            isLoaded={isLoaded}
           />
         </Stack>
       </VStack>

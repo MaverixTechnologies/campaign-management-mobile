@@ -23,7 +23,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.campaign-management-mobile",
+      "package": "com.anuparashar0507.campaignmanagementmobile",
       "adaptiveIcon": {
         "foregroundImage": "./assets/android/icon.png",
         "backgroundColor": "#0061A3"

@@ -1,11 +1,22 @@
 import React from "react";
-import { VStack, Stack } from "native-base";
-import StatsCardT2 from "../../components/Cards/StatsCardT2";
+import {
+  VStack,
+  Stack,
+  Spacer,
+  Text,
+  HStack,
+  Box,
+  // Icon,
+  // Pressable,
+  // Flex,
+} from "native-base";
+// import StatsCardT2 from "../../components/Cards/StatsCardT2";
 import TitleCard from "../../components/Cards/TitleCard";
 import StatsCard from "../../components/Cards/StatsCard";
+// import { SimpleLineIcons } from "@expo/vector-icons";
 import InfoCard from "./InfoCard";
 import { useNavigation } from "@react-navigation/native";
-const BLACardsStack = ({ screenWidth, data, itemId }) => {
+const BLACardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
   const navigation = useNavigation();
   return (
     <VStack space={"0"} w={"100%"} alignItems={"center"}>
@@ -53,6 +64,7 @@ const BLACardsStack = ({ screenWidth, data, itemId }) => {
           subheading={`Details of polling booth`}
           // isMore={true}
           // onClick={() => navigation.navigate("Voters Analytics")}
+          isLoaded={isLoaded}
         />
         <InfoCard data={data} screenWidth={screenWidth} />
       </VStack>
@@ -85,6 +97,7 @@ const BLACardsStack = ({ screenWidth, data, itemId }) => {
               zone_id: itemId,
             })
           }
+          isLoaded={isLoaded}
         />
         <Stack
           flexDirection={screenWidth > 300 ? "row" : "column"}
@@ -100,6 +113,7 @@ const BLACardsStack = ({ screenWidth, data, itemId }) => {
               screenWidth > 800 ? "380" : screenWidth > 300 ? "45%" : "full"
             }
             bg="white"
+            isLoaded={isLoaded}
           />
           <StatsCard
             heading={"Added Voters"}
@@ -108,6 +122,7 @@ const BLACardsStack = ({ screenWidth, data, itemId }) => {
               screenWidth > 800 ? "380" : screenWidth > 300 ? "45%" : "full"
             }
             bg="white"
+            isLoaded={isLoaded}
           />
         </Stack>
       </VStack>
@@ -130,18 +145,19 @@ const BLACardsStack = ({ screenWidth, data, itemId }) => {
           borderColor={"secondary.400"}
           icon={"map-pin"}
           iconColor={"secondary.400"}
-          heading={"Zone Stats"}
-          subheading={`Zonal statistics of the constituency`}
+          heading={"Recently Added Voters"}
+          subheading={`Last 5 added voters list`}
+          isLoaded={isLoaded}
           // isMore={true}
         />
         <Stack
-          flexDirection={screenWidth > 300 ? "row" : "column"}
-          justifyContent={screenWidth > 300 ? "space-between" : "center"}
-          alignItems={screenWidth > 300 ? "space-between" : "center"}
-          space={6}
+          // flexDirection={screenWidth > 300 ? "row" : "column"}
+          // justifyContent={screenWidth > 300 ? "space-between" : "center"}
+          // alignItems={screenWidth > 300 ? "space-between" : "center"}
+          space={1}
           w={screenWidth > 800 ? "800" : screenWidth - 20}
         >
-          <StatsCardT2
+          {/* <StatsCardT2
             heading={"Booths"}
             subheading={"BLAs"}
             text={data?.total_polling_booths}
@@ -150,6 +166,7 @@ const BLACardsStack = ({ screenWidth, data, itemId }) => {
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }
+            isLoaded={isLoaded}
           />
           <StatsCardT2
             heading={"Pollings"}
@@ -160,7 +177,81 @@ const BLACardsStack = ({ screenWidth, data, itemId }) => {
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }
-          />
+            isLoaded={isLoaded}
+          /> */}
+          {data?.last_5_voters_added.map((item, i) => {
+            return (
+              <Box
+                borderWidth={2}
+                borderColor={"gray.100"}
+                borderBottomRadius={8}
+                borderTopRightRadius={8}
+                p="2"
+                key={i}
+                bg="secondary.50"
+              >
+                <HStack
+                  alignItems="flex-start"
+                  justifyContent={"space-between"}
+                  space={1}
+                >
+                  <HStack alignItems="center" space={3}>
+                    <VStack>
+                      <Text
+                        color="coolGray.800"
+                        _dark={{
+                          color: "warmGray.50",
+                        }}
+                        bold
+                      >
+                        {item?.full_name}
+                      </Text>
+                      <Text
+                        color="coolGray.600"
+                        _dark={{
+                          color: "warmGray.200",
+                        }}
+                      >
+                        Age - {item?.age}
+                      </Text>
+                    </VStack>
+                  </HStack>
+                  <Spacer />
+                  <VStack
+                    alignItems={"flex-end"}
+                    pr={2}
+                    justifyContent={"flex-start"}
+                  >
+                    <Text
+                      fontSize="xs"
+                      color="secondary.600"
+                      _dark={{
+                        color: "warmGray.50",
+                      }}
+                      alignSelf="flex-start"
+                    >
+                      Political Inclination - {item?.political_inclination}
+                    </Text>
+
+                    <HStack>
+                      <Text
+                        fontSize="xs"
+                        color="primary.800"
+                        _dark={{
+                          color: "warmGray.50",
+                        }}
+                        alignSelf="flex-start"
+                      >
+                        {item?.added_by__username
+                          ? item?.added_by__username
+                          : "NA"}
+                      </Text>
+                    </HStack>
+                  </VStack>
+                </HStack>
+              </Box>
+            );
+          })}
         </Stack>
       </VStack>
     </VStack>

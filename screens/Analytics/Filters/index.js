@@ -121,9 +121,10 @@ const Filters = ({ screenWidth, route, navigation }) => {
     useCallback(() => {
       // Do something when the screen is focused
       // GetProfile();
-      filterOn === "Caste" || filterOn === "Category" || filterOn === "Advance"
-        ? GetEnums()
-        : null;
+      // filterOn === "Caste" || filterOn === "Category" || filterOn === "Advance"
+      // ?
+      GetEnums();
+      // : null;
       return () => {
         // Do something when the screen is unfocused
         // Useful for cleanup functions
@@ -308,29 +309,29 @@ const Filters = ({ screenWidth, route, navigation }) => {
                 </Badge>
               ))} */}
               {Object.keys(formData).map((key) => {
-                if (key === "age_min" || key === "age_max") {
-                  return (
-                    <Badge
-                      key={key}
-                      rounded={"lg"}
-                      colorScheme="secondary"
-                      mr={2}
-                    >
-                      {`${formData.age_min} - ${formData.age_max}`}
-                    </Badge>
-                  );
-                } else {
-                  return (
-                    <Badge
-                      rounded={"lg"}
-                      colorScheme="secondary"
-                      key={key}
-                      mr={2}
-                    >
-                      {formData[key]}
-                    </Badge>
-                  );
-                }
+                // if (key === "age_min" || key === "age_max") {
+                //   return (
+                //     <Badge
+                //       key={key}
+                //       rounded={"lg"}
+                //       colorScheme="secondary"
+                //       mr={2}
+                //     >
+                //       {`${formData.age_min} - ${formData.age_max}`}
+                //     </Badge>
+                //   );
+                // } else {
+                return (
+                  <Badge
+                    rounded={"lg"}
+                    colorScheme="secondary"
+                    key={key}
+                    mr={2}
+                  >
+                    {formData[key]}
+                  </Badge>
+                );
+                // }
               })}
             </HStack>
             <Button

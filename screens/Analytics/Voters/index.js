@@ -33,7 +33,7 @@ const Voters = ({ route, navigation }) => {
   // const [staunchSupporterData, setStaunchSupporterData] = useState([]);
   // const [voterStatsData, setVoterStatsData] = useState({});
   const { zone, zone_id } = route.params;
-  console.log("ZONE __", route.params);
+  console.log("ZONE __", route.params.zone);
   const { goBack } = navigation;
   const colors = [
     "#FF6384", // Red
@@ -312,7 +312,16 @@ const Voters = ({ route, navigation }) => {
     });
   };
   const GetDashboard = () => {
-    ApiService.getDashboard()
+    const tempDash =
+      zone === "mandal"
+        ? ApiService.getMandalDashboard(zone_id)
+        : zone === "sector"
+        ? ApiService.getSectorDashboard(zone_id)
+        : zone === "booth"
+        ? ApiService.getBoothDashboard(zone_id)
+        : ApiService.getDashboard();
+
+    tempDash
       .then((e) => {
         setDashboardData(e.data);
       })
@@ -330,7 +339,7 @@ const Voters = ({ route, navigation }) => {
         // Do something when the screen is unfocused
         // Useful for cleanup functions
       };
-    }, [])
+    }, [zone, zone_id])
   );
   return (
     <ScrollView>

@@ -25,6 +25,7 @@ const screenWidth = Dimensions.get("window").width;
 const BoothDashboard = ({ route, navigation }) => {
   // const navigation = useNavigation();
   const [boothInfo, setBoothInfo] = useState();
+  const [isLoaded, setIsLoaded] = useState(false);
   const { itemId } = route.params;
   const { goBack } = navigation;
   // const data = [
@@ -49,9 +50,11 @@ const BoothDashboard = ({ route, navigation }) => {
       .then((e) => {
         // console.log(e);
         // let splitData = e.data.slice(0, 10);
+        setIsLoaded(true);
         setBoothInfo(e.data);
       })
       .catch((err) => {
+        setIsLoaded(true);
         console.log(err);
       });
   };
@@ -105,6 +108,7 @@ const BoothDashboard = ({ route, navigation }) => {
         <BLACardsStack
           itemId={itemId}
           data={boothInfo}
+          isLoaded={isLoaded}
           screenWidth={screenWidth}
         />
       </Center>

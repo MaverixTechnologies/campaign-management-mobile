@@ -17,8 +17,8 @@ const AgeRangeInput = ({
   const onChangeAge = (label, value) => {
     label === "start" ? setStart(value) : setEnd(value);
     let tempAges = {
-      age_min: start,
-      age_max: end,
+      ...(label === "start" && { age_min: start }),
+      ...(label === "end" && { age_max: end }),
     };
 
     setFormData({ ...formData, ...tempAges });
@@ -45,15 +45,19 @@ const AgeRangeInput = ({
             placeholder="Start Age"
             width="120px"
             keyboardType="numeric"
-            value={formData?.start}
-            onChangeText={(value) => onChangeAge("start", value)}
+            value={start}
+            onChangeText={(value) =>
+              setFormData({ ...formData, ...{ age_min: value } })
+            }
           />
           <Input
             placeholder="End Age"
             width="120px"
             keyboardType="numeric"
-            value={formData?.end}
-            onChangeText={(value) => onChangeAge("end", value)}
+            value={end}
+            onChangeText={(value) =>
+              setFormData({ ...formData, ...{ age_max: value } })
+            }
           />
         </HStack>
       </FormControl>

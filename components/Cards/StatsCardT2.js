@@ -31,7 +31,7 @@ const StatsCardT2 = ({
     >
       <Stack py="4" px="4" space={0}>
         <HStack justifyContent={"space-between"} alignItems={"flex-start"}>
-          <Skeleton.Text lines={1} isLoaded={isLoaded}>
+          <Skeleton.Text lines={2} isLoaded={isLoaded}>
             <Heading
               size="xs"
               _light={{
@@ -58,31 +58,31 @@ const StatsCardT2 = ({
           </Skeleton.Text>
         </HStack>
         <HStack justifyContent={"space-between"} alignItems={"flex-start"}>
-          <Skeleton.Text lines={1} isLoaded={isLoaded}>
-            <Text
-              fontSize="xs"
-              _light={{
-                color: "secondary.600",
-              }}
-              _dark={{
-                color: "secondary.100",
-              }}
-            >
-              {subheading} -{/* {text2} */}
-            </Text>
-            <Text
-              fontSize="xs"
-              _light={{
-                color: "primary.700",
-              }}
-              _dark={{
-                color: "primary.50",
-              }}
-              fontWeight="500"
-            >
-              {text2}
-            </Text>
-          </Skeleton.Text>
+          {/* <Skeleton.Text lines={1} isLoaded={isLoaded}> */}
+          <Text
+            fontSize="xs"
+            _light={{
+              color: "secondary.600",
+            }}
+            _dark={{
+              color: "secondary.100",
+            }}
+          >
+            {subheading} -{/* {text2} */}
+          </Text>
+          <Text
+            fontSize="xs"
+            _light={{
+              color: "primary.700",
+            }}
+            _dark={{
+              color: "primary.50",
+            }}
+            fontWeight="500"
+          >
+            {text2}
+          </Text>
+          {/* </Skeleton.Text> */}
         </HStack>
       </Stack>
     </Pressable>

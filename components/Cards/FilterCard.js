@@ -31,9 +31,11 @@ const FilterCard = ({
       }}
     >
       <Stack
-        py={type === "advance" ? 5 : "3"}
+        pt={type === "advance" ? 3 : 3}
+        pb={type === "advance" ? 3 : 2}
         px="4"
         justifyContent={type === "advance" ? "center" : "center"}
+        alignItems={type === "advance" ? "center" : "flex-start"}
         space={type === "advance" ? 4 : 2}
         direction={type === "advance" ? "row" : "column"}
       >

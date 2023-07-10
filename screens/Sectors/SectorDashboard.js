@@ -25,6 +25,7 @@ const screenWidth = Dimensions.get("window").width;
 const SectorDashboard = ({ route, navigation }) => {
   //   const navigation = useNavigation();
   const [sectorInfo, setSectorInfo] = useState();
+  const [isLoaded, setIsLoaded] = useState(false);
   const { itemId } = route.params;
   const { goBack } = navigation;
   // const data = [
@@ -47,9 +48,11 @@ const SectorDashboard = ({ route, navigation }) => {
   const GetSector = () => {
     ApiService.getSectorDashboard(itemId)
       .then((e) => {
+        setIsLoaded(true);
         setSectorInfo(e.data);
       })
       .catch((err) => {
+        setIsLoaded(true);
         console.log(err);
       });
   };
@@ -103,6 +106,7 @@ const SectorDashboard = ({ route, navigation }) => {
         <CardsStack
           itemId={itemId}
           screenWidth={screenWidth}
+          isLoaded={isLoaded}
           data={sectorInfo}
         />
         {sectorInfo?.sectorincharge_name ? null : (

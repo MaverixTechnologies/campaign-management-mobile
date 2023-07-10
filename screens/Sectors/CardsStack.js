@@ -5,7 +5,7 @@ import TitleCard from "../../components/Cards/TitleCard";
 import StatsCard from "../../components/Cards/StatsCard";
 import InfoCard from "./InfoCard";
 import { useNavigation } from "@react-navigation/native";
-const CardsStack = ({ screenWidth, data, itemId }) => {
+const CardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
   const navigation = useNavigation();
 
   return (
@@ -35,7 +35,7 @@ const CardsStack = ({ screenWidth, data, itemId }) => {
           // isMore={true}
           // onClick={() => navigation.navigate("Voters Analytics")}
         />
-        <InfoCard data={data} screenWidth={screenWidth} />
+        <InfoCard isLoaded={isLoaded} data={data} screenWidth={screenWidth} />
       </VStack>
       <VStack
         bg={{
@@ -66,6 +66,7 @@ const CardsStack = ({ screenWidth, data, itemId }) => {
               zone_id: itemId,
             })
           }
+          isLoaded={isLoaded}
         />
         <Stack
           flexDirection={screenWidth > 300 ? "row" : "column"}
@@ -81,6 +82,7 @@ const CardsStack = ({ screenWidth, data, itemId }) => {
               screenWidth > 800 ? "380" : screenWidth > 300 ? "45%" : "full"
             }
             bg="white"
+            isLoaded={isLoaded}
           />
           <StatsCard
             heading={"Added Voters"}
@@ -89,6 +91,7 @@ const CardsStack = ({ screenWidth, data, itemId }) => {
               screenWidth > 800 ? "380" : screenWidth > 300 ? "45%" : "full"
             }
             bg="white"
+            isLoaded={isLoaded}
           />
         </Stack>
       </VStack>
@@ -114,6 +117,7 @@ const CardsStack = ({ screenWidth, data, itemId }) => {
           heading={"Zone Stats"}
           subheading={`Zonal statistics of the constituency`}
           // isMore={true}
+          isLoaded={isLoaded}
         />
         <Stack
           flexDirection={screenWidth > 300 ? "row" : "column"}
@@ -131,6 +135,7 @@ const CardsStack = ({ screenWidth, data, itemId }) => {
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }
+            isLoaded={isLoaded}
           />
           <StatsCardT2
             heading={"Pollings"}
@@ -141,6 +146,7 @@ const CardsStack = ({ screenWidth, data, itemId }) => {
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }
+            isLoaded={isLoaded}
           />
         </Stack>
       </VStack>

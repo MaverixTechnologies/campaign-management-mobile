@@ -23,6 +23,7 @@ import { ApiService } from "../../lib/axios";
 const screenWidth = Dimensions.get("window").width;
 
 const MandalDashboard = ({ route, navigation }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
   // const navigation = useNavigation();
   const [mandalInfo, setMandalInfo] = useState();
   const { itemId } = route.params;
@@ -49,9 +50,11 @@ const MandalDashboard = ({ route, navigation }) => {
       .then((e) => {
         // console.log(e);
         // let splitData = e.data.slice(0, 10);
+        setIsLoaded(true);
         setMandalInfo(e?.data);
       })
       .catch((err) => {
+        setIsLoaded(true);
         console.log(err);
       });
   };
@@ -106,6 +109,7 @@ const MandalDashboard = ({ route, navigation }) => {
         <CardsStack
           itemId={itemId}
           screenWidth={screenWidth}
+          isLoaded={isLoaded}
           data={mandalInfo}
         />
         {mandalInfo?.mandalincharge_name ? null : (

@@ -8,6 +8,7 @@ import { Provider as ReduxProvider } from "react-redux";
 import { store, persistor } from "./lib/redux/store";
 import { PersistGate } from "redux-persist/es/integration/react";
 import { LinearGradient } from "expo-linear-gradient";
+import { Updates } from "expo";
 
 import { Root } from "./root";
 const config = {
@@ -16,6 +17,17 @@ const config = {
   },
 };
 export default function App() {
+  async function checkForUpdates() {
+    const { isAvailable } = await Updates.checkForUpdateAsync();
+    if (isAvailable) {
+      await Updates.fetchUpdateAsync();
+      // Handle app reload to apply the update
+      Updates.reloadAsync();
+    }
+  }
+
+  checkForUpdates(); // Call the function on app launch
+
   console.log("APP");
   return (
     <NativeBaseProvider config={config} theme={theme}>

@@ -18,6 +18,7 @@
       "channel": "preview"
     },
     "production": {
+      "distribution": "internal",
       "channel": "production"
     }
   },

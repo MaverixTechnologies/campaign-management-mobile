@@ -2,13 +2,15 @@ import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NativeBaseProvider, Spinner } from "native-base";
 import { theme } from "./lib/theme";
+import { Platform } from "react-native";
+
 // import { useColorScheme } from "react-native";
 // redux & persister
 import { Provider as ReduxProvider } from "react-redux";
 import { store, persistor } from "./lib/redux/store";
 import { PersistGate } from "redux-persist/es/integration/react";
 import { LinearGradient } from "expo-linear-gradient";
-import { Updates } from "expo";
+import * as Updates from "expo-updates";
 
 import { Root } from "./root";
 const config = {
@@ -17,18 +19,25 @@ const config = {
   },
 };
 export default function App() {
-  async function checkForUpdates() {
-    const { isAvailable } = await Updates.checkForUpdateAsync();
-    if (isAvailable) {
-      await Updates.fetchUpdateAsync();
-      // Handle app reload to apply the update
-      Updates.reloadAsync();
+  async function onFetchUpdateAsync() {
+    try {
+      const update = await Updates.checkForUpdateAsync();
+
+      if (update.isAvailable) {
+        alert(`New Update is Available Downloading now...`);
+        await Updates.fetchUpdateAsync();
+        await Updates.reloadAsync();
+      }
+    } catch (error) {
+      // You can also add an alert() to see the error message in case of an error when fetching updates.
+      alert(`Error fetching latest Expo update: ${error}`);
     }
   }
 
-  checkForUpdates(); // Call the function on app launch
+  if (Platform.OS !== "web") {
+    onFetchUpdateAsync(); // Call the function on app launch
+  }
 
-  console.log("APP");
   return (
     <NativeBaseProvider config={config} theme={theme}>
       <ReduxProvider store={store}>

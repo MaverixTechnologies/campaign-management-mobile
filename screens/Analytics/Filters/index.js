@@ -104,7 +104,6 @@ const Filters = ({ screenWidth, route, navigation }) => {
         setFormData({});
       });
   };
-  console.log("Formdata : -", formData);
   const GetEnums = () => {
     setIsLoaded(false);
     ApiService.getEnums().then((e) => {
@@ -121,15 +120,17 @@ const Filters = ({ screenWidth, route, navigation }) => {
     useCallback(() => {
       // Do something when the screen is focused
       // GetProfile();
-      // filterOn === "Caste" || filterOn === "Category" || filterOn === "Advance"
-      // ?
-      GetEnums();
-      // : null;
+      filter === "age-range" ||
+      filter === "first-name" ||
+      filter === "gender" ||
+      filter === "last-name"
+        ? null
+        : GetEnums();
       return () => {
         // Do something when the screen is unfocused
         // Useful for cleanup functions
       };
-    }, [])
+    }, [filter])
   );
   return (
     <ScrollView bgColor={"primary.50"} w={"100%"}>

@@ -23,7 +23,7 @@ const AllBooths = ({ navigation: { goBack } }) => {
 
   const navigation = useNavigation();
 
-  const GetSectors = () => {
+  const GetBooths = () => {
     ApiService.getBooths()
       .then((e) => {
         setLists(e.data);
@@ -38,7 +38,7 @@ const AllBooths = ({ navigation: { goBack } }) => {
   useFocusEffect(
     useCallback(() => {
       // Do something when the screen is focused
-      GetSectors();
+      GetBooths();
       return () => {
         // Do something when the screen is unfocused
         // Useful for cleanup functions

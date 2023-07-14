@@ -6,9 +6,10 @@ import {
   // VStack,
   IconButton,
   Text,
-  Heading,
-  Icon,
-  Pressable,
+  // Heading,
+  // Icon,
+  // Pressable,
+  Spinner,
 } from "native-base";
 // import { PieChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
@@ -21,6 +22,7 @@ import { ApiService } from "../../lib/axios";
 // import InfoCard from "./InfoCard";
 import BLACardsStack from "./BLACardsStack";
 const screenWidth = Dimensions.get("window").width;
+// const screenHeight = Dimensions.get("window").height;
 
 const BoothDashboard = ({ route, navigation }) => {
   // const navigation = useNavigation();
@@ -101,18 +103,21 @@ const BoothDashboard = ({ route, navigation }) => {
           Go back
         </Text>
       </HStack>
-      {/* <Center>
-        <InfoCard data={boothInfo} screenWidth={screenWidth} />
-      </Center> */}
-      <Center>
-        <BLACardsStack
-          itemId={itemId}
-          data={boothInfo}
-          isLoaded={isLoaded}
-          screenWidth={screenWidth}
-        />
-      </Center>
-      {boothInfo?.bla_name ? null : (
+      {isLoaded ? (
+        <Center>
+          <BLACardsStack
+            itemId={itemId}
+            data={boothInfo}
+            isLoaded={isLoaded}
+            screenWidth={screenWidth}
+          />
+        </Center>
+      ) : (
+        <Center>
+          <Spinner size={"lg"} />
+        </Center>
+      )}
+      {/* {boothInfo?.bla_name ? null : (
         <Center>
           <Pressable
             onPress={() => {
@@ -154,7 +159,7 @@ const BoothDashboard = ({ route, navigation }) => {
             </HStack>
           </Pressable>
         </Center>
-      )}
+      )} */}
     </ScrollView>
   );
 };

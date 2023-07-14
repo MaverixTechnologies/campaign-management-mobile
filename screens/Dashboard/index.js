@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Center, ScrollView, VStack } from "native-base";
+import { Center, ScrollView, VStack, Spinner } from "native-base";
 import MLACardsStack from "./CardsStack";
 import MICardsStack from "../Mandals/CardsStack";
 import SICardsStack from "../Sectors/CardsStack";
@@ -13,6 +13,8 @@ const screenWidth = Dimensions.get("window").width;
 import { useFocusEffect } from "@react-navigation/native";
 import { ApiService } from "../../lib/axios";
 import { useSelector } from "react-redux";
+const screenHeight = Dimensions.get("window").height;
+
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
@@ -76,63 +78,75 @@ const Dashboard = () => {
   );
   return (
     <ScrollView bgColor={"primary.50"}>
-      <VStack alignSelf={"center"} w={"100%"} space={2} maxWidth={"800"} pb={8}>
-        <Center p={0}>
-          {userProfile?.role === "MLA" || userProfile?.role === "ADMIN" ? (
-            <MLAInfoCard
-              isLoaded={isLoaded}
-              screenWidth={screenWidth}
-              data={dashboardData}
-            />
-          ) : userProfile?.role === "MANDAL_INCHARGE" ? (
-            <MIInfoCard
-              isLoaded={isLoaded}
-              screenWidth={screenWidth}
-              data={dashboardData}
-            />
-          ) : userProfile?.role === "SECTOR_INCHARGE" ? (
-            <SIInfoCard
-              isLoaded={isLoaded}
-              screenWidth={screenWidth}
-              data={dashboardData}
-            />
-          ) : userProfile?.role === "BOOTH_LEVEL_AGENT" ? (
-            <BLAInfoCard
-              isLoaded={isLoaded}
-              screenWidth={screenWidth}
-              data={dashboardData}
-            />
-          ) : null}
+      {isLoaded ? (
+        <VStack
+          alignSelf={"center"}
+          w={"100%"}
+          space={2}
+          maxWidth={"800"}
+          pb={8}
+        >
+          <Center p={0}>
+            {userProfile?.role === "MLA" || userProfile?.role === "ADMIN" ? (
+              <MLAInfoCard
+                isLoaded={isLoaded}
+                screenWidth={screenWidth}
+                data={dashboardData}
+              />
+            ) : userProfile?.role === "MANDAL_INCHARGE" ? (
+              <MIInfoCard
+                isLoaded={isLoaded}
+                screenWidth={screenWidth}
+                data={dashboardData}
+              />
+            ) : userProfile?.role === "SECTOR_INCHARGE" ? (
+              <SIInfoCard
+                isLoaded={isLoaded}
+                screenWidth={screenWidth}
+                data={dashboardData}
+              />
+            ) : userProfile?.role === "BOOTH_LEVEL_AGENT" ? (
+              <BLAInfoCard
+                isLoaded={isLoaded}
+                screenWidth={screenWidth}
+                data={dashboardData}
+              />
+            ) : null}
+          </Center>
+          <Center w={"100%"}>
+            {userProfile?.role === "MLA" || userProfile?.role === "ADMIN" ? (
+              <MLACardsStack
+                screenWidth={screenWidth}
+                data={dashboardData}
+                chartData={data}
+                isLoaded={isLoaded}
+              />
+            ) : userProfile?.role === "MANDAL_INCHARGE" ? (
+              <MICardsStack
+                isLoaded={isLoaded}
+                screenWidth={screenWidth}
+                data={dashboardData}
+              />
+            ) : userProfile?.role === "SECTOR_INCHARGE" ? (
+              <SICardsStack
+                isLoaded={isLoaded}
+                screenWidth={screenWidth}
+                data={dashboardData}
+              />
+            ) : userProfile?.role === "BOOTH_LEVEL_AGENT" ? (
+              <BLACardsStack
+                isLoaded={isLoaded}
+                screenWidth={screenWidth}
+                data={dashboardData}
+              />
+            ) : null}
+          </Center>
+        </VStack>
+      ) : (
+        <Center h={screenHeight - 80}>
+          <Spinner size={"lg"} />
         </Center>
-        <Center w={"100%"}>
-          {userProfile?.role === "MLA" || userProfile?.role === "ADMIN" ? (
-            <MLACardsStack
-              screenWidth={screenWidth}
-              data={dashboardData}
-              chartData={data}
-              isLoaded={isLoaded}
-            />
-          ) : userProfile?.role === "MANDAL_INCHARGE" ? (
-            <MICardsStack
-              isLoaded={isLoaded}
-              screenWidth={screenWidth}
-              data={dashboardData}
-            />
-          ) : userProfile?.role === "SECTOR_INCHARGE" ? (
-            <SICardsStack
-              isLoaded={isLoaded}
-              screenWidth={screenWidth}
-              data={dashboardData}
-            />
-          ) : userProfile?.role === "BOOTH_LEVEL_AGENT" ? (
-            <BLACardsStack
-              isLoaded={isLoaded}
-              screenWidth={screenWidth}
-              data={dashboardData}
-            />
-          ) : null}
-        </Center>
-      </VStack>
+      )}
     </ScrollView>
   );
 };

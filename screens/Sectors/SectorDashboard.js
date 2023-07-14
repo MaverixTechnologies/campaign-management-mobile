@@ -8,6 +8,7 @@ import {
   Heading,
   Icon,
   Pressable,
+  Spinner,
 } from "native-base";
 // import { PieChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
@@ -21,6 +22,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import CardsStack from "./CardsStack";
 import { ApiService } from "../../lib/axios";
 const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 
 const SectorDashboard = ({ route, navigation }) => {
   //   const navigation = useNavigation();
@@ -99,73 +101,63 @@ const SectorDashboard = ({ route, navigation }) => {
           Go back
         </Text>
       </HStack>
-      {/* <Center>
-        <InfoCard data={sectorInfo} screenWidth={screenWidth} />
-      </Center> */}
-      <Center>
-        <CardsStack
-          itemId={itemId}
-          screenWidth={screenWidth}
-          isLoaded={isLoaded}
-          data={sectorInfo}
-        />
-        {sectorInfo?.sectorincharge_name ? null : (
-          <Center>
-            <Pressable
-              onPress={() => {
-                navigation.navigate("AddSectorIncharge", {
-                  itemId: itemId,
-                });
-              }}
-              w={screenWidth > 800 ? "800" : screenWidth - 20}
-              rounded={"full"}
-              bg="coolGray.100"
-            >
-              <HStack
-                bg="primary.100"
-                alignItems={"center"}
-                justifyContent={"space-between"}
-                py="4"
-                rounded={"full"}
-                px="8"
-              >
-                <Heading
-                  size="md"
-                  ml="-1"
-                  _light={{
-                    color: "gray.700",
-                  }}
-                  _dark={{
-                    color: "gray.50",
-                  }}
-                >
-                  Add New Member
-                </Heading>
-                <Icon
-                  color={"primary"}
-                  variant={"ghost"}
-                  as={MaterialIcons}
-                  name="person-add-alt-1"
-                  size={"lg"}
-                />
-              </HStack>
-            </Pressable>
-          </Center>
-        )}
-      </Center>
-      {/* <Center>
-        <GraphCard heading={"Constituency Distribution"}>
-          <PieChart
-            data={data}
-            width={screenWidth > 800 ? 800 : screenWidth - 40}
-            height={200}
-            chartConfig={chartConfig}
-            accessor={"population"}
-            backgroundColor={"transparent"}
-            paddingLeft={"15"}
+      {isLoaded ? (
+        <Center>
+          <CardsStack
+            itemId={itemId}
+            screenWidth={screenWidth}
+            isLoaded={isLoaded}
+            data={sectorInfo}
           />
-        </GraphCard>
-      </Center> */}
+          {sectorInfo?.sectorincharge_name ? null : (
+            <Center>
+              <Pressable
+                onPress={() => {
+                  navigation.navigate("AddSectorIncharge", {
+                    itemId: itemId,
+                  });
+                }}
+                w={screenWidth > 800 ? "800" : screenWidth - 20}
+                rounded={"full"}
+                bg="coolGray.100"
+              >
+                <HStack
+                  bg="primary.100"
+                  alignItems={"center"}
+                  justifyContent={"space-between"}
+                  py="4"
+                  rounded={"full"}
+                  px="8"
+                >
+                  <Heading
+                    size="md"
+                    ml="-1"
+                    _light={{
+                      color: "gray.700",
+                    }}
+                    _dark={{
+                      color: "gray.50",
+                    }}
+                  >
+                    Add New Member
+                  </Heading>
+                  <Icon
+                    color={"primary"}
+                    variant={"ghost"}
+                    as={MaterialIcons}
+                    name="person-add-alt-1"
+                    size={"lg"}
+                  />
+                </HStack>
+              </Pressable>
+            </Center>
+          )}
+        </Center>
+      ) : (
+        <Center h={screenHeight - 80}>
+          <Spinner size={"lg"} />
+        </Center>
+      )}
     </ScrollView>
   );
 };

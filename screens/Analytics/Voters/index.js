@@ -6,6 +6,8 @@ import {
   Text,
   ScrollView,
   Stack,
+  Spinner,
+  Center,
 } from "native-base";
 import StatsCard from "../../../components/Cards/StatsCard";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -21,6 +23,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { ApiService } from "../../../lib/axios";
 import CounterStatsCard from "../../../components/Cards/CounterStatsCard";
 const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 
 const Voters = ({ route, navigation }) => {
   const [dashboardData, setDashboardData] = useState({});
@@ -33,7 +36,7 @@ const Voters = ({ route, navigation }) => {
   // const [staunchSupporterData, setStaunchSupporterData] = useState([]);
   // const [voterStatsData, setVoterStatsData] = useState({});
   const { zone, zone_id } = route.params;
-  console.log("ZONE __", route.params.zone);
+  // console.log("ZONE __", route.params.zone);
   const { goBack } = navigation;
   const colors = [
     "#FF6384", // Red
@@ -324,6 +327,7 @@ const Voters = ({ route, navigation }) => {
     tempDash
       .then((e) => {
         setDashboardData(e.data);
+        GetVotersStats();
       })
       .catch(() => {
         setIsLoaded(true);
@@ -334,10 +338,17 @@ const Voters = ({ route, navigation }) => {
       // Do something when the screen is focused
       // GetProfile();
       GetDashboard();
-      GetVotersStats();
+      // GetVotersStats();
       return () => {
         // Do something when the screen is unfocused
         // Useful for cleanup functions
+        setDashboardData({});
+        setCategoryData([]);
+        setCasteData([]);
+        setPoliticalInclinationData([]);
+        setGenderData([]);
+        setAgeData([]);
+        setIsLoaded(false);
       };
     }, [zone, zone_id])
   );
@@ -373,247 +384,253 @@ const Voters = ({ route, navigation }) => {
           Go back
         </Text>
       </HStack>
-      <VStack
-        bg={{
-          linearGradient: {
-            colors: ["secondary.50", "blue.100"],
-            start: [0, 0],
-            end: [0, 1],
-          },
-        }}
-        // bg={"gray.50"}
-        space={"4"}
-        pt={4}
-        pb={6}
-        w={"100%"}
-        alignItems={"center"}
-      >
-        <TitleCard
-          bg={"blue.50"}
-          borderColor={"primary.400"}
-          icon={"pie-chart"}
-          iconColor={"primary.400"}
-          heading={"Voters Count"}
-          subheading={`Total voters and voters added till now`}
-          // isMore={true}
-        />
-        <Stack
-          flexDirection={screenWidth > 300 ? "row" : "column"}
-          justifyContent={screenWidth > 300 ? "space-around" : "center"}
-          alignItems={screenWidth > 300 ? "space-between" : "center"}
-          space={4}
-          w={screenWidth > 800 ? "800" : screenWidth - 20}
-        >
-          <StatsCard
-            heading={"Voters"}
-            text={dashboardData?.total_voters}
-            width={
-              screenWidth > 800 ? "380" : screenWidth > 300 ? "45%" : "full"
-            }
-            bg="white"
-            isLoaded={isLoaded}
-          />
-          <StatsCard
-            heading={"Added Voters"}
-            text={dashboardData?.total_voters_added}
-            width={
-              screenWidth > 800 ? "380" : screenWidth > 300 ? "45%" : "full"
-            }
-            bg="white"
-            isLoaded={isLoaded}
-          />
-        </Stack>
-      </VStack>
-      <VStack
-        bg={{
-          linearGradient: {
-            colors: ["secondary.50", "blue.100"],
-            start: [0, 0],
-            end: [0, 1],
-          },
-        }}
-        // bg={"gray.50"}
-        space={"4"}
-        pt={4}
-        pb={6}
-        w={"100%"}
-        alignItems={"center"}
-      >
-        <TitleCard
-          bg={"blue.50"}
-          borderColor={"primary.400"}
-          icon={"pie-chart"}
-          iconColor={"primary.400"}
-          heading={"Gender Wise Voters Stats"}
-          subheading={`Breakdown of voters based on gender`}
-          // isMore={true}
-          isLoaded={isLoaded}
-        />
+      {isLoaded ? (
+        <>
+          <VStack
+            bg={{
+              linearGradient: {
+                colors: ["secondary.50", "blue.100"],
+                start: [0, 0],
+                end: [0, 1],
+              },
+            }}
+            // bg={"gray.50"}
+            space={"4"}
+            pt={4}
+            pb={6}
+            w={"100%"}
+            alignItems={"center"}
+          >
+            <TitleCard
+              bg={"blue.50"}
+              borderColor={"primary.400"}
+              icon={"pie-chart"}
+              iconColor={"primary.400"}
+              heading={"Voters Count"}
+              subheading={`Total voters and voters added till now`}
+              // isMore={true}
+            />
+            <Stack
+              flexDirection={screenWidth > 300 ? "row" : "column"}
+              justifyContent={screenWidth > 300 ? "space-around" : "center"}
+              alignItems={screenWidth > 300 ? "space-between" : "center"}
+              space={4}
+              w={screenWidth > 800 ? "800" : screenWidth - 20}
+            >
+              <StatsCard
+                heading={"Voters"}
+                text={dashboardData?.total_voters}
+                width={
+                  screenWidth > 800 ? "380" : screenWidth > 300 ? "45%" : "full"
+                }
+                bg="white"
+                isLoaded={isLoaded}
+              />
+              <StatsCard
+                heading={"Added Voters"}
+                text={dashboardData?.total_voters_added}
+                width={
+                  screenWidth > 800 ? "380" : screenWidth > 300 ? "45%" : "full"
+                }
+                bg="white"
+                isLoaded={isLoaded}
+              />
+            </Stack>
+          </VStack>
+          <VStack
+            bg={{
+              linearGradient: {
+                colors: ["secondary.50", "blue.100"],
+                start: [0, 0],
+                end: [0, 1],
+              },
+            }}
+            // bg={"gray.50"}
+            space={"4"}
+            pt={4}
+            pb={6}
+            w={"100%"}
+            alignItems={"center"}
+          >
+            <TitleCard
+              bg={"blue.50"}
+              borderColor={"primary.400"}
+              icon={"pie-chart"}
+              iconColor={"primary.400"}
+              heading={"Gender Wise Voters Stats"}
+              subheading={`Breakdown of voters based on gender`}
+              // isMore={true}
+              isLoaded={isLoaded}
+            />
 
-        <GraphCard
-          isLoaded={isLoaded}
-          width={screenWidth > 800 ? 800 : screenWidth - 20}
-        >
-          <PieChart
-            data={genderData}
-            width={screenWidth > 800 ? 800 : screenWidth - 20}
-            height={200}
-            chartConfig={chartConfig}
-            accessor={"count"}
-            backgroundColor={"transparent"}
-            paddingLeft={"15"}
-          />
-          <CounterStatsCard
-            screenWidth={screenWidth}
-            data={genderData}
+            <GraphCard
+              isLoaded={isLoaded}
+              width={screenWidth > 800 ? 800 : screenWidth - 20}
+            >
+              <PieChart
+                data={genderData}
+                width={screenWidth > 800 ? 800 : screenWidth - 20}
+                height={200}
+                chartConfig={chartConfig}
+                accessor={"count"}
+                backgroundColor={"transparent"}
+                paddingLeft={"15"}
+              />
+              <CounterStatsCard
+                screenWidth={screenWidth}
+                data={genderData}
+                w={"100%"}
+                isLoaded={isLoaded}
+              />
+            </GraphCard>
+          </VStack>
+          <VStack
+            bg={{
+              linearGradient: {
+                colors: ["secondary.50", "blue.100"],
+                start: [0, 0],
+                end: [0, 1],
+              },
+            }}
+            space={"4"}
+            pt={4}
+            pb={6}
             w={"100%"}
-            isLoaded={isLoaded}
-          />
-        </GraphCard>
-      </VStack>
-      <VStack
-        bg={{
-          linearGradient: {
-            colors: ["secondary.50", "blue.100"],
-            start: [0, 0],
-            end: [0, 1],
-          },
-        }}
-        space={"4"}
-        pt={4}
-        pb={6}
-        w={"100%"}
-        alignItems={"center"}
-      >
-        <TitleCard
-          bg={"blue.50"}
-          borderColor={"primary.400"}
-          icon={"pie-chart"}
-          iconColor={"primary.400"}
-          heading={"Age wise"}
-          subheading={`Voter's statistics based on age range`}
-        />
-        <GraphCard
-          isLoaded={isLoaded}
-          width={screenWidth > 800 ? 800 : screenWidth - 20}
-        >
-          <ProgressChart screenWidth={screenWidth} data={ageData} w={"100%"} />
-        </GraphCard>
-      </VStack>
-      <VStack
-        bg={{
-          linearGradient: {
-            colors: ["secondary.50", "blue.100"],
-            start: [0, 0],
-            end: [0, 1],
-          },
-        }}
-        // bg={"gray.50"}
-        space={"4"}
-        pt={4}
-        pb={6}
-        w={"100%"}
-        alignItems={"center"}
-      >
-        <TitleCard
-          bg={"blue.50"}
-          borderColor={"primary.400"}
-          icon={"pie-chart"}
-          iconColor={"primary.400"}
-          heading={"Category Wise"}
-          subheading={`Category based distribution of voters in the constituency`}
-          // isMore={true}
-        />
-        <GraphCard
-          isLoaded={isLoaded}
-          width={screenWidth > 800 ? 800 : screenWidth - 20}
-        >
-          <PieChart
-            data={categoryData}
-            width={screenWidth > 800 ? 800 : screenWidth - 40}
-            height={200}
-            chartConfig={chartConfig}
-            accessor={"count"}
-            backgroundColor={"transparent"}
-            paddingLeft={"15"}
-          />
-          <ProgressChart
-            screenWidth={screenWidth}
-            data={categoryData}
+            alignItems={"center"}
+          >
+            <TitleCard
+              bg={"blue.50"}
+              borderColor={"primary.400"}
+              icon={"pie-chart"}
+              iconColor={"primary.400"}
+              heading={"Age wise"}
+              subheading={`Voter's statistics based on age range`}
+            />
+            <GraphCard
+              isLoaded={isLoaded}
+              width={screenWidth > 800 ? 800 : screenWidth - 20}
+            >
+              <ProgressChart
+                screenWidth={screenWidth}
+                data={ageData}
+                w={"100%"}
+              />
+            </GraphCard>
+          </VStack>
+          <VStack
+            bg={{
+              linearGradient: {
+                colors: ["secondary.50", "blue.100"],
+                start: [0, 0],
+                end: [0, 1],
+              },
+            }}
+            // bg={"gray.50"}
+            space={"4"}
+            pt={4}
+            pb={6}
             w={"100%"}
-          />
-        </GraphCard>
-      </VStack>
-      <VStack
-        bg={{
-          linearGradient: {
-            colors: ["secondary.50", "blue.100"],
-            start: [0, 0],
-            end: [0, 1],
-          },
-        }}
-        // bg={"gray.50"}
-        space={"4"}
-        pt={4}
-        pb={6}
-        w={"100%"}
-        alignItems={"center"}
-      >
-        <TitleCard
-          bg={"blue.50"}
-          borderColor={"primary.400"}
-          icon={"pie-chart"}
-          iconColor={"primary.400"}
-          heading={"Caste Wise"}
-          subheading={`Major castes of voters in the constituency`}
-        />
-        <GraphCard
-          isLoaded={isLoaded}
-          width={screenWidth > 800 ? 800 : screenWidth - 20}
-        >
-          <PieChart
-            data={casteData}
-            width={screenWidth > 800 ? 800 : screenWidth - 40}
-            height={200}
-            chartConfig={chartConfig}
-            accessor={"count"}
-            backgroundColor={"transparent"}
-            paddingLeft={"15"}
-          />
-        </GraphCard>
-      </VStack>
-      <VStack
-        bg={{
-          linearGradient: {
-            colors: ["secondary.50", "blue.100"],
-            start: [0, 0],
-            end: [0, 1],
-          },
-        }}
-        space={"4"}
-        pt={4}
-        pb={6}
-        w={"100%"}
-        alignItems={"center"}
-      >
-        <TitleCard
-          bg={"blue.50"}
-          borderColor={"primary.400"}
-          icon={"pie-chart"}
-          iconColor={"primary.400"}
-          heading={"Political Inclination"}
-          subheading={`Political inclination of voters in the constituency`}
-        />
-        <GraphCard
-          isLoaded={isLoaded}
-          width={screenWidth > 800 ? 800 : screenWidth - 20}
-        >
-          <ProgressChart
-            screenWidth={screenWidth}
-            data={politicalInclinationData}
+            alignItems={"center"}
+          >
+            <TitleCard
+              bg={"blue.50"}
+              borderColor={"primary.400"}
+              icon={"pie-chart"}
+              iconColor={"primary.400"}
+              heading={"Category Wise"}
+              subheading={`Category based distribution of voters in the constituency`}
+              // isMore={true}
+            />
+            <GraphCard
+              isLoaded={isLoaded}
+              width={screenWidth > 800 ? 800 : screenWidth - 20}
+            >
+              <PieChart
+                data={categoryData}
+                width={screenWidth > 800 ? 800 : screenWidth - 40}
+                height={200}
+                chartConfig={chartConfig}
+                accessor={"count"}
+                backgroundColor={"transparent"}
+                paddingLeft={"15"}
+              />
+              <ProgressChart
+                screenWidth={screenWidth}
+                data={categoryData}
+                w={"100%"}
+              />
+            </GraphCard>
+          </VStack>
+          <VStack
+            bg={{
+              linearGradient: {
+                colors: ["secondary.50", "blue.100"],
+                start: [0, 0],
+                end: [0, 1],
+              },
+            }}
+            // bg={"gray.50"}
+            space={"4"}
+            pt={4}
+            pb={6}
             w={"100%"}
-          />
-          {/* <BarChart
+            alignItems={"center"}
+          >
+            <TitleCard
+              bg={"blue.50"}
+              borderColor={"primary.400"}
+              icon={"pie-chart"}
+              iconColor={"primary.400"}
+              heading={"Caste Wise"}
+              subheading={`Major castes of voters in the constituency`}
+            />
+            <GraphCard
+              isLoaded={isLoaded}
+              width={screenWidth > 800 ? 800 : screenWidth - 20}
+            >
+              <PieChart
+                data={casteData}
+                width={screenWidth > 800 ? 800 : screenWidth - 40}
+                height={200}
+                chartConfig={chartConfig}
+                accessor={"count"}
+                backgroundColor={"transparent"}
+                paddingLeft={"15"}
+              />
+            </GraphCard>
+          </VStack>
+          <VStack
+            bg={{
+              linearGradient: {
+                colors: ["secondary.50", "blue.100"],
+                start: [0, 0],
+                end: [0, 1],
+              },
+            }}
+            space={"4"}
+            pt={4}
+            pb={6}
+            w={"100%"}
+            alignItems={"center"}
+          >
+            <TitleCard
+              bg={"blue.50"}
+              borderColor={"primary.400"}
+              icon={"pie-chart"}
+              iconColor={"primary.400"}
+              heading={"Political Inclination"}
+              subheading={`Political inclination of voters in the constituency`}
+            />
+            <GraphCard
+              isLoaded={isLoaded}
+              width={screenWidth > 800 ? 800 : screenWidth - 20}
+            >
+              <ProgressChart
+                screenWidth={screenWidth}
+                data={politicalInclinationData}
+                w={"100%"}
+              />
+              {/* <BarChart
             // style={graphStyle}
             data={{
               labels: politicalInclinationData.map((item) => item.name),
@@ -664,9 +681,9 @@ const Voters = ({ route, navigation }) => {
 
             // verticalLabelRotation={30}
           /> */}
-        </GraphCard>
-      </VStack>
-      {/* <VStack
+            </GraphCard>
+          </VStack>
+          {/* <VStack
         bg={{
           linearGradient: {
             colors: ["secondary.50", "blue.100"],
@@ -713,6 +730,12 @@ const Voters = ({ route, navigation }) => {
           />
         </GraphCard>
       </VStack> */}
+        </>
+      ) : (
+        <Center h={screenHeight - 80}>
+          <Spinner size={"lg"} />
+        </Center>
+      )}
     </ScrollView>
   );
 };

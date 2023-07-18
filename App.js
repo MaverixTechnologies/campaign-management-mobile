@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NativeBaseProvider, Spinner } from "native-base";
@@ -22,23 +22,24 @@ const config = {
 export default function App() {
   // const [isConnected, setIsConnected] = useState(false);
   async function onFetchUpdateAsync() {
-    // const { isConnected } = await Network.getNetworkStateAsync();
-    // if (!isConnected) {
-    //   alert(`No Internet Connection`);
-    // } else {
-    try {
-      const update = await Updates.checkForUpdateAsync();
+    const { isConnected } = await Network.getNetworkStateAsync();
+    console.log("isConnected :-", isConnected);
+    if (!isConnected) {
+      alert(`No Internet Connection`);
+    } else {
+      try {
+        const update = await Updates.checkForUpdateAsync();
 
-      if (update.isAvailable) {
-        alert(`New Update is Available Downloading now...`);
-        await Updates.fetchUpdateAsync();
-        await Updates.reloadAsync();
+        if (update.isAvailable) {
+          alert(`New Update is Available Downloading now...`);
+          await Updates.fetchUpdateAsync();
+          await Updates.reloadAsync();
+        }
+      } catch (error) {
+        // You can also add an alert() to see the error message in case of an error when fetching updates.
+        alert(`Error fetching latest Expo update: ${error}`);
       }
-    } catch (error) {
-      // You can also add an alert() to see the error message in case of an error when fetching updates.
-      alert(`Error fetching latest Expo update: ${error}`);
     }
-    // }
   }
 
   if (Platform.OS !== "web") {
@@ -67,21 +68,3 @@ export default function App() {
     </NativeBaseProvider>
   );
 }
-
-// Color Switch Component
-// function ToggleDarkMode() {
-//   const { colorMode, toggleColorMode } = useColorMode();
-//   return (
-//     <HStack space={2} alignItems="center">
-//       <Text>Dark</Text>
-//       <Switch
-//         isChecked={colorMode === "light"}
-//         onToggle={toggleColorMode}
-//         aria-label={
-//           colorMode === "light" ? "switch to dark mode" : "switch to light mode"
-//         }
-//       />
-//       <Text>Light</Text>
-//     </HStack>
-//   );
-// }

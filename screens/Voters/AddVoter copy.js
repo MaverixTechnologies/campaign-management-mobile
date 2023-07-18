@@ -11,13 +11,10 @@ import {
   Heading,
   Spinner,
   Center,
-  View,
-  // ScrollView,
-  // ScrollView,
+  ScrollView,
   // CheckIcon,
 } from "native-base";
 // import { ScrollView } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useToast } from "native-base";
 import { ApiService } from "../../lib/axios";
 import { useFocusEffect } from "@react-navigation/native";
@@ -32,32 +29,32 @@ const AddVoter = () => {
   const [lists, setLists] = useState();
   const [errors, setErrors] = useState({});
   // Dropdown States
-  // const [openCategory, setOpenCategory] = useState(false);
-  // const [openCaste, setOpenCaste] = useState(false);
-  // const [openGender, setOpenGender] = useState(false);
+  const [openCategory, setOpenCategory] = useState(false);
+  const [openCaste, setOpenCaste] = useState(false);
+  const [openGender, setOpenGender] = useState(false);
   const [openBooths, setOpenBooths] = useState(false);
   const [selectedBooth, setSelectedBooth] = useState(null);
   // Multi Dropdown close As a rule, all other pickers should be closed when another picker opens.
-  // const onOpenCategory = useCallback(() => {
-  //   setOpenCaste(false);
-  //   setOpenGender(false);
-  //   setOpenBooths(false);
-  // }, []);
-  // const onOpenCaste = useCallback(() => {
-  //   setOpenCategory(false);
-  //   setOpenGender(false);
-  //   setOpenBooths(false);
-  // }, []);
-  // const onOpenGender = useCallback(() => {
-  //   setOpenCaste(false);
-  //   setOpenCategory(false);
-  //   setOpenBooths(false);
-  // }, []);
-  // const onOpenBooths = useCallback(() => {
-  //   setOpenCaste(false);
-  //   setOpenGender(false);
-  //   setOpenCategory(false);
-  // }, []);
+  const onOpenCategory = useCallback(() => {
+    setOpenCaste(false);
+    setOpenGender(false);
+    setOpenBooths(false);
+  }, []);
+  const onOpenCaste = useCallback(() => {
+    setOpenCategory(false);
+    setOpenGender(false);
+    setOpenBooths(false);
+  }, []);
+  const onOpenGender = useCallback(() => {
+    setOpenCaste(false);
+    setOpenCategory(false);
+    setOpenBooths(false);
+  }, []);
+  const onOpenBooths = useCallback(() => {
+    setOpenCaste(false);
+    setOpenGender(false);
+    setOpenCategory(false);
+  }, []);
   const toast = useToast();
   const { userId } = useSelector((state) => state.auth);
   const validate = () => {
@@ -133,11 +130,7 @@ const AddVoter = () => {
     }, [])
   );
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
-      keyboardShouldPersistTaps="handled"
-      enableOnAndroid
-    >
+    <ScrollView>
       {isLoaded ? (
         <VStack
           width="90%"
@@ -360,33 +353,63 @@ const AddVoter = () => {
                 Polling Booth
               </Text>
             </FormControl.Label>
-            <View>
-              <DropDownPicker
-                open={openBooths}
-                value={selectedBooth}
-                items={lists}
-                setOpen={setOpenBooths}
-                // onOpen={onOpenBooths}
-                setValue={setSelectedBooth}
-                setItems={setLists}
-                // loading={loading}
-                activityIndicatorColor="#5188E3"
-                searchable={true}
-                placeholder="Select Polling Booth"
-                searchPlaceholder="Search Polling Booth here..."
-                onChangeValue={(value) =>
-                  setFormData({ ...formData, polling_booth: value })
-                }
-                zIndex={9999}
-                zIndexInverse={3000}
-                listMode="MODAL"
-                closeAfterSelecting={true}
-                modalAnimationType="slide"
-                // dropDownContainerStyle={{
-                //   overflow: "scroll",
-                // }}
-              />
-            </View>
+            {/* <Input
+              type="text"
+              id="polling_booth"
+              name="polling_booth"
+              placeholder="Enter polling booth"
+              value={formData.polling_booth}
+              onChangeText={(value) =>
+                setFormData({ ...formData, polling_booth: value })
+              }
+              width="100%"
+              py="3"
+              px="1"
+              fontSize="16"
+            /> */}
+            {/* <Select
+              id="polling_booth"
+              name="polling_booth"
+              value={formData.politicalInclination}
+              accessibilityLabel="Select Polling Booth"
+              placeholder="Select Polling Booth"
+              mt="1"
+              onValueChange={(value) =>
+                setFormData({ ...formData, polling_booth: value })
+              }
+              width="100%"
+              py="3"
+              px="1"
+              // onMagicTap={}
+              // fontSize="16"
+            >
+              {lists?.map((option) => (
+                <Select.Item
+                  key={option.id}
+                  label={option.label}
+                  value={option.value}
+                />
+              ))}
+            </Select> */}
+            <DropDownPicker
+              open={openBooths}
+              value={selectedBooth}
+              items={lists}
+              setOpen={setOpenBooths}
+              onOpen={onOpenBooths}
+              setValue={setSelectedBooth}
+              setItems={setLists}
+              // loading={loading}
+              activityIndicatorColor="#5188E3"
+              searchable={true}
+              placeholder="Select Booth"
+              searchPlaceholder="Search voter Booth here..."
+              onChangeValue={(value) =>
+                setFormData({ ...formData, polling_booth: value })
+              }
+              zIndex={1000}
+              zIndexInverse={3000}
+            />
             {"epic_number" in errors ? (
               <FormControl.ErrorMessage>Error</FormControl.ErrorMessage>
             ) : (
@@ -440,7 +463,7 @@ const AddVoter = () => {
           <Spinner size={"lg"} />
         </Center>
       )}
-    </KeyboardAwareScrollView>
+    </ScrollView>
   );
 };
 

@@ -57,6 +57,7 @@
     "react-native-user-avatar": "^1.0.8",
     "react-native-web": "~0.18.10",
     "react-redux": "^8.0.5",
+    "react-select-search": "^4.1.6",
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "victory-native": "^36.6.11"

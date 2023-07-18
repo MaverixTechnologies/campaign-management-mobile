@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, VStack, Heading, Text, HStack, Divider } from "native-base";
+import PhoneCall from "../../components/Cards/PhoneCall";
 const InfoCard = ({ screenWidth, data }) => {
   return (
     <Box
@@ -195,7 +196,7 @@ const InfoCard = ({ screenWidth, data }) => {
           >
             Sector Incharge Contact
           </Heading>
-          <Text
+          {/* <Text
             textTransform={"capitalize"}
             fontSize="md"
             _light={{
@@ -209,7 +210,14 @@ const InfoCard = ({ screenWidth, data }) => {
             {data?.sectorincharge_contact
               ? data?.sectorincharge_contact
               : "Not added"}
-          </Text>
+          </Text> */}
+          <PhoneCall
+            number={
+              data?.sectorincharge_contact
+                ? data?.sectorincharge_contact
+                : "Not added"
+            }
+          />
         </HStack>
         <Divider
           orientation="horizontal"

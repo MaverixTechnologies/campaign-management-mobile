@@ -230,16 +230,15 @@ const AddVoter = () => {
               </Text>
             </FormControl.Label>
             <Select
+              id="caste"
+              name="caste"
               selectedValue={formData?.caste}
-              minWidth="200"
-              accessibilityLabel={`Select Caste}`}
+              // minWidth="200"
+              accessibilityLabel={`Select Caste`}
+              mt="1"
               placeholder={`Select Caste`}
-              // _selectedItem={{
-              //   bg: "primary.600",
-              //   endIcon: <CheckIcon size="5" />,
-              // }}
-              collapsable={"true"}
-              mt={1}
+              py="3"
+              px="1"
               onValueChange={(itemValue) =>
                 setFormData({ ...formData, caste: itemValue })
               }
@@ -271,7 +270,7 @@ const AddVoter = () => {
               //   bg: "teal.600",
               // }}
               mt="1"
-              value={formData.category}
+              value={formData.voter_category}
               onValueChange={(value) =>
                 setFormData({ ...formData, voter_category: value })
               }
@@ -323,7 +322,7 @@ const AddVoter = () => {
             <Select
               id="political_inclination"
               name="political_inclination"
-              value={formData.politicalInclination}
+              value={formData.political_inclination}
               accessibilityLabel="Select Party"
               placeholder="Select Party"
               mt="1"

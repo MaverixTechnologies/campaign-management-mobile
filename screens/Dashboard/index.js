@@ -6,9 +6,9 @@ import SICardsStack from "../Sectors/CardsStack";
 import BLACardsStack from "../Booths/BLACardsStack";
 import { Dimensions } from "react-native";
 import MLAInfoCard from "./InfoCard";
-import MIInfoCard from "../Mandals/InfoCard";
-import SIInfoCard from "../Sectors/InfoCard";
-import BLAInfoCard from "../Booths/InfoCard";
+// import MIInfoCard from "../Mandals/InfoCard";
+// import SIInfoCard from "../Sectors/InfoCard";
+// import BLAInfoCard from "../Booths/InfoCard";
 const screenWidth = Dimensions.get("window").width;
 import { useFocusEffect } from "@react-navigation/native";
 import { ApiService } from "../../lib/axios";
@@ -42,19 +42,6 @@ const Dashboard = () => {
       legendFontSize: 15,
     },
   ];
-  // const data2 = {
-  //   labels: ["January", "February", "March", "April", "May", "June"],
-  //   datasets: [
-  //     {
-  //       data: [20, 45, 28, 80, 99, 43],
-  //     },
-  //   ],
-  // };
-  // const GetProfile = () => {
-  //   ApiService.getProfile().then((e) => {
-  //     dispatch(setUserProfile(e.data));
-  //   });
-  // };
   const GetDashboard = () => {
     ApiService.getDashboard()
       .then((e) => {
@@ -93,25 +80,26 @@ const Dashboard = () => {
                 screenWidth={screenWidth}
                 data={dashboardData}
               />
-            ) : userProfile?.role === "MANDAL_INCHARGE" ? (
-              <MIInfoCard
-                isLoaded={isLoaded}
-                screenWidth={screenWidth}
-                data={dashboardData}
-              />
-            ) : userProfile?.role === "SECTOR_INCHARGE" ? (
-              <SIInfoCard
-                isLoaded={isLoaded}
-                screenWidth={screenWidth}
-                data={dashboardData}
-              />
-            ) : userProfile?.role === "BOOTH_LEVEL_AGENT" ? (
-              <BLAInfoCard
-                isLoaded={isLoaded}
-                screenWidth={screenWidth}
-                data={dashboardData}
-              />
-            ) : null}
+            ) : // userProfile?.role === "MANDAL_INCHARGE" ? (
+            //   <MIInfoCard
+            //     isLoaded={isLoaded}
+            //     screenWidth={screenWidth}
+            //     data={dashboardData}
+            //   />
+            // ) : userProfile?.role === "SECTOR_INCHARGE" ? (
+            //   <SIInfoCard
+            //     isLoaded={isLoaded}
+            //     screenWidth={screenWidth}
+            //     data={dashboardData}
+            //   />
+            // ) : userProfile?.role === "BOOTH_LEVEL_AGENT" ? (
+            //   <BLAInfoCard
+            //     isLoaded={isLoaded}
+            //     screenWidth={screenWidth}
+            //     data={dashboardData}
+            //   />
+            // ) :
+            null}
           </Center>
           <Center w={"100%"}>
             {userProfile?.role === "MLA" || userProfile?.role === "ADMIN" ? (

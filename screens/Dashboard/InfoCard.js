@@ -107,9 +107,7 @@ const InfoCard = ({ screenWidth, data }) => {
               }}
               fontWeight="500"
             >
-              {/* {data?.sitting_mla_name}
-               */}
-              {`Sanjay Shah "makrai"`}
+              {data?.sitting_mla_name ? data?.sitting_mla_name : `NA`}
             </Heading>
           </HStack>
         ) : null}

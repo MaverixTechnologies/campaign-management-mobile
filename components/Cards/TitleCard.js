@@ -12,6 +12,7 @@ import {
 import { Dimensions } from "react-native";
 const screenWidth = Dimensions.get("window").width;
 import { Feather } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 
 const TitleCard = ({
   bg,
@@ -23,6 +24,8 @@ const TitleCard = ({
   isMore,
   onClick,
 }) => {
+  const { userProfile } = useSelector((state) => state.auth);
+
   return (
     <HStack
       p={2}
@@ -59,7 +62,8 @@ const TitleCard = ({
           <Text fontSize={"xs"}>{subheading}</Text>
         </VStack>
       </HStack>
-      {isMore ? (
+      {isMore &&
+      (userProfile?.role === "MLA" || userProfile?.role === "ADMIN") ? (
         <Button
           iconRight
           variant={"ghost"}

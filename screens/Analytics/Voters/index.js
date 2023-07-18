@@ -8,6 +8,7 @@ import {
   Stack,
   Spinner,
   Center,
+  Box,
 } from "native-base";
 import StatsCard from "../../../components/Cards/StatsCard";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -467,21 +468,29 @@ const Voters = ({ route, navigation }) => {
               isLoaded={isLoaded}
               width={screenWidth > 800 ? 800 : screenWidth - 20}
             >
-              <PieChart
-                data={genderData}
-                width={screenWidth > 800 ? 800 : screenWidth - 20}
-                height={200}
-                chartConfig={chartConfig}
-                accessor={"count"}
-                backgroundColor={"transparent"}
-                paddingLeft={"15"}
-              />
-              <CounterStatsCard
-                screenWidth={screenWidth}
-                data={genderData}
-                w={"100%"}
-                isLoaded={isLoaded}
-              />
+              {dashboardData?.total_voters_added < 1 ? (
+                <Box>
+                  <Text>No Data to Show, add some voters to see analytics</Text>
+                </Box>
+              ) : (
+                <>
+                  <PieChart
+                    data={genderData}
+                    width={screenWidth > 800 ? 800 : screenWidth - 20}
+                    height={200}
+                    chartConfig={chartConfig}
+                    accessor={"count"}
+                    backgroundColor={"transparent"}
+                    paddingLeft={"15"}
+                  />
+                  <CounterStatsCard
+                    screenWidth={screenWidth}
+                    data={genderData}
+                    w={"100%"}
+                    isLoaded={isLoaded}
+                  />
+                </>
+              )}
             </GraphCard>
           </VStack>
           <VStack
@@ -506,15 +515,22 @@ const Voters = ({ route, navigation }) => {
               heading={"Age wise"}
               subheading={`Voter's statistics based on age range`}
             />
+
             <GraphCard
               isLoaded={isLoaded}
               width={screenWidth > 800 ? 800 : screenWidth - 20}
             >
-              <ProgressChart
-                screenWidth={screenWidth}
-                data={ageData}
-                w={"100%"}
-              />
+              {dashboardData?.total_voters_added < 1 ? (
+                <Box>
+                  <Text>No Data to Show, add some voters to see analytics</Text>
+                </Box>
+              ) : (
+                <ProgressChart
+                  screenWidth={screenWidth}
+                  data={ageData}
+                  w={"100%"}
+                />
+              )}
             </GraphCard>
           </VStack>
           <VStack
@@ -545,20 +561,28 @@ const Voters = ({ route, navigation }) => {
               isLoaded={isLoaded}
               width={screenWidth > 800 ? 800 : screenWidth - 20}
             >
-              <PieChart
-                data={categoryData}
-                width={screenWidth > 800 ? 800 : screenWidth - 40}
-                height={200}
-                chartConfig={chartConfig}
-                accessor={"count"}
-                backgroundColor={"transparent"}
-                paddingLeft={"15"}
-              />
-              <ProgressChart
-                screenWidth={screenWidth}
-                data={categoryData}
-                w={"100%"}
-              />
+              {dashboardData?.total_voters_added < 1 ? (
+                <Box>
+                  <Text>No Data to Show, add some voters to see analytics</Text>
+                </Box>
+              ) : (
+                <>
+                  <PieChart
+                    data={categoryData}
+                    width={screenWidth > 800 ? 800 : screenWidth - 40}
+                    height={200}
+                    chartConfig={chartConfig}
+                    accessor={"count"}
+                    backgroundColor={"transparent"}
+                    paddingLeft={"15"}
+                  />
+                  <ProgressChart
+                    screenWidth={screenWidth}
+                    data={categoryData}
+                    w={"100%"}
+                  />
+                </>
+              )}
             </GraphCard>
           </VStack>
           <VStack
@@ -588,15 +612,21 @@ const Voters = ({ route, navigation }) => {
               isLoaded={isLoaded}
               width={screenWidth > 800 ? 800 : screenWidth - 20}
             >
-              <PieChart
-                data={casteData}
-                width={screenWidth > 800 ? 800 : screenWidth - 40}
-                height={200}
-                chartConfig={chartConfig}
-                accessor={"count"}
-                backgroundColor={"transparent"}
-                paddingLeft={"15"}
-              />
+              {dashboardData?.total_voters_added < 1 ? (
+                <Box>
+                  <Text>No Data to Show, add some voters to see analytics</Text>
+                </Box>
+              ) : (
+                <PieChart
+                  data={casteData}
+                  width={screenWidth > 800 ? 800 : screenWidth - 40}
+                  height={200}
+                  chartConfig={chartConfig}
+                  accessor={"count"}
+                  backgroundColor={"transparent"}
+                  paddingLeft={"15"}
+                />
+              )}
             </GraphCard>
           </VStack>
           <VStack
@@ -625,11 +655,17 @@ const Voters = ({ route, navigation }) => {
               isLoaded={isLoaded}
               width={screenWidth > 800 ? 800 : screenWidth - 20}
             >
-              <ProgressChart
-                screenWidth={screenWidth}
-                data={politicalInclinationData}
-                w={"100%"}
-              />
+              {dashboardData?.total_voters_added < 1 ? (
+                <Box>
+                  <Text>No Data to Show, add some voters to see analytics</Text>
+                </Box>
+              ) : (
+                <ProgressChart
+                  screenWidth={screenWidth}
+                  data={politicalInclinationData}
+                  w={"100%"}
+                />
+              )}
               {/* <BarChart
             // style={graphStyle}
             data={{

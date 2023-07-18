@@ -5,7 +5,8 @@ import { ApiService } from "../../lib/axios";
 import logo from "../../assets/logo.png";
 import bgImg from "../../assets/crowd.png";
 import { ImageBackground, Dimensions } from "react-native";
-import { Feather } from "@expo/vector-icons";
+// import { Feather } from "@expo/vector-icons";
+import ToastAlert from "../../components/Alert/ToastAlert";
 const screenWidth = Dimensions.get("window").width;
 
 //components
@@ -23,8 +24,8 @@ import {
   Center,
   Checkbox,
   Spacer,
-  useColorMode,
-  IconButton,
+  // useColorMode,
+  // IconButton,
   Flex,
   Image,
 } from "native-base";
@@ -42,7 +43,7 @@ import jwt_decode from "jwt-decode";
 export const SignInScreen = () => {
   const dispatch = useDispatch();
   const { loginInfo } = useSelector((state) => state.auth);
-  const { toggleColorMode } = useColorMode();
+  // const { toggleColorMode } = useColorMode();
   // const [email, onChangeEmail] = React.useState(loginInfo?.email);
   const [username, onChangeUserName] = useState(loginInfo?.username);
   const [password, onChangePassword] = useState(loginInfo?.password);
@@ -83,13 +84,26 @@ export const SignInScreen = () => {
       setIsLoaded(true);
       navigation.navigate("Dashboard");
     } catch (error) {
-      console.error("Login failed:", error.message);
+      // console.error("Login failed:", error.message);
       // Handle error and display appropriate message
-      const errorMessage = error.response?.data?.message || error.message;
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.detail ||
+        error.message ||
+        "User name or Password is incorrect";
       toast.show({
-        title: "Error",
+        render: () => {
+          return (
+            <ToastAlert
+              title={errorMessage}
+              variant="left-accent"
+              isClosable={true}
+              toast={toast}
+              status={"error"}
+            />
+          );
+        },
         placement: "top-right",
-        description: errorMessage,
       });
       setIsLoaded(true);
     }
@@ -119,9 +133,6 @@ export const SignInScreen = () => {
           m={2}
         >
           <Image
-            // source={{
-            //   uri: logo.toString(),
-            // }}
             source={logo}
             size={screenWidth > 800 ? "50%" : "xl"}
             h={screenWidth > 800 ? "60%" : "100px"}
@@ -146,19 +157,16 @@ export const SignInScreen = () => {
           </Text>
         </Center>
         <ImageBackground
-          // source={{ uri: bgImg.toString() }}
           source={bgImg}
           resizeMode={screenWidth > 800 ? "cover" : "cover"}
           style={{
             width: "100%",
             flex: 1,
-            // position: screenWidth > 800 ? "absolute" : "relative",
           }}
         />
       </Flex>
       <Flex
         mt={screenWidth > 800 ? "-4" : -16}
-        safeArea
         px="4"
         pb="2"
         width={screenWidth > 800 ? "50%" : "100%"}
@@ -166,8 +174,13 @@ export const SignInScreen = () => {
         justifyContent={screenWidth > 800 ? "center" : "space-between"}
         alignItems={screenWidth > 800 ? "center" : "flex-start"}
       >
-        <Heading>Login</Heading>
-        <Column space={3} mt="5" width={screenWidth > 800 ? "80%" : "100%"}>
+        <Column
+          safeArea
+          space={3}
+          mt="5"
+          width={screenWidth > 800 ? "80%" : "100%"}
+        >
+          <Heading>Login</Heading>
           <FormControl>
             <FormControl.Label>User Name</FormControl.Label>
             <Input
@@ -193,13 +206,15 @@ export const SignInScreen = () => {
               Forget Password?
             </Link>
           </Row>
+        </Column>
+        <Column space={3} mt="5" width={screenWidth > 800 ? "80%" : "100%"}>
           <Button isLoading={!isLoaded} mt={8} onPress={onPressSigninButton}>
             Sign in
           </Button>
         </Column>
       </Flex>
 
-      <Flex
+      {/* <Flex
         px={screenWidth > 800 ? 8 : "2"}
         position={"absolute"}
         py={screenWidth > 800 ? 8 : "0"}
@@ -218,7 +233,7 @@ export const SignInScreen = () => {
             name: "sun",
           }}
         />
-      </Flex>
+      </Flex> */}
     </Stack>
   );
 };

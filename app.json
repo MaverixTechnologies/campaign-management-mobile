@@ -26,7 +26,7 @@
     "android": {
       "package": "com.anuparashar0507.campaignmanagementmobile",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/android/icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#0061A3"
       }
     },

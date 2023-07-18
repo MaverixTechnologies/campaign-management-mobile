@@ -283,7 +283,7 @@ const InfoCard = ({ screenWidth, data }) => {
           >
             BLO Contact
           </Heading>
-          <Text
+          {/* <Text
             fontSize="md"
             _light={{
               color: "primary.800",
@@ -295,7 +295,10 @@ const InfoCard = ({ screenWidth, data }) => {
             textTransform={"capitalize"}
           >
             {data?.blo_contact ? data?.blo_contact : "Not added"}
-          </Text>
+          </Text> */}
+          <PhoneCall
+            number={data?.blo_contact ? data?.blo_contact : "Not added"}
+          />
         </HStack>
       </VStack>
     </Box>

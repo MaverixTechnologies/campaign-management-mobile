@@ -55,6 +55,7 @@
     "react-native-svg-charts": "^5.4.0",
     "react-native-swipe-list-view": "^3.2.9",
     "react-native-user-avatar": "^1.0.8",
+    "react-native-virtualized-view": "^1.0.0",
     "react-native-web": "~0.18.10",
     "react-redux": "^8.0.5",
     "react-select-search": "^4.1.6",

@@ -129,6 +129,8 @@ const Filters = ({ screenWidth, route, navigation }) => {
       return () => {
         // Do something when the screen is unfocused
         // Useful for cleanup functions
+        setResults([]);
+        setFormData({});
       };
     }, [filter])
   );

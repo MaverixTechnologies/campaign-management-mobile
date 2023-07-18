@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Spacer,
   Text,
@@ -9,25 +9,39 @@ import {
   Pressable,
   Flex,
 } from "native-base";
+import { Platform, Linking } from "react-native";
 // import UserAvatar from "react-native-user-avatar";
 import { SwipeListView } from "react-native-swipe-list-view";
-import { Entypo, MaterialIcons, SimpleLineIcons } from "@expo/vector-icons";
+import {
+  Entypo,
+  // MaterialIcons,
+  SimpleLineIcons,
+  Feather,
+} from "@expo/vector-icons";
 const VoterList = ({ data }) => {
-  const [listData, setListData] = useState(data);
+  // const [listData, setListData] = useState(data);
 
   const closeRow = (rowMap, rowKey) => {
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
     }
   };
-
-  const deleteRow = (rowMap, rowKey) => {
-    closeRow(rowMap, rowKey);
-    const newData = [...listData];
-    const prevIndex = listData.findIndex((item) => item.key === rowKey);
-    newData.splice(prevIndex, 1);
-    setListData(newData);
+  const makePhoneCall = (number) => {
+    if (number !== "NA" || number !== "Not added" || number === null) {
+      if (Platform.OS === "android") {
+        Linking.openURL(`tel:${number}`);
+      } else {
+        Linking.openURL(`telprompt:${number}`);
+      }
+    }
   };
+  // const deleteRow = (rowMap, rowKey) => {
+  //   closeRow(rowMap, rowKey);
+  //   const newData = [...listData];
+  //   const prevIndex = listData.findIndex((item) => item.key === rowKey);
+  //   newData.splice(prevIndex, 1);
+  //   setListData(newData);
+  // };
 
   const onRowDidOpen = (rowKey) => {
     console.log("This row opened", rowKey);
@@ -176,17 +190,45 @@ const VoterList = ({ data }) => {
       <Pressable
         w="70"
         cursor="pointer"
-        bg="red.500"
+        bg={
+          data?.item?.contact_number === "NA" ||
+          data?.item?.contact_number === "Not added" ||
+          data?.item?.contact_number === null
+            ? "amber.200"
+            : "green.500"
+        }
         justifyContent="center"
-        onPress={() => deleteRow(rowMap, data.item.key)}
+        // onPress={() => deleteRow(rowMap, data.item.key)}
+        onPress={() => makePhoneCall(data?.item?.contact_number)}
         _pressed={{
           opacity: 0.5,
         }}
+        disabled={
+          data?.item?.contact_number === "NA" ||
+          data?.item?.contact_number === "Not added" ||
+          data?.item?.contact_number === null
+            ? true
+            : false
+        }
       >
         <VStack alignItems="center" space={2}>
-          <Icon as={<MaterialIcons name="delete" />} color="white" size="xs" />
+          <Icon
+            as={
+              <Feather
+                name={
+                  data?.item?.contact_number === "NA" ||
+                  data?.item?.contact_number === "Not added" ||
+                  data?.item?.contact_number === null
+                    ? "slash"
+                    : "phone-call"
+                }
+              />
+            }
+            color="white"
+            size="xs"
+          />
           <Text color="white" fontSize="xs" fontWeight="medium">
-            Delete
+            Call
           </Text>
         </VStack>
       </Pressable>
@@ -196,7 +238,7 @@ const VoterList = ({ data }) => {
   return (
     <Box bg="white" safeArea w={"100%"} px={4}>
       <SwipeListView
-        data={listData}
+        data={data}
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
         rightOpenValue={-130}

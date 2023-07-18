@@ -1,6 +1,7 @@
 import React from "react";
-import { Button } from "native-base";
+import { Button, Icon } from "native-base";
 import { Platform, Linking } from "react-native";
+import { Feather } from "@expo/vector-icons";
 const PhoneCall = ({ number }) => {
   const makePhoneCall = (num) => {
     if (number !== "NA" || number !== "Not added") {
@@ -16,18 +17,25 @@ const PhoneCall = ({ number }) => {
       onPress={() => makePhoneCall(number)}
       rounded={"full"}
       p={1}
+      disabled={
+        number === "NA" || number === "Not added" || Platform.OS === "web"
+          ? true
+          : false
+      }
       backgroundColor={
         number === "NA" || number === "Not added" ? "amber.300" : "green.500"
       }
+      leftIcon={
+        <Icon
+          as={Feather}
+          name={
+            number === "NA" || number === "Not added" ? "slash" : "phone-call"
+          }
+          size="sm"
+        />
+      }
       textTransform={"capitalize"}
       fontSize="md"
-      //   _light={{
-      //     color: "primary.800",
-      //   }}
-      //   color={"primary.800"}
-      //   _dark={{
-      //     color: "gray.50",
-      //   }}
       fontStyle={{
         color: "primary.800",
       }}

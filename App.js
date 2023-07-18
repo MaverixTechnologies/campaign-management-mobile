@@ -22,23 +22,23 @@ const config = {
 export default function App() {
   // const [isConnected, setIsConnected] = useState(false);
   async function onFetchUpdateAsync() {
-    const { isConnected } = await Network.getNetworkStateAsync();
-    if (!isConnected) {
-      alert(`No Internet Connection`);
-    } else {
-      try {
-        const update = await Updates.checkForUpdateAsync();
+    // const { isConnected } = await Network.getNetworkStateAsync();
+    // if (!isConnected) {
+    //   alert(`No Internet Connection`);
+    // } else {
+    try {
+      const update = await Updates.checkForUpdateAsync();
 
-        if (update.isAvailable) {
-          alert(`New Update is Available Downloading now...`);
-          await Updates.fetchUpdateAsync();
-          await Updates.reloadAsync();
-        }
-      } catch (error) {
-        // You can also add an alert() to see the error message in case of an error when fetching updates.
-        alert(`Error fetching latest Expo update: ${error}`);
+      if (update.isAvailable) {
+        alert(`New Update is Available Downloading now...`);
+        await Updates.fetchUpdateAsync();
+        await Updates.reloadAsync();
       }
+    } catch (error) {
+      // You can also add an alert() to see the error message in case of an error when fetching updates.
+      alert(`Error fetching latest Expo update: ${error}`);
     }
+    // }
   }
 
   if (Platform.OS !== "web") {

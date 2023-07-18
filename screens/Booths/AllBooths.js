@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from "react";
 import {
   Text,
-  ScrollView,
   FlatList,
   VStack,
   HStack,
@@ -9,6 +8,7 @@ import {
   Pressable,
   Spinner,
   Center,
+  View,
 } from "native-base";
 import { ApiService } from "../../lib/axios";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
@@ -46,7 +46,7 @@ const AllBooths = ({ navigation: { goBack } }) => {
     }, [])
   );
   return (
-    <ScrollView bgColor={"primary.50"}>
+    <View bgColor={"primary.50"}>
       <HStack
         space={2}
         p={1}
@@ -214,7 +214,7 @@ const AllBooths = ({ navigation: { goBack } }) => {
           <Spinner size={"lg"} />
         </Center>
       )}
-    </ScrollView>
+    </View>
   );
 };
 

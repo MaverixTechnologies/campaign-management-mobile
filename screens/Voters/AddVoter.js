@@ -21,6 +21,7 @@ import { ApiService } from "../../lib/axios";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { Dimensions } from "react-native";
+import ToastAlert from "../../components/Alert/ToastAlert";
 const screenHeight = Dimensions.get("window").height;
 const AddVoter = () => {
   const [formData, setFormData] = React.useState({});
@@ -31,11 +32,179 @@ const AddVoter = () => {
   const toast = useToast();
   const { userId } = useSelector((state) => state.auth);
   const validate = () => {
-    if (formData.name === undefined) {
+    if (formData?.name === undefined) {
       setErrors({ ...errors, name: "Name is required" });
+      toast.show({
+        render: () => {
+          return (
+            <ToastAlert
+              title="Name is required"
+              variant="left-accent"
+              isClosable={true}
+              toast={toast}
+              status={"error"}
+            />
+          );
+        },
+        placement: "top-right",
+      });
       return false;
-    } else if (formData.name.length < 3) {
+    } else if (formData?.name.length < 3) {
       setErrors({ ...errors, name: "Name is too short" });
+      toast.show({
+        render: () => {
+          return (
+            <ToastAlert
+              title="Name is too short"
+              variant="left-accent"
+              isClosable={true}
+              toast={toast}
+              status={"warning"}
+            />
+          );
+        },
+        placement: "top-right",
+      });
+      return false;
+    } else if (formData?.age < 18) {
+      setErrors({ ...errors, age: "Not a valid voter: Age must be above 18" });
+      toast.show({
+        render: () => {
+          return (
+            <ToastAlert
+              title="Not a valid voter: Age must be above 18"
+              variant="left-accent"
+              isClosable={true}
+              toast={toast}
+              status={"warning"}
+            />
+          );
+        },
+        placement: "top-right",
+      });
+      return false;
+    } else if (formData?.age === undefined || formData?.age.length < 1) {
+      setErrors({ ...errors, age: "Age is required" });
+      toast.show({
+        render: () => {
+          return (
+            <ToastAlert
+              title="Age is required"
+              variant="left-accent"
+              isClosable={true}
+              toast={toast}
+              status={"error"}
+            />
+          );
+        },
+        placement: "top-right",
+      });
+      return false;
+    } else if (
+      formData?.contact_number === undefined ||
+      formData?.contact_number.length < 1
+    ) {
+      setErrors({ ...errors, contact_number: "Contact number is required" });
+      toast.show({
+        render: () => {
+          return (
+            <ToastAlert
+              title="Contact number is required"
+              variant="left-accent"
+              isClosable={true}
+              toast={toast}
+              status={"error"}
+            />
+          );
+        },
+        placement: "top-right",
+      });
+      return false;
+    } else if (formData?.contact_number?.length !== 10) {
+      setErrors({
+        ...errors,
+        contact_number: "Invalid: Contact number must be of 10 digit",
+      });
+      toast.show({
+        render: () => {
+          return (
+            <ToastAlert
+              title="Invalid: Contact number must be of 10 digit"
+              variant="left-accent"
+              isClosable={true}
+              toast={toast}
+              status={"error"}
+            />
+          );
+        },
+        placement: "top-right",
+      });
+      return false;
+    } else if (formData?.caste === undefined || formData?.caste?.length < 1) {
+      setErrors({
+        ...errors,
+        caste: "Select a caste",
+      });
+      toast.show({
+        render: () => {
+          return (
+            <ToastAlert
+              title="Select a caste"
+              variant="left-accent"
+              isClosable={true}
+              toast={toast}
+              status={"error"}
+            />
+          );
+        },
+        placement: "top-right",
+      });
+      return false;
+    } else if (
+      formData?.voter_category === undefined ||
+      formData?.voter_category?.length < 1
+    ) {
+      setErrors({
+        ...errors,
+        voter_category: "Select a category",
+      });
+      toast.show({
+        render: () => {
+          return (
+            <ToastAlert
+              title="Select a category"
+              variant="left-accent"
+              isClosable={true}
+              toast={toast}
+              status={"error"}
+            />
+          );
+        },
+        placement: "top-right",
+      });
+      return false;
+    } else if (
+      formData?.polling_booth === undefined ||
+      formData?.polling_booth?.length < 1
+    ) {
+      setErrors({
+        ...errors,
+        polling_booth: "Select a polling booth",
+      });
+      toast.show({
+        render: () => {
+          return (
+            <ToastAlert
+              title="Select a polling booth"
+              variant="left-accent"
+              isClosable={true}
+              toast={toast}
+              status={"error"}
+            />
+          );
+        },
+        placement: "top-right",
+      });
       return false;
     }
     return true;
@@ -100,6 +269,8 @@ const AddVoter = () => {
       return () => {
         // Do something when the screen is unfocused
         // Useful for cleanup functions
+        setErrors({});
+        setFormData({});
       };
     }, [])
   );
@@ -140,7 +311,9 @@ const AddVoter = () => {
                 color={"text"}
               />
               {"name" in errors ? (
-                <FormControl.ErrorMessage>Error</FormControl.ErrorMessage>
+                <FormControl.ErrorMessage>
+                  {errors.name}
+                </FormControl.ErrorMessage>
               ) : (
                 <FormControl.HelperText>
                   Name should contain atleast 3 character.
@@ -169,6 +342,15 @@ const AddVoter = () => {
                 px="1"
                 fontSize="16"
               />
+              {"age" in errors ? (
+                <FormControl.ErrorMessage>
+                  {errors.age}
+                </FormControl.ErrorMessage>
+              ) : (
+                <FormControl.HelperText>
+                  Name should contain atleast 3 character.
+                </FormControl.HelperText>
+              )}
             </FormControl>
             <FormControl isRequired>
               <FormControl.Label htmlFor="contactNumber">
@@ -193,10 +375,12 @@ const AddVoter = () => {
               />
 
               {"contact_number" in errors ? (
-                <FormControl.ErrorMessage>Error</FormControl.ErrorMessage>
+                <FormControl.ErrorMessage>
+                  {errors.contact_number}
+                </FormControl.ErrorMessage>
               ) : (
                 <FormControl.HelperText>
-                  Contact Number should contain atleast 10 character.
+                  Contact Number should contain 10 character.
                 </FormControl.HelperText>
               )}
             </FormControl>
@@ -225,7 +409,9 @@ const AddVoter = () => {
                 ))}
               </Select>
               {"caste" in errors ? (
-                <FormControl.ErrorMessage>Error</FormControl.ErrorMessage>
+                <FormControl.ErrorMessage>
+                  {errors.caste}
+                </FormControl.ErrorMessage>
               ) : (
                 <FormControl.HelperText>
                   {/* Caste should contain atleast 3 character. */}
@@ -247,20 +433,28 @@ const AddVoter = () => {
                 //   bg: "teal.600",
                 // }}
                 mt="1"
-                value={formData.voter_category}
+                selectedValue={formData?.voter_category}
                 onValueChange={(value) =>
                   setFormData({ ...formData, voter_category: value })
                 }
                 width="100%"
                 py="3"
                 px="1"
-                // fontSize="16"
               >
                 <Select.Item label="General" value="General" />
                 <Select.Item label="OBC" value="OBC" />
                 <Select.Item label="SC" value="SC" />
                 <Select.Item label="ST" value="ST" />
               </Select>
+              {"voter_category" in errors ? (
+                <FormControl.ErrorMessage>
+                  {errors.voter_category}
+                </FormControl.ErrorMessage>
+              ) : (
+                <FormControl.HelperText>
+                  {/* Caste should contain atleast 3 character. */}
+                </FormControl.HelperText>
+              )}
             </FormControl>
             <FormControl>
               <FormControl.Label htmlFor="epic_number">
@@ -299,7 +493,7 @@ const AddVoter = () => {
               <Select
                 id="political_inclination"
                 name="political_inclination"
-                value={formData.politicalInclination}
+                selectedValue={formData?.political_inclination}
                 accessibilityLabel="Select Party"
                 placeholder="Select Party"
                 mt="1"
@@ -323,7 +517,7 @@ const AddVoter = () => {
                 </FormControl.HelperText>
               )}
             </FormControl>
-            <FormControl>
+            <FormControl isRequired>
               <FormControl.Label htmlFor="polling_booth">
                 <Text fontWeight={"semibold"} fontSize="14">
                   Polling Booth
@@ -332,14 +526,15 @@ const AddVoter = () => {
               <Select
                 id="polling_booth"
                 name="polling_booth"
-                value={formData?.polling_booth}
+                selectedValue={formData?.polling_booth}
                 accessibilityLabel="Select Polling Booth"
                 placeholder={
-                  formData?.polling_booth
-                    ? lists?.find(
-                        (list) => list?.value === formData?.polling_booth
-                      )?.label
-                    : "Select Polling Booth"
+                  // formData?.polling_booth
+                  //   ? lists?.find(
+                  //       (list) => list?.value === formData?.polling_booth
+                  //     )?.label
+                  //   :
+                  "Select Polling Booth"
                 }
                 mt="1"
                 onValueChange={(value) =>
@@ -361,11 +556,13 @@ const AddVoter = () => {
                 ))}
               </Select>
               {/* <CustomSelect placeholder="Select Polling Booth" options={lists} /> */}
-              {"epic_number" in errors ? (
-                <FormControl.ErrorMessage>Error</FormControl.ErrorMessage>
+              {"polling_booth" in errors ? (
+                <FormControl.ErrorMessage>
+                  {errors.polling_booth}
+                </FormControl.ErrorMessage>
               ) : (
                 <FormControl.HelperText>
-                  EPIC/Voter ID Number must be alphanumeric 10-digit code.
+                  Polling booth of the voter
                 </FormControl.HelperText>
               )}
             </FormControl>
@@ -378,7 +575,7 @@ const AddVoter = () => {
               <Radio.Group
                 id="staunch_supporter"
                 name="staunch_supporter"
-                value={formData.staunch_supporter}
+                value={formData?.staunch_supporter}
                 onValueChange={(value) =>
                   setFormData({ ...formData, staunch_supporter: value })
                 }

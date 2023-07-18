@@ -121,10 +121,9 @@ const InfoCard = ({ screenWidth, data }) => {
           </Heading>
           <PhoneCall
             number={
-              // data?.mandalincharge_contact
-              //   ? data?.mandalincharge_contact
-              //   :
-              "Not added"
+              data?.mandalincharge_contact
+                ? data?.mandalincharge_contact
+                : "Not added"
             }
           />
         </HStack>

@@ -6,7 +6,7 @@ import {
   HStack,
   IconButton,
   Pressable,
-  ScrollView,
+  View,
   Spinner,
   Center,
 } from "native-base";
@@ -45,7 +45,7 @@ const AllSectors = ({ navigation }) => {
     }, [])
   );
   return (
-    <ScrollView bgColor={"primary.50"}>
+    <View bgColor={"primary.50"}>
       <HStack
         space={2}
         p={1}
@@ -213,7 +213,7 @@ const AllSectors = ({ navigation }) => {
           <Spinner size={"lg"} />
         </Center>
       )}
-    </ScrollView>
+    </View>
   );
 };
 

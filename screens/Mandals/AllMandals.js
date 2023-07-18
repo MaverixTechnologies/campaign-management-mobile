@@ -6,9 +6,9 @@ import {
   HStack,
   IconButton,
   Pressable,
-  ScrollView,
   Spinner,
   Center,
+  View,
 } from "native-base";
 import { ApiService } from "../../lib/axios";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
@@ -38,7 +38,7 @@ const AllMandals = ({ navigation: { goBack } }) => {
     }, [])
   );
   return (
-    <ScrollView bgColor={"primary.50"}>
+    <View bgColor={"primary.50"}>
       <HStack
         space={2}
         p={1}
@@ -154,7 +154,7 @@ const AllMandals = ({ navigation: { goBack } }) => {
           <Spinner size={"lg"} />
         </Center>
       )}
-    </ScrollView>
+    </View>
   );
 };
 

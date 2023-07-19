@@ -230,7 +230,8 @@ const BLACardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
                       }}
                       alignSelf="flex-start"
                     >
-                      Political Inclination - {item?.political_inclination}
+                      Epic Number -
+                      {item?.epic_number ? item?.epic_number : "NA"}
                     </Text>
 
                     <HStack>
@@ -242,9 +243,11 @@ const BLACardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
                         }}
                         alignSelf="flex-start"
                       >
-                        {item?.added_by__username
+                        Contact Number -
+                        {item?.contact_number ? item?.contact_number : "NA"}
+                        {/* {item?.added_by__username
                           ? item?.added_by__username
-                          : "NA"}
+                          : "NA"} */}
                       </Text>
                     </HStack>
                   </VStack>

@@ -116,22 +116,22 @@ const CardsStack = ({ screenWidth, data, chartData, isLoaded }) => {
           w={screenWidth > 800 ? "800" : screenWidth - 20}
         >
           <StatsCardT2
-            heading={"Mandals"}
-            subheading={"Mandal Incharges"}
-            text={data?.total_mandals}
+            heading={"Mandal Incharges"}
+            subheading={"Mandals"}
+            text={data?.total_mics}
+            text2={data?.total_mandals}
             onClick={() => navigation.navigate("Mandals")}
-            text2={data?.total_mics}
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }
             isLoaded={isLoaded}
           />
           <StatsCardT2
-            heading={"Sectors"}
-            subheading={"Sector Incharges"}
-            text={data?.total_sectors}
+            heading={"Sector Incharges"}
+            subheading={"Sectors"}
+            text={data?.total_sics}
+            text2={data?.total_sectors}
             onClick={() => navigation.navigate("Sectors")}
-            text2={data?.total_sics}
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }
@@ -147,8 +147,8 @@ const CardsStack = ({ screenWidth, data, chartData, isLoaded }) => {
           w={screenWidth > 800 ? "800" : screenWidth - 20}
         >
           <StatsCardT2
-            heading={"Booths"}
-            subheading={"BLAs"}
+            heading={"BLAs"}
+            subheading={"Booths"}
             text={data?.total_polling_booths}
             onClick={() => navigation.navigate("Booths")}
             text2={data?.total_blas}
@@ -158,11 +158,11 @@ const CardsStack = ({ screenWidth, data, chartData, isLoaded }) => {
             isLoaded={isLoaded}
           />
           <StatsCardT2
-            heading={"Pollings"}
-            subheading={"PAs"}
+            // heading={"Pollings"}
+            heading={"PAs"}
             onClick={() => navigation.navigate("Booths")}
-            text={data?.total_polling_booths}
-            text2={data?.total_pas * 2}
+            // text={data?.total_polling_booths}
+            text={data?.total_pas * 2}
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }

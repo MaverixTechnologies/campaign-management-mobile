@@ -1,5 +1,13 @@
 import React from "react";
-import { Stack, Heading, Text, HStack, Pressable, Skeleton } from "native-base";
+import {
+  Stack,
+  Heading,
+  Text,
+  HStack,
+  Pressable,
+  Skeleton,
+  Divider,
+} from "native-base";
 const StatsCardT2 = ({
   heading,
   text,
@@ -29,11 +37,11 @@ const StatsCardT2 = ({
         backgroundColor: "white",
       }}
     >
-      <Stack py="4" px="4" space={0}>
+      <Stack py="4" px="4" space={1}>
         <HStack justifyContent={"space-between"} alignItems={"flex-start"}>
           <Skeleton.Text lines={2} isLoaded={isLoaded}>
             <Heading
-              size="xs"
+              size="sm"
               _light={{
                 color: "primary.800",
               }}
@@ -44,7 +52,7 @@ const StatsCardT2 = ({
               {heading}
             </Heading>
             <Text
-              fontSize="xl"
+              fontSize="lg"
               _light={{
                 color: "primary.700",
               }}
@@ -57,8 +65,8 @@ const StatsCardT2 = ({
             </Text>
           </Skeleton.Text>
         </HStack>
+        <Divider />
         <HStack justifyContent={"space-between"} alignItems={"flex-start"}>
-          {/* <Skeleton.Text lines={1} isLoaded={isLoaded}> */}
           <Text
             fontSize="xs"
             _light={{
@@ -68,7 +76,7 @@ const StatsCardT2 = ({
               color: "secondary.100",
             }}
           >
-            {subheading} -{/* {text2} */}
+            {subheading}
           </Text>
           <Text
             fontSize="xs"
@@ -82,7 +90,6 @@ const StatsCardT2 = ({
           >
             {text2}
           </Text>
-          {/* </Skeleton.Text> */}
         </HStack>
       </Stack>
     </Pressable>

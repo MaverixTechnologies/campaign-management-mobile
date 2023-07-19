@@ -1,8 +1,8 @@
-import React from "react";
-import { VStack, Text, FormControl, Select, CheckIcon } from "native-base";
+import React, { useState, useEffect } from "react";
+import { VStack, Text, FormControl } from "native-base";
 // import { MaterialIcons } from "@expo/vector-icons";
 // import DropDownPicker from "react-native-dropdown-picker";
-
+import CustomDropDownPicker from "../../../components/CustomDropDownPicker";
 const CasteFilter = ({
   // filter,
   formData,
@@ -14,6 +14,16 @@ const CasteFilter = ({
   filterOn,
   options,
 }) => {
+  const [openCastes, setOpenCastes] = useState(false);
+  const [caste, setCaste] = useState("");
+  const handleChange = () => {
+    setFormData({ ...formData, caste: caste });
+  };
+
+  useEffect(() => {
+    handleChange();
+  }, [caste]);
+
   return (
     <VStack
       width="90%"
@@ -29,44 +39,35 @@ const CasteFilter = ({
             Filter voters on {filterOn}
           </Text>
         </FormControl.Label>
-        {/* <DropDownPicker
+        <CustomDropDownPicker
+          open={openCastes}
+          setOpen={setOpenCastes}
+          value={caste}
+          setValue={setCaste}
           items={options}
-          // value={value}
-          value={formData?.caste}
-          // containerStyle={{ height: 40 }}
-          style={{ backgroundColor: "#fafafa" }}
-          itemStyle={{ justifyContent: "flex-start" }}
-          dropDownStyle={{ backgroundColor: "#fafafa" }}
-          searchable={true} // Enable search functionality
-          searchablePlaceholder="Search for an option"
-          searchablePlaceholderTextColor="gray"
-          placeholder={`Select ${filterOn}`}
-          searchableError={() => <Text>Option not found</Text>} // Custom error message for search
-          onChangeItem={(item) =>
-            setFormData({ ...formData, caste: item.value })
-          }
-          dropDownContainerStyle={{
-            backgroundColor: "#dfdfdf",
-          }}
-        /> */}
-        <Select
-          selectedValue={formData?.caste}
-          minWidth="200"
-          accessibilityLabel={`Select ${filterOn}`}
-          placeholder={`Select ${filterOn}`}
-          _selectedItem={{
-            bg: "primary.600",
-            endIcon: <CheckIcon size="5" />,
-          }}
-          mt={1}
-          onValueChange={(itemValue) =>
-            setFormData({ ...formData, caste: itemValue })
-          }
-        >
-          {options.map((option, i) => (
-            <Select.Item key={i} label={option?.label} value={option?.value} />
-          ))}
-        </Select>
+          placeholder="Select Caste"
+          searchable={true}
+          searchPlaceholder="Search Caste here..."
+          // onChangeValue={setCaste}
+        />
+        {/* // <Select
+        //   selectedValue={formData?.caste}
+        //   minWidth="200"
+        //   accessibilityLabel={`Select ${filterOn}`}
+        //   placeholder={`Select ${filterOn}`}
+        //   _selectedItem={{
+        //     bg: "primary.600",
+        //     endIcon: <CheckIcon size="5" />,
+        //   }}
+        //   mt={1}
+        //   onValueChange={(itemValue) =>
+        //     setFormData({ ...formData, caste: itemValue })
+        //   }
+        // >
+        //   {options.map((option, i) => (
+        //     <Select.Item key={i} label={option?.label} value={option?.value} />
+        //   ))}
+        // </Select> */}
       </FormControl>
     </VStack>
   );

@@ -44,24 +44,22 @@ const AllMandals = ({ navigation: { goBack } }) => {
       };
     }, [])
   );
-  // Use the filtered list for rendering
-  const dataToRender = searchQuery ? filteredLists : lists;
 
   // Function to handle search and update the filtered list
   const handleSearch = useCallback(
     (query) => {
       setIsLoaded(false);
       setSearchQuery(query);
-      const filteredData = lists.filter(
-        (item, i) =>
-          item?.name.toLowerCase().includes(query.toLowerCase()) ||
-          (i + 1)?.toString().includes(query.toLowerCase())
+      const filteredData = lists.filter((item) =>
+        item?.name.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredLists(filteredData);
-      setIsLoaded(false);
+      setIsLoaded(true);
     },
     [lists]
   );
+  // Use the filtered list for rendering
+  const dataToRender = searchQuery ? filteredLists : lists;
   const RenderItemComponent = React.memo(({ item, index }) => {
     return (
       <Pressable
@@ -198,6 +196,7 @@ const AllMandals = ({ navigation: { goBack } }) => {
           bg="white"
           borderRadius={8}
           px={2}
+          maxLength={10}
         />
       </HStack>
       {isLoaded ? (
@@ -210,9 +209,10 @@ const AllMandals = ({ navigation: { goBack } }) => {
           )}
           keyExtractor={(item) => item.id}
           removeClippedSubviews={true}
-          onEndReachedThreshold={0.1}
+          // onEndReachedThreshold={0.1}
           onScrollBeginDrag={handleScrollEnd}
           onEndReached={() => setIsAtEndOfList(true)}
+          onScrollEndDrag={handleScrollEnd}
         />
       ) : (
         <Center h={screenHeight - 80}>

@@ -53,7 +53,7 @@ export default function NavigationContent(props) {
               fontSize="xs"
               color="gray.400"
               fontWeight="500"
-              textTransform={"capitalize"}
+              textTransform={"uppercase"}
             >
               {userProfile?.role}
             </Text>

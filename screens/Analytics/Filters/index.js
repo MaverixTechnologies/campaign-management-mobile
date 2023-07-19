@@ -4,14 +4,14 @@ import {
   HStack,
   IconButton,
   Text,
-  ScrollView,
+  // ScrollView,
   Button,
   Badge,
   Icon,
-  // Alert,
   useToast,
   Spinner,
   Center,
+  View,
 } from "native-base";
 import { useFocusEffect } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -20,7 +20,6 @@ import NameInput from "./NameInput";
 import CasteFilter from "./CasteFilter";
 import CategoryFilter from "./CategoryFilter";
 import DeadAliveFilter from "./DeadAliveFilter";
-// import GenderFilter from "./GenderFilter";
 import RegionFilter from "./RegionFilter";
 import { ApiService } from "../../../lib/axios";
 import VoterList from "../../../components/Lists/VoterList";
@@ -37,7 +36,6 @@ const Filters = ({ screenWidth, route, navigation }) => {
   const [results, setResults] = useState([]);
   const [enums, setEnums] = useState({});
   const { filter } = route.params;
-  // const filter = "age-range";
   const [isLoaded, setIsLoaded] = useState(true);
   const toast = useToast();
   const filterOn =
@@ -62,9 +60,6 @@ const Filters = ({ screenWidth, route, navigation }) => {
     };
     ApiService.filterVoters(apidata)
       .then((res) => {
-        // console.log(res);
-        // console.log("Submitted");
-        // setResults(res.data?.results);
         setIsLoaded(true);
         !res.data?.results.length > 0
           ? toast.show({
@@ -139,7 +134,7 @@ const Filters = ({ screenWidth, route, navigation }) => {
     }, [filter])
   );
   return (
-    <ScrollView bgColor={"primary.50"} w={"100%"}>
+    <View bgColor={"primary.50"} w={"100%"} maxH={"full"} overflow={"scroll"}>
       <HStack
         space={2}
         p={1}
@@ -310,24 +305,7 @@ const Filters = ({ screenWidth, route, navigation }) => {
             py={2}
           >
             <HStack space={4}>
-              {/* {formData.values((value) => (
-                <Badge rounded={"lg"} colorScheme="info">
-                  {value}
-                </Badge>
-              ))} */}
               {Object.keys(formData).map((key) => {
-                // if (key === "age_min" || key === "age_max") {
-                //   return (
-                //     <Badge
-                //       key={key}
-                //       rounded={"lg"}
-                //       colorScheme="secondary"
-                //       mr={2}
-                //     >
-                //       {`${formData.age_min} - ${formData.age_max}`}
-                //     </Badge>
-                //   );
-                // } else {
                 return (
                   <Badge
                     rounded={"lg"}
@@ -338,7 +316,6 @@ const Filters = ({ screenWidth, route, navigation }) => {
                     {formData[key]}
                   </Badge>
                 );
-                // }
               })}
             </HStack>
             <Button
@@ -354,7 +331,7 @@ const Filters = ({ screenWidth, route, navigation }) => {
           <VoterList data={results} />
         </VStack>
       )}
-    </ScrollView>
+    </View>
   );
 };
 

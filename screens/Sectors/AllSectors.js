@@ -58,10 +58,8 @@ const AllSectors = ({ navigation }) => {
     (query) => {
       setIsLoaded(false);
       setSearchQuery(query);
-      const filteredData = lists.filter(
-        (item, i) =>
-          item?.name.toLowerCase().includes(query.toLowerCase()) ||
-          (i + 1)?.toString().includes(query.toLowerCase())
+      const filteredData = lists.filter((item) =>
+        item?.name.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredLists(filteredData);
       setIsLoaded(true);
@@ -256,6 +254,7 @@ const AllSectors = ({ navigation }) => {
           bg="white"
           borderRadius={8}
           px={2}
+          maxLength={10}
         />
       </HStack>
       {isLoaded ? (

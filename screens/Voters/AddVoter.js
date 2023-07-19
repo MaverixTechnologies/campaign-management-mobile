@@ -1,18 +1,17 @@
 import React, { useCallback, useState } from "react";
-import { ScrollView } from "react-native-virtualized-view";
 import {
   FormControl,
   Text,
   VStack,
   Button,
   Input,
-  Select,
+  // Select,
   Radio,
   HStack,
   Heading,
   Spinner,
   Center,
-  // ScrollView,
+  ScrollView,
   View,
   // ScrollView,
 } from "native-base";
@@ -22,31 +21,35 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { Dimensions } from "react-native";
 import ToastAlert from "../../components/Alert/ToastAlert";
-import DropDownPicker from "react-native-dropdown-picker";
-
+// import DropDownPicker from "react-native-dropdown-picker";
+import CustomDropDownPicker from "../../components/CustomDropDownPicker";
+// import AlertCenter from "../../components/Alert/AlertCenter";
 const screenHeight = Dimensions.get("window").height;
 const AddVoter = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    age: 0,
-    caste: "",
-    voter_category: "",
-    contact_number: 0,
-    epic_number: "",
-    political_inclination: "",
-    polling_booth: null,
-    staunch_supporter: false,
-  });
+  const [name, setName] = useState("");
+  const [age, setAge] = useState(null);
+  const [caste, setCaste] = useState("");
+  const [category, setCategory] = useState("");
+  const [contact, setContact] = useState(null);
+  const [epicNumber, setEpicNumber] = useState("");
+  const [politicalInclination, setPoliticalInclination] = useState("");
+  const [pollingBooth, setPollingBooth] = useState(null);
+  const [staunchSupporter, setStaunchSupporter] = useState("No");
   const [isLoaded, setIsLoaded] = useState(true);
   const [enums, setEnums] = useState({});
   const [lists, setLists] = useState();
   const [errors, setErrors] = useState({});
   const [openBooths, setOpenBooths] = useState(false);
-  const [selectedBooth, setSelectedBooth] = useState(null);
+  const [openParties, setOpenParties] = useState(false);
+  const [openCategories, setOpenCategories] = useState(false);
+  const [openCastes, setOpenCastes] = useState(false);
+
   const toast = useToast();
   const { userId } = useSelector((state) => state.auth);
+
+  let regexEpicNumber = new RegExp(/^[A-Z]{4}[0-9]{6}$/);
   const validate = () => {
-    if (formData?.name === undefined) {
+    if (name === undefined) {
       setErrors({ ...errors, name: "Name is required" });
       toast.show({
         render: () => {
@@ -64,7 +67,7 @@ const AddVoter = () => {
         isClosable: true,
       });
       return false;
-    } else if (formData?.name.length < 3) {
+    } else if (name.length < 3) {
       setErrors({ ...errors, name: "Name is too short" });
       toast.show({
         render: () => {
@@ -82,25 +85,7 @@ const AddVoter = () => {
         isClosable: true,
       });
       return false;
-    } else if (formData?.age < 18) {
-      setErrors({ ...errors, age: "Not a valid voter: Age must be above 18" });
-      toast.show({
-        render: () => {
-          return (
-            <ToastAlert
-              title="Not a valid voter: Age must be above 18"
-              id={"addvoterage"}
-              toast={toast}
-              status={"warning"}
-            />
-          );
-        },
-        placement: "top-right",
-        id: "addvoterage",
-        isClosable: true,
-      });
-      return false;
-    } else if (formData?.age === undefined || formData?.age.length < 1) {
+    } else if (age === undefined || age === null || age.length < 1) {
       setErrors({ ...errors, age: "Age is required" });
       toast.show({
         render: () => {
@@ -118,9 +103,28 @@ const AddVoter = () => {
         isClosable: true,
       });
       return false;
+    } else if (age < 18) {
+      setErrors({ ...errors, age: "Not a valid voter: Age must be above 18" });
+      toast.show({
+        render: () => {
+          return (
+            <ToastAlert
+              title="Not a valid voter: Age must be above 18"
+              id={"addvoterage"}
+              toast={toast}
+              status={"warning"}
+            />
+          );
+        },
+        placement: "top-right",
+        id: "addvoterage",
+        isClosable: true,
+      });
+      return false;
     } else if (
-      formData?.contact_number === undefined ||
-      formData?.contact_number.length < 1
+      contact === undefined ||
+      contact === null ||
+      contact.length < 1
     ) {
       setErrors({ ...errors, contact_number: "Contact number is required" });
       toast.show({
@@ -139,7 +143,7 @@ const AddVoter = () => {
         isClosable: true,
       });
       return false;
-    } else if (formData?.contact_number?.length !== 10) {
+    } else if (contact.length !== 10) {
       setErrors({
         ...errors,
         contact_number: "Invalid: Contact number must be of 10 digit",
@@ -160,7 +164,7 @@ const AddVoter = () => {
         isClosable: true,
       });
       return false;
-    } else if (formData?.caste === undefined || formData?.caste?.length < 1) {
+    } else if (caste === undefined || caste?.length < 1) {
       setErrors({
         ...errors,
         caste: "Select a caste",
@@ -181,10 +185,7 @@ const AddVoter = () => {
         isClosable: true,
       });
       return false;
-    } else if (
-      formData?.voter_category === undefined ||
-      formData?.voter_category?.length < 1
-    ) {
+    } else if (category === undefined || category?.length < 1) {
       setErrors({
         ...errors,
         voter_category: "Select a category",
@@ -206,8 +207,9 @@ const AddVoter = () => {
       });
       return false;
     } else if (
-      formData?.polling_booth === undefined ||
-      formData?.polling_booth?.length < 1
+      pollingBooth === undefined ||
+      pollingBooth === null ||
+      pollingBooth?.length < 1
     ) {
       setErrors({
         ...errors,
@@ -229,25 +231,104 @@ const AddVoter = () => {
         isClosable: true,
       });
       return false;
+    } else if (
+      epicNumber === undefined ||
+      epicNumber === null ||
+      epicNumber?.length < 1
+    ) {
+      setErrors({
+        ...errors,
+        epic_number: "Epic Number is required",
+      });
+      toast.show({
+        render: () => {
+          return (
+            <ToastAlert
+              title="Epic Number is required"
+              id={"addvoterepicnumber"}
+              toast={toast}
+              status={"error"}
+            />
+          );
+        },
+        placement: "top-right",
+        id: "addvoterepicnumber",
+        isClosable: true,
+      });
+      return false;
+    } else if (!regexEpicNumber.test(epicNumber)) {
+      setErrors({
+        ...errors,
+        epic_number: "Invalid Epic Number",
+      });
+      toast.show({
+        render: () => {
+          return (
+            <ToastAlert
+              title="Enter a valid Epic Number"
+              id={"addvoterepicinvalidepic"}
+              toast={toast}
+              status={"error"}
+            />
+          );
+        },
+        placement: "top-right",
+        id: "addvoterepicinvalidepic",
+        isClosable: true,
+      });
+      return false;
     }
     return true;
   };
   const onSubmit = () => {
-    let newFormData = { ...formData, added_by: userId };
+    // let newFormData = { ...formData, added_by: userId };
+    let newFormData = {
+      name: name,
+      age: age,
+      caste: caste,
+      voter_category: category,
+      contact_number: contact,
+      epic_number: epicNumber,
+      political_inclination: politicalInclination,
+      polling_booth: pollingBooth,
+      staunch_supporter: staunchSupporter,
+      added_by: userId,
+    };
     validate()
       ? ApiService.addVoter(newFormData)
           .then(() => {
             toast.show({
-              title: "Voter Added",
+              render: () => {
+                return (
+                  <ToastAlert
+                    title="Voter Added Successfully"
+                    id={"addvotersuccess"}
+                    toast={toast}
+                    status={"success"}
+                  />
+                );
+              },
               placement: "top-right",
-              description: "Voter Added Successfully",
+              id: "addvotersuccess",
+              isClosable: true,
             });
+            cleanUp();
           })
           .catch((err) => {
             toast.show({
-              title: "Error",
+              render: () => {
+                return (
+                  <ToastAlert
+                    title={err?.response?.detail || err?.message}
+                    id={"addvoterfailed"}
+                    toast={toast}
+                    status={"error"}
+                  />
+                );
+              },
               placement: "top-right",
-              description: err,
+              id: "addvoterfailed",
+              isClosable: true,
             });
           })
       : console.log("Validation Failed");
@@ -279,15 +360,32 @@ const AddVoter = () => {
         setIsLoaded(true);
       });
   };
+  const cleanUp = () => {
+    setErrors({});
+    setName("");
+    setAge(null);
+    setCaste("");
+    setCategory("");
+    setContact(null);
+    setEpicNumber("");
+    setPoliticalInclination("");
+    setPollingBooth(null);
+    setStaunchSupporter("No");
+  };
 
-  // console.log("FormaData : -", formData);
   useFocusEffect(
     useCallback(() => {
       GetBooths();
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+        cleanUp();
+        // alertCleanUp();
+      };
     }, [])
   );
   return (
-    <View>
+    <View bg={"primary.50"} maxH={"100%"}>
       {isLoaded ? (
         <ScrollView>
           <VStack
@@ -297,6 +395,7 @@ const AddVoter = () => {
             mx="auto"
             maxW="600px"
             alignItems="center"
+            bg={"primary.50"}
           >
             <Heading w={"full"} textAlign={"left"} fontSize="xl" pb="3">
               Enter Voter Details
@@ -309,18 +408,16 @@ const AddVoter = () => {
               </FormControl.Label>
               <Input
                 placeholder="Enter voter name"
-                value={formData.name}
-                onChangeText={(value) =>
-                  setFormData({ ...formData, name: value })
-                }
+                value={name}
+                onChangeText={(value) => setName(value)}
                 width="100%"
                 borderRadius="8"
                 py="3"
-                px="3"
                 size="2xl"
                 fontSize="16"
                 variant={"outline"}
                 color={"text"}
+                maxLength={30}
               />
               {"name" in errors ? (
                 <FormControl.ErrorMessage>
@@ -332,7 +429,7 @@ const AddVoter = () => {
                 </FormControl.HelperText>
               )}
             </FormControl>
-            <FormControl isRequired>
+            <FormControl isRequired isInvalid={"age" in errors}>
               <FormControl.Label htmlFor="age">
                 <Text fontWeight={"semibold"} fontSize="14">
                   Age
@@ -345,14 +442,12 @@ const AddVoter = () => {
                 min={0}
                 max={120}
                 placeholder="Enter age"
-                value={formData.age}
-                onChangeText={(value) =>
-                  setFormData({ ...formData, age: value })
-                }
+                value={age}
+                onChangeText={(value) => setAge(value)}
                 width="100%"
                 py="3"
-                px="1"
                 fontSize="16"
+                maxLength={3}
               />
               {"age" in errors ? (
                 <FormControl.ErrorMessage>
@@ -364,26 +459,23 @@ const AddVoter = () => {
                 </FormControl.HelperText>
               )}
             </FormControl>
-            <FormControl isRequired>
+            <FormControl isRequired isInvalid={"contact_number" in errors}>
               <FormControl.Label htmlFor="contactNumber">
                 <Text fontWeight={"semibold"} fontSize="14">
                   Contact Number
                 </Text>
               </FormControl.Label>
               <Input
-                // type="text"
                 keyboardType="numeric"
                 id="contactNumber"
                 name="contactNumber"
                 placeholder="Enter your number"
-                value={formData.contact_number}
+                value={contact}
                 width="100%"
                 py="3"
-                px="1"
                 fontSize="16"
-                onChangeText={(value) =>
-                  setFormData({ ...formData, contact_number: value })
-                }
+                onChangeText={(value) => setContact(value)}
+                maxLength={10}
               />
 
               {"contact_number" in errors ? (
@@ -396,30 +488,28 @@ const AddVoter = () => {
                 </FormControl.HelperText>
               )}
             </FormControl>
-            <FormControl isRequired>
+            <FormControl isRequired isInvalid={"caste" in errors}>
               <FormControl.Label htmlFor="caste">
                 <Text fontWeight={"semibold"} fontSize="14">
                   Caste
                 </Text>
               </FormControl.Label>
-              <Select
-                id="caste"
-                name="caste"
-                selectedValue={formData?.caste}
-                minWidth="200"
-                accessibilityLabel={`Select Caste}`}
-                placeholder={`Select Caste`}
-                mt={1}
-                py="3"
-                px="1"
-                onValueChange={(itemValue) =>
-                  setFormData({ ...formData, caste: itemValue })
-                }
-              >
-                {enums?.caste?.map((option, i) => (
-                  <Select.Item key={i} label={option} value={option} />
-                ))}
-              </Select>
+              <CustomDropDownPicker
+                open={openCastes}
+                setOpen={setOpenCastes}
+                value={caste}
+                setValue={setCaste}
+                items={enums?.caste?.sort()?.map((item) => {
+                  return {
+                    label: item,
+                    value: item,
+                  };
+                })}
+                placeholder="Select Caste"
+                searchable={true}
+                searchPlaceholder="Search Caste here..."
+                onChangeValue={(value) => setCaste(value)}
+              />
               {"caste" in errors ? (
                 <FormControl.ErrorMessage>
                   {errors.caste}
@@ -430,34 +520,38 @@ const AddVoter = () => {
                 </FormControl.HelperText>
               )}
             </FormControl>
-            <FormControl isRequired>
+            <FormControl isRequired isInvalid={"voter_category" in errors}>
               <FormControl.Label htmlFor="voter_category">
                 <Text fontWeight={"semibold"} fontSize="14">
                   Category
                 </Text>
               </FormControl.Label>
-              <Select
-                id="voter_category"
-                name="voter_category"
-                accessibilityLabel="Select Category"
+              <CustomDropDownPicker
+                open={openCategories}
+                setOpen={setOpenCategories}
+                value={category}
+                setValue={setCategory}
+                items={[
+                  {
+                    label: "General",
+                    value: "General",
+                  },
+                  {
+                    label: "OBC",
+                    value: "OBC",
+                  },
+                  {
+                    label: "SC",
+                    value: "SC",
+                  },
+                  {
+                    label: "ST",
+                    value: "ST",
+                  },
+                ]}
                 placeholder="Select Category"
-                // _selectedItem={{
-                //   bg: "teal.600",
-                // }}
-                mt="1"
-                selectedValue={formData?.voter_category}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, voter_category: value })
-                }
-                width="100%"
-                py="3"
-                px="1"
-              >
-                <Select.Item label="General" value="General" />
-                <Select.Item label="OBC" value="OBC" />
-                <Select.Item label="SC" value="SC" />
-                <Select.Item label="ST" value="ST" />
-              </Select>
+                onChangeValue={(value) => setCategory(value)}
+              />
               {"voter_category" in errors ? (
                 <FormControl.ErrorMessage>
                   {errors.voter_category}
@@ -468,7 +562,7 @@ const AddVoter = () => {
                 </FormControl.HelperText>
               )}
             </FormControl>
-            <FormControl>
+            <FormControl isRequired isInvalid={"epic_number" in errors}>
               <FormControl.Label htmlFor="epic_number">
                 <Text fontWeight={"semibold"} fontSize="14">
                   EPIC/Voter ID Number
@@ -479,17 +573,18 @@ const AddVoter = () => {
                 id="epic_number"
                 name="epic_number"
                 placeholder="Enter EPIC number"
-                value={formData.epic_number}
-                onChangeText={(value) =>
-                  setFormData({ ...formData, epic_number: value })
-                }
+                value={epicNumber}
+                onChangeText={(value) => setEpicNumber(value.toUpperCase())}
                 width="100%"
                 py="3"
-                px="1"
                 fontSize="16"
+                autoCapitalize="characters"
+                maxLength={10}
               />
               {"epic_number" in errors ? (
-                <FormControl.ErrorMessage>Error</FormControl.ErrorMessage>
+                <FormControl.ErrorMessage>
+                  {errors.epic_number}
+                </FormControl.ErrorMessage>
               ) : (
                 <FormControl.HelperText>
                   EPIC/Voter ID Number must be alphanumeric 10-digit code.
@@ -502,25 +597,20 @@ const AddVoter = () => {
                   Political Inclination
                 </Text>
               </FormControl.Label>
-              <Select
-                id="political_inclination"
-                name="political_inclination"
-                selectedValue={formData?.political_inclination}
-                accessibilityLabel="Select Party"
+              <CustomDropDownPicker
+                open={openParties}
+                setOpen={setOpenParties}
+                value={politicalInclination}
+                setValue={setPoliticalInclination}
+                items={enums?.political_party?.map((item) => {
+                  return {
+                    label: item,
+                    value: item,
+                  };
+                })}
                 placeholder="Select Party"
-                mt="1"
-                onValueChange={(value) =>
-                  setFormData({ ...formData, political_inclination: value })
-                }
-                width="100%"
-                py="3"
-                px="1"
-                // fontSize="16"
-              >
-                {enums?.political_party?.map((option, i) => (
-                  <Select.Item key={i} label={option} value={option} />
-                ))}
-              </Select>
+                onChangeValue={(value) => setPoliticalInclination(value)}
+              />
               {"political_inclination" in errors ? (
                 <FormControl.ErrorMessage>Error</FormControl.ErrorMessage>
               ) : (
@@ -529,71 +619,24 @@ const AddVoter = () => {
                 </FormControl.HelperText>
               )}
             </FormControl>
-            <FormControl isRequired>
+            <FormControl isRequired isInvalid={"polling_booth" in errors}>
               <FormControl.Label htmlFor="polling_booth">
                 <Text fontWeight={"semibold"} fontSize="14">
                   Polling Booth
                 </Text>
               </FormControl.Label>
-              {/* <Select
-                id="polling_booth"
-                name="polling_booth"
-                selectedValue={formData?.polling_booth}
-                accessibilityLabel="Select Polling Booth"
-                placeholder={
-                  // formData?.polling_booth
-                  //   ? lists?.find(
-                  //       (list) => list?.value === formData?.polling_booth
-                  //     )?.label
-                  //   :
-                  "Select Polling Booth"
-                }
-                mt="1"
-                onValueChange={(value) =>
-                  setFormData({
-                    ...formData,
-                    polling_booth: value,
-                  })
-                }
-                width="100%"
-                py="3"
-                px="1"
-              >
-                {lists?.map((option) => (
-                  <Select.Item
-                    key={option.id}
-                    label={option.label}
-                    value={option.value}
-                  />
-                ))}
-              </Select> */}
-              <View>
-                <DropDownPicker
-                  open={openBooths}
-                  value={selectedBooth}
-                  items={lists}
-                  setOpen={setOpenBooths}
-                  // onOpen={onOpenBooths}
-                  setValue={setSelectedBooth}
-                  setItems={setLists}
-                  // loading={loading}
-                  activityIndicatorColor="#5188E3"
-                  searchable={true}
-                  placeholder="Select Polling Booth"
-                  searchPlaceholder="Search Polling Booth here..."
-                  onChangeValue={(value) =>
-                    setFormData({ ...formData, polling_booth: value })
-                  }
-                  zIndex={9999}
-                  zIndexInverse={3000}
-                  listMode="MODAL"
-                  closeAfterSelecting={true}
-                  modalAnimationType="slide"
-                  // dropDownContainerStyle={{
-                  //   overflow: "scroll",
-                  // }}
-                />
-              </View>
+              <CustomDropDownPicker
+                open={openBooths}
+                value={pollingBooth}
+                items={lists}
+                setOpen={setOpenBooths}
+                setValue={setPollingBooth}
+                setItems={setLists}
+                placeholder="Select Polling Booth"
+                searchable={true}
+                searchPlaceholder="Search Polling Booth here..."
+                onChangeValue={(value) => setPollingBooth(value)}
+              />
               {"polling_booth" in errors ? (
                 <FormControl.ErrorMessage>
                   {errors.polling_booth}
@@ -613,10 +656,9 @@ const AddVoter = () => {
               <Radio.Group
                 id="staunch_supporter"
                 name="staunch_supporter"
-                value={formData?.staunch_supporter}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, staunch_supporter: value })
-                }
+                accessibilityLabel={"staunch_supporter"}
+                value={staunchSupporter}
+                onChange={(value) => setStaunchSupporter(value)}
               >
                 <HStack direction="row" space={4}>
                   <Radio value="Yes">Yes</Radio>

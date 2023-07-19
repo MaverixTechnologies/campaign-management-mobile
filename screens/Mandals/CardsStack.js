@@ -129,22 +129,22 @@ const CardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
           w={screenWidth > 800 ? "800" : screenWidth - 20}
         >
           <StatsCardT2
-            heading={"Sectors"}
-            subheading={"Sector Incharges"}
-            text={data?.total_sectors}
+            subheading={"Sectors"}
+            heading={"Sector Incharges"}
+            text={data?.total_sics}
+            text2={data?.total_sectors}
             onClick={() => navigation.navigate("Sectors")}
-            text2={data?.total_sics}
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }
             isLoaded={isLoaded}
           />
           <StatsCardT2
-            heading={"Booths"}
-            subheading={"BLAs"}
-            text={data?.total_polling_booths}
+            subheading={"Booths"}
+            heading={"BLAs"}
+            text={data?.total_blas}
+            text2={data?.total_polling_booths}
             onClick={() => navigation.navigate("Booths")}
-            text2={data?.total_blas}
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }
@@ -160,11 +160,11 @@ const CardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
           w={screenWidth > 800 ? "800" : screenWidth - 20}
         >
           <StatsCardT2
-            heading={"Pollings"}
-            subheading={"PAs"}
+            // subheading={"Pollings"}
+            heading={"PAs"}
             onClick={() => navigation.navigate("Booths")}
-            text={data?.total_polling_booths}
-            text2={data?.total_pas * 2}
+            // text={data?.total_polling_booths}
+            text={data?.total_pas * 2}
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }

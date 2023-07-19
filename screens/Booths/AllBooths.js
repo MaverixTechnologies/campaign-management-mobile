@@ -251,6 +251,7 @@ const AllBooths = ({ navigation: { goBack } }) => {
         // position="sticky"
         // top={screenWidth > 800 ? "40px" : "32px"}
         zIndex={1}
+        maxLength={10}
       >
         <Input
           placeholder="Search Polling Booth"

@@ -53,9 +53,9 @@ const SectorDashboard = ({ route, navigation }) => {
         setIsLoaded(true);
         setSectorInfo(e.data);
       })
-      .catch((err) => {
+      .catch(() => {
         setIsLoaded(true);
-        console.log(err);
+        // console.log(err);
       });
   };
 

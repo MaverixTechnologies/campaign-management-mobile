@@ -26,7 +26,7 @@ export default function NavigationContent(props) {
     await AsyncStorage.removeItem("refreshToken");
     dispatch(logout());
   };
-  console.log("props  - ", props);
+  // console.log("props  - ", props);
   return (
     <Box flex={1} p={0} m={0}>
       <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1 }}>

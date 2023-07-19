@@ -96,25 +96,27 @@ export const SignInScreen = () => {
           return (
             <ToastAlert
               title={errorMessage}
-              variant="left-accent"
-              isClosable={true}
+              id={"signin"}
               toast={toast}
               status={"error"}
             />
           );
         },
         placement: "top-right",
+        isClosable: true,
+        id: "signin",
       });
       setIsLoaded(true);
     }
   };
   return (
     <Stack
-      justifyContent={screenWidth > 800 ? "center" : "space-between"}
+      justifyContent={screenWidth > 800 ? "center" : "flex-start"}
       alignItems={screenWidth > 800 ? "center" : "flex-start"}
       width="100%"
       h={"100%"}
       direction={screenWidth > 800 ? "row" : "column"}
+      space={20}
     >
       <Flex
         px={0}

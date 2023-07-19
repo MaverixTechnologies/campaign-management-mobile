@@ -60,9 +60,9 @@ const AddSectorIncharge = ({ route, navigation }) => {
     let newFormData = { ...formData, sector: itemId };
     validate()
       ? ApiService.addSectorIncharge(newFormData)
-          .then((res) => {
-            console.log(res);
-            console.log("Submitted");
+          .then(() => {
+            // console.log(res);
+            // console.log("Submitted");
             toast.show({
               title: "Voter Added",
               placement: "top-right",

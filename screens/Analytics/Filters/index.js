@@ -62,8 +62,8 @@ const Filters = ({ screenWidth, route, navigation }) => {
     };
     ApiService.filterVoters(apidata)
       .then((res) => {
-        console.log(res);
-        console.log("Submitted");
+        // console.log(res);
+        // console.log("Submitted");
         // setResults(res.data?.results);
         setIsLoaded(true);
         !res.data?.results.length > 0
@@ -72,14 +72,16 @@ const Filters = ({ screenWidth, route, navigation }) => {
                 return (
                   <ToastAlert
                     title="No result found for the query!"
-                    variant="left-accent"
                     description="Try searching another."
-                    isClosable={true}
                     toast={toast}
+                    id={"filternotfound"}
+                    isClosable={true}
                   />
                 );
               },
               placement: "top-right",
+              id: "filternotfound",
+              isClosable: true,
             })
           : setResults(res.data?.results);
       })
@@ -90,15 +92,17 @@ const Filters = ({ screenWidth, route, navigation }) => {
             return (
               <ToastAlert
                 title="Something Went Wrong!!"
-                variant="left-accent"
                 description="Please try again in sometime."
-                isClosable={true}
                 status="error"
                 toast={toast}
+                id={"filtersomethingwentwrong"}
+                isClosable={true}
               />
             );
           },
           placement: "top-right",
+          id: "filtersomethingwentwrong",
+          isClosable: true,
         });
         setIsLoaded(true);
         setFormData({});

@@ -107,7 +107,7 @@ const BLACardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
           w={screenWidth > 800 ? "800" : screenWidth - 20}
         >
           <StatsCard
-            heading={"Voters"}
+            heading={"Total Voters"}
             text={data?.total_voters}
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "45%" : "full"

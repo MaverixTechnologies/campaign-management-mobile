@@ -55,9 +55,9 @@ const BoothDashboard = ({ route, navigation }) => {
         setIsLoaded(true);
         setBoothInfo(e.data);
       })
-      .catch((err) => {
+      .catch(() => {
         setIsLoaded(true);
-        console.log(err);
+        // console.log(err);
       });
   };
 

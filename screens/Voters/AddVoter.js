@@ -22,13 +22,27 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { Dimensions } from "react-native";
 import ToastAlert from "../../components/Alert/ToastAlert";
+import DropDownPicker from "react-native-dropdown-picker";
+
 const screenHeight = Dimensions.get("window").height;
 const AddVoter = () => {
-  const [formData, setFormData] = React.useState({});
+  const [formData, setFormData] = useState({
+    name: "",
+    age: 0,
+    caste: "",
+    voter_category: "",
+    contact_number: 0,
+    epic_number: "",
+    political_inclination: "",
+    polling_booth: null,
+    staunch_supporter: false,
+  });
   const [isLoaded, setIsLoaded] = useState(true);
   const [enums, setEnums] = useState({});
   const [lists, setLists] = useState();
   const [errors, setErrors] = useState({});
+  const [openBooths, setOpenBooths] = useState(false);
+  const [selectedBooth, setSelectedBooth] = useState(null);
   const toast = useToast();
   const { userId } = useSelector((state) => state.auth);
   const validate = () => {
@@ -39,14 +53,15 @@ const AddVoter = () => {
           return (
             <ToastAlert
               title="Name is required"
-              variant="left-accent"
-              isClosable={true}
               toast={toast}
+              id={"addvotername"}
               status={"error"}
             />
           );
         },
         placement: "top-right",
+        id: "addvotername",
+        isClosable: true,
       });
       return false;
     } else if (formData?.name.length < 3) {
@@ -56,14 +71,15 @@ const AddVoter = () => {
           return (
             <ToastAlert
               title="Name is too short"
-              variant="left-accent"
-              isClosable={true}
+              id={"addvotername2"}
               toast={toast}
               status={"warning"}
             />
           );
         },
         placement: "top-right",
+        id: "addvotername2",
+        isClosable: true,
       });
       return false;
     } else if (formData?.age < 18) {
@@ -73,14 +89,15 @@ const AddVoter = () => {
           return (
             <ToastAlert
               title="Not a valid voter: Age must be above 18"
-              variant="left-accent"
-              isClosable={true}
+              id={"addvoterage"}
               toast={toast}
               status={"warning"}
             />
           );
         },
         placement: "top-right",
+        id: "addvoterage",
+        isClosable: true,
       });
       return false;
     } else if (formData?.age === undefined || formData?.age.length < 1) {
@@ -90,14 +107,15 @@ const AddVoter = () => {
           return (
             <ToastAlert
               title="Age is required"
-              variant="left-accent"
-              isClosable={true}
+              id={"addvoterage2"}
               toast={toast}
               status={"error"}
             />
           );
         },
         placement: "top-right",
+        id: "addvoterage2",
+        isClosable: true,
       });
       return false;
     } else if (
@@ -110,14 +128,15 @@ const AddVoter = () => {
           return (
             <ToastAlert
               title="Contact number is required"
-              variant="left-accent"
-              isClosable={true}
+              id={"addvotercontact"}
               toast={toast}
               status={"error"}
             />
           );
         },
         placement: "top-right",
+        id: "addvotercontact",
+        isClosable: true,
       });
       return false;
     } else if (formData?.contact_number?.length !== 10) {
@@ -130,14 +149,15 @@ const AddVoter = () => {
           return (
             <ToastAlert
               title="Invalid: Contact number must be of 10 digit"
-              variant="left-accent"
-              isClosable={true}
+              id={"addvotercontactinvalid"}
               toast={toast}
               status={"error"}
             />
           );
         },
         placement: "top-right",
+        id: "addvotercontactinvalid",
+        isClosable: true,
       });
       return false;
     } else if (formData?.caste === undefined || formData?.caste?.length < 1) {
@@ -150,14 +170,15 @@ const AddVoter = () => {
           return (
             <ToastAlert
               title="Select a caste"
-              variant="left-accent"
-              isClosable={true}
+              id={"addvotercaste"}
               toast={toast}
               status={"error"}
             />
           );
         },
         placement: "top-right",
+        id: "addvotercaste",
+        isClosable: true,
       });
       return false;
     } else if (
@@ -173,14 +194,15 @@ const AddVoter = () => {
           return (
             <ToastAlert
               title="Select a category"
-              variant="left-accent"
-              isClosable={true}
+              id={"addvotercategory"}
               toast={toast}
               status={"error"}
             />
           );
         },
         placement: "top-right",
+        id: "addvotercategory",
+        isClosable: true,
       });
       return false;
     } else if (
@@ -196,14 +218,15 @@ const AddVoter = () => {
           return (
             <ToastAlert
               title="Select a polling booth"
-              variant="left-accent"
-              isClosable={true}
+              id={"addvoterpolling"}
               toast={toast}
               status={"error"}
             />
           );
         },
         placement: "top-right",
+        id: "addvoterpolling",
+        isClosable: true,
       });
       return false;
     }
@@ -213,9 +236,7 @@ const AddVoter = () => {
     let newFormData = { ...formData, added_by: userId };
     validate()
       ? ApiService.addVoter(newFormData)
-          .then((res) => {
-            console.log(res);
-            console.log("Submitted");
+          .then(() => {
             toast.show({
               title: "Voter Added",
               placement: "top-right",
@@ -259,19 +280,10 @@ const AddVoter = () => {
       });
   };
 
-  console.log("FormaData : -", formData);
+  // console.log("FormaData : -", formData);
   useFocusEffect(
     useCallback(() => {
-      // Do something when the screen is focused
-      // GetProfile();
-
       GetBooths();
-      return () => {
-        // Do something when the screen is unfocused
-        // Useful for cleanup functions
-        setErrors({});
-        setFormData({});
-      };
     }, [])
   );
   return (
@@ -359,7 +371,7 @@ const AddVoter = () => {
                 </Text>
               </FormControl.Label>
               <Input
-                type="tel"
+                // type="text"
                 keyboardType="numeric"
                 id="contactNumber"
                 name="contactNumber"
@@ -523,7 +535,7 @@ const AddVoter = () => {
                   Polling Booth
                 </Text>
               </FormControl.Label>
-              <Select
+              {/* <Select
                 id="polling_booth"
                 name="polling_booth"
                 selectedValue={formData?.polling_booth}
@@ -554,8 +566,34 @@ const AddVoter = () => {
                     value={option.value}
                   />
                 ))}
-              </Select>
-              {/* <CustomSelect placeholder="Select Polling Booth" options={lists} /> */}
+              </Select> */}
+              <View>
+                <DropDownPicker
+                  open={openBooths}
+                  value={selectedBooth}
+                  items={lists}
+                  setOpen={setOpenBooths}
+                  // onOpen={onOpenBooths}
+                  setValue={setSelectedBooth}
+                  setItems={setLists}
+                  // loading={loading}
+                  activityIndicatorColor="#5188E3"
+                  searchable={true}
+                  placeholder="Select Polling Booth"
+                  searchPlaceholder="Search Polling Booth here..."
+                  onChangeValue={(value) =>
+                    setFormData({ ...formData, polling_booth: value })
+                  }
+                  zIndex={9999}
+                  zIndexInverse={3000}
+                  listMode="MODAL"
+                  closeAfterSelecting={true}
+                  modalAnimationType="slide"
+                  // dropDownContainerStyle={{
+                  //   overflow: "scroll",
+                  // }}
+                />
+              </View>
               {"polling_booth" in errors ? (
                 <FormControl.ErrorMessage>
                   {errors.polling_booth}

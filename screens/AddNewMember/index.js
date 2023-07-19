@@ -30,9 +30,9 @@ const AddNewMember = () => {
   const onSubmit = () => {
     validate()
       ? ApiService.addVoter(formData)
-          .then((res) => {
-            console.log(res);
-            console.log("Submitted");
+          .then(() => {
+            // console.log(res);
+            // console.log("Submitted");
             toast.show({
               title: "Voter Added",
               placement: "top-right",

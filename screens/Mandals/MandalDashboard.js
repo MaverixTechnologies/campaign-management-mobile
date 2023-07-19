@@ -55,9 +55,9 @@ const MandalDashboard = ({ route, navigation }) => {
         setIsLoaded(true);
         setMandalInfo(e?.data);
       })
-      .catch((err) => {
+      .catch(() => {
         setIsLoaded(true);
-        console.log(err);
+        // console.log(err);
       });
   };
 

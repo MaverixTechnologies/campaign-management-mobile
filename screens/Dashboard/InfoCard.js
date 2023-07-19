@@ -95,7 +95,7 @@ const InfoCard = ({ screenWidth, data }) => {
               }}
               textTransform={"uppercase"}
             >
-              Siting MLA -
+              Sitting MLA -
             </Heading>
             <Heading
               size="sm"

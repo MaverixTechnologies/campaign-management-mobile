@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  useToast,
+  // useToast,
   VStack,
   HStack,
   Text,
@@ -9,23 +9,23 @@ import {
   Alert,
 } from "native-base";
 const ToastAlert = ({
-  //   id,
+  id,
   status,
   variant,
   title,
   description,
   isClosable,
-  //   toast,
+  toast,
   ...rest
 }) => {
-  const toast = useToast();
+  const isClosableCheck = isClosable === false ? false : true;
   return (
     <Alert
       maxWidth="100%"
       alignSelf="center"
       flexDirection="row"
       status={status ? status : "info"}
-      variant={variant}
+      variant={variant ? variant : "left-accent"}
       {...rest}
     >
       <VStack space={1} flexShrink={1} w="100%">
@@ -51,14 +51,14 @@ const ToastAlert = ({
               {title}
             </Text>
           </HStack>
-          {isClosable ? (
+          {isClosableCheck ? (
             <IconButton
               variant="unstyled"
               icon={<CloseIcon size="3" />}
               _icon={{
                 color: variant === "solid" ? "lightText" : "darkText",
               }}
-              onPress={() => toast.closeAll()}
+              onPress={() => toast.close(id)}
             />
           ) : null}
         </HStack>

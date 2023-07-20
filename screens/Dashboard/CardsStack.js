@@ -149,9 +149,9 @@ const CardsStack = ({ screenWidth, data, chartData, isLoaded }) => {
           <StatsCardT2
             heading={"BLAs"}
             subheading={"Booths"}
-            text={data?.total_polling_booths}
+            text={data?.total_blas}
+            text2={data?.total_polling_booths}
             onClick={() => navigation.navigate("Booths")}
-            text2={data?.total_blas}
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }

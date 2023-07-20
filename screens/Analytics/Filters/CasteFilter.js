@@ -1,28 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { VStack, Text, FormControl } from "native-base";
-// import { MaterialIcons } from "@expo/vector-icons";
-// import DropDownPicker from "react-native-dropdown-picker";
 import CustomDropDownPicker from "../../../components/CustomDropDownPicker";
-const CasteFilter = ({
-  // filter,
-  formData,
-  setFormData,
-  // show,
-  // setShow,
-  // errors,
-  // setErrors,
-  filterOn,
-  options,
-}) => {
+const CasteFilter = ({ formData, setFormData, filterOn, options }) => {
   const [openCastes, setOpenCastes] = useState(false);
   const [caste, setCaste] = useState("");
-  const handleChange = () => {
-    setFormData({ ...formData, caste: caste });
-  };
-
-  useEffect(() => {
-    handleChange();
-  }, [caste]);
 
   return (
     <VStack
@@ -48,26 +29,10 @@ const CasteFilter = ({
           placeholder="Select Caste"
           searchable={true}
           searchPlaceholder="Search Caste here..."
-          // onChangeValue={setCaste}
+          onSelectItem={(item) =>
+            setFormData({ ...formData, caste: item.value })
+          }
         />
-        {/* // <Select
-        //   selectedValue={formData?.caste}
-        //   minWidth="200"
-        //   accessibilityLabel={`Select ${filterOn}`}
-        //   placeholder={`Select ${filterOn}`}
-        //   _selectedItem={{
-        //     bg: "primary.600",
-        //     endIcon: <CheckIcon size="5" />,
-        //   }}
-        //   mt={1}
-        //   onValueChange={(itemValue) =>
-        //     setFormData({ ...formData, caste: itemValue })
-        //   }
-        // >
-        //   {options.map((option, i) => (
-        //     <Select.Item key={i} label={option?.label} value={option?.value} />
-        //   ))}
-        // </Select> */}
       </FormControl>
     </VStack>
   );

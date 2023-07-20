@@ -14,6 +14,8 @@ const AdvanceFilter = ({
   errors,
   setErrors,
   // filterOn,
+  setCaste,
+  caste,
   enums,
 }) => {
   return (
@@ -61,6 +63,8 @@ const AdvanceFilter = ({
         setErrors={setErrors}
         filterOn={"Caste"}
         searchKey={"caste"}
+        setCaste={setCaste}
+        caste={caste}
         options={
           enums?.caste
             ? enums?.caste?.map((item) => ({

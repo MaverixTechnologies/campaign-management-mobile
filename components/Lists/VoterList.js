@@ -8,17 +8,22 @@ import {
   Icon,
   Pressable,
   Flex,
+  // View,
+  Badge,
+  Button,
 } from "native-base";
 import { Platform, Linking } from "react-native";
-// import UserAvatar from "react-native-user-avatar";
 import { SwipeListView } from "react-native-swipe-list-view";
-import {
-  // Entypo,
-  // MaterialIcons,
-  SimpleLineIcons,
-  Feather,
-} from "@expo/vector-icons";
-const VoterList = ({ data }) => {
+import { SimpleLineIcons, Feather, MaterialIcons } from "@expo/vector-icons";
+const VoterList = ({
+  data,
+  isLoadingMore,
+  handleLoadMore,
+  currentPage,
+  totalPages,
+  formData,
+  onResetFilter,
+}) => {
   // const [listData, setListData] = useState(data);
 
   // const closeRow = (rowMap, rowKey) => {
@@ -41,7 +46,7 @@ const VoterList = ({ data }) => {
   };
 
   const renderItem = ({ item }) => (
-    <Box key={item.id}>
+    <Box key={item.id} px={4}>
       <Pressable
         onPress={() => console.log("You touched me")}
         _dark={{
@@ -156,8 +161,8 @@ const VoterList = ({ data }) => {
     </Box>
   );
 
-  const renderHiddenItem = (data, rowMap) => (
-    <HStack flex="1" pl="2">
+  const renderHiddenItem = (data) => (
+    <HStack flex="1" px={4}>
       {/* <Pressable
         w="70"
         ml="auto"
@@ -192,7 +197,6 @@ const VoterList = ({ data }) => {
             : "green.500"
         }
         justifyContent="center"
-        // onPress={() => deleteRow(rowMap, data.item.key)}
         onPress={() => makePhoneCall(data?.item?.contact_number)}
         _pressed={{
           opacity: 0.5,
@@ -230,23 +234,62 @@ const VoterList = ({ data }) => {
   );
 
   return (
-    <Box bg="white" safeArea w={"100%"} px={4}>
-      <SwipeListView
-        data={data}
-        renderItem={renderItem}
-        renderHiddenItem={renderHiddenItem}
-        rightOpenValue={-80}
-        previewRowKey={"0"}
-        previewOpenValue={-40}
-        previewOpenDelay={3000}
-        onRowDidOpen={onRowDidOpen}
-        key={1}
-        // ref={swipeListViewRef}
-        // onEndReached={handleLoadMore}
-        // onEndReachedThreshold={0.1}
-        // ListHeaderComponent={props.ListHeaderComponent}
-      />
-    </Box>
+    <SwipeListView
+      data={data}
+      renderItem={renderItem}
+      renderHiddenItem={renderHiddenItem}
+      rightOpenValue={-80}
+      previewRowKey={"0"}
+      previewOpenValue={-40}
+      previewOpenDelay={3000}
+      onRowDidOpen={onRowDidOpen}
+      keyExtractor={(item) => item.id}
+      ListHeaderComponent={
+        <HStack
+          background={"primary.50"}
+          justifyContent={"space-between"}
+          px={4}
+          py={2}
+        >
+          <HStack space={4} overflowX={"scroll"}>
+            {Object.values(formData).map((key) => {
+              console.log("Key :-", formData);
+              return (
+                <Badge rounded={"lg"} colorScheme="secondary" key={key} mr={2}>
+                  {key}
+                </Badge>
+              );
+            })}
+          </HStack>
+          <Button
+            colorScheme="red"
+            leftIcon={<Icon as={MaterialIcons} name="cancel" size="sm" />}
+            onPress={() => onResetFilter()}
+            rounded={"full"}
+            size={"sm"}
+          >
+            Reset
+          </Button>
+        </HStack>
+      }
+      ListFooterComponent={
+        data.length > 0 &&
+        currentPage < totalPages && (
+          <HStack w={"100%"} justifyContent={"center"}>
+            <Button
+              onPress={handleLoadMore}
+              isLoading={isLoadingMore}
+              bg={"transparent"}
+              variant={"ghost"}
+              isLoadingText="Loading"
+            >
+              Load More Results
+            </Button>
+          </HStack>
+        )
+      }
+      key={1}
+    />
   );
 };
 

@@ -6,8 +6,6 @@ import {
   Text,
   // ScrollView,
   Button,
-  Badge,
-  Icon,
   useToast,
   Spinner,
   Center,
@@ -29,7 +27,7 @@ import AdvanceFilter from "./AdvanceFilter";
 import ToastAlert from "../../../components/Alert/ToastAlert";
 const screenHeight = Dimensions.get("window").height;
 
-const Filters = ({ screenWidth, route, navigation }) => {
+const Filters = ({ route, navigation }) => {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
@@ -199,8 +197,9 @@ const Filters = ({ screenWidth, route, navigation }) => {
       };
     }, [filter])
   );
-  return (
-    <View bgColor={"primary.50"} w={"100%"} maxH={"full"} overflow={"scroll"}>
+
+  const BackComponent = () => {
+    return (
       <HStack
         space={2}
         p={1}
@@ -209,7 +208,8 @@ const Filters = ({ screenWidth, route, navigation }) => {
         justifyContent={"flex-start"}
         borderBottomColor={"primary.100"}
         borderBottomWidth={1}
-        w={screenWidth > 800 ? "800" : screenWidth}
+        w={"full"}
+        h={"50px"}
       >
         <IconButton
           size={"md"}
@@ -231,10 +231,25 @@ const Filters = ({ screenWidth, route, navigation }) => {
           Go back
         </Text>
       </HStack>
+    );
+  };
+  console.log(formData);
+  return (
+    <View
+      bgColor={"primary.50"}
+      w={"100%"}
+      maxH={"full"}
+      overflowY={"scroll"}
+      px={0}
+      pb={0}
+    >
+      <BackComponent />
+
       {!results?.length > 0 ? (
         <Center w={"100%"}>
           {isLoaded ? (
-            <VStack space={"2"} pt={4} pb={4} w={"100%"} alignItems={"center"}>
+            <VStack space={"2"} pb={4} w={"100%"} alignItems={"center"}>
+              {/* <BackComponent /> */}
               {filter === "first-name" || filter === "last-name" ? (
                 <NameInput
                   filter={filter}
@@ -363,54 +378,15 @@ const Filters = ({ screenWidth, route, navigation }) => {
           )}
         </Center>
       ) : (
-        <VStack w={"100%"}>
-          <HStack
-            background={"primary.50"}
-            justifyContent={"space-between"}
-            px={4}
-            py={2}
-          >
-            <HStack space={4}>
-              {Object.keys(formData).map((key) => {
-                return (
-                  <Badge
-                    rounded={"lg"}
-                    colorScheme="secondary"
-                    key={key}
-                    mr={2}
-                  >
-                    {formData[key]}
-                  </Badge>
-                );
-              })}
-            </HStack>
-            <Button
-              colorScheme="red"
-              leftIcon={<Icon as={MaterialIcons} name="cancel" size="sm" />}
-              onPress={() => onResetFilter()}
-              rounded={"full"}
-              size={"sm"}
-            >
-              Reset
-            </Button>
-          </HStack>
-          <VoterList data={results} />
-          {results.length > 0 && currentPage < totalPages && (
-            <HStack w={"100%"} justifyContent={"center"}>
-              <Button
-                onPress={handleLoadMore}
-                isLoading={isLoadingMore}
-                // mt={4}
-                // colorScheme="primary"
-                bg={"transparent"}
-                variant={"ghost"}
-                isLoadingText="Loading"
-              >
-                Load More Results
-              </Button>
-            </HStack>
-          )}
-        </VStack>
+        <VoterList
+          data={results}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handleLoadMore={handleLoadMore}
+          isLoadingMore={isLoadingMore}
+          formData={formData}
+          onResetFilter={onResetFilter}
+        />
       )}
     </View>
   );

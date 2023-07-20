@@ -455,7 +455,7 @@ const AddVoter = () => {
                 </FormControl.ErrorMessage>
               ) : (
                 <FormControl.HelperText>
-                  Name should contain atleast 3 character.
+                  Age must be above 18 to be a valid voter.
                 </FormControl.HelperText>
               )}
             </FormControl>

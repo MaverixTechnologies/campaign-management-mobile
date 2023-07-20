@@ -196,7 +196,7 @@ const BLACardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
                   space={1}
                 >
                   <HStack alignItems="center" space={3}>
-                    <VStack>
+                    <VStack space={1}>
                       <Text
                         color="coolGray.800"
                         _dark={{
@@ -220,6 +220,7 @@ const BLACardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
                   <VStack
                     alignItems={"flex-end"}
                     pr={2}
+                    space={2}
                     justifyContent={"flex-start"}
                   >
                     <Text
@@ -228,9 +229,8 @@ const BLACardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
                       _dark={{
                         color: "warmGray.50",
                       }}
-                      alignSelf="flex-start"
+                      alignSelf="flex-end"
                     >
-                      Epic Number -
                       {item?.epic_number ? item?.epic_number : "NA"}
                     </Text>
 
@@ -241,13 +241,9 @@ const BLACardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
                         _dark={{
                           color: "warmGray.50",
                         }}
-                        alignSelf="flex-start"
+                        alignSelf="flex-end"
                       >
-                        Contact Number -
                         {item?.contact_number ? item?.contact_number : "NA"}
-                        {/* {item?.added_by__username
-                          ? item?.added_by__username
-                          : "NA"} */}
                       </Text>
                     </HStack>
                   </VStack>

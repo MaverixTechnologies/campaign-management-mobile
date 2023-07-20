@@ -27,13 +27,14 @@ import CustomDropDownPicker from "../../components/CustomDropDownPicker";
 const screenHeight = Dimensions.get("window").height;
 const AddVoter = () => {
   const [name, setName] = useState("");
-  const [age, setAge] = useState(null);
+  const [age, setAge] = useState("");
   const [caste, setCaste] = useState("");
   const [category, setCategory] = useState("");
-  const [contact, setContact] = useState(null);
+  const [contact, setContact] = useState("");
+  const [gender, setGender] = useState("");
   const [epicNumber, setEpicNumber] = useState("");
   const [politicalInclination, setPoliticalInclination] = useState("");
-  const [pollingBooth, setPollingBooth] = useState(null);
+  const [pollingBooth, setPollingBooth] = useState("");
   const [staunchSupporter, setStaunchSupporter] = useState("No");
   const [isLoaded, setIsLoaded] = useState(true);
   const [enums, setEnums] = useState({});
@@ -43,11 +44,12 @@ const AddVoter = () => {
   const [openParties, setOpenParties] = useState(false);
   const [openCategories, setOpenCategories] = useState(false);
   const [openCastes, setOpenCastes] = useState(false);
-
+  const [openGenders, setOpenGenders] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const toast = useToast();
   const { userId } = useSelector((state) => state.auth);
 
-  let regexEpicNumber = new RegExp(/^[A-Z]{4}[0-9]{6}$/);
+  let regexEpicNumber = new RegExp(/^[A-Z]{3}[0-9]{7}$/);
   const validate = () => {
     if (name === undefined) {
       setErrors({ ...errors, name: "Name is required" });
@@ -206,6 +208,27 @@ const AddVoter = () => {
         isClosable: true,
       });
       return false;
+    } else if (gender === undefined || gender?.length < 1) {
+      setErrors({
+        ...errors,
+        gender: "Select a gender",
+      });
+      toast.show({
+        render: () => {
+          return (
+            <ToastAlert
+              title="Select a gender"
+              id={"addvotergender"}
+              toast={toast}
+              status={"error"}
+            />
+          );
+        },
+        placement: "top-right",
+        id: "addvotergender",
+        isClosable: true,
+      });
+      return false;
     } else if (
       pollingBooth === undefined ||
       pollingBooth === null ||
@@ -281,12 +304,14 @@ const AddVoter = () => {
     return true;
   };
   const onSubmit = () => {
+    setIsSubmitting(true);
     // let newFormData = { ...formData, added_by: userId };
     let newFormData = {
-      name: name,
+      full_name: name,
       age: age,
       caste: caste,
-      voter_category: category,
+      category: category,
+      gender: gender,
       contact_number: contact,
       epic_number: epicNumber,
       political_inclination: politicalInclination,
@@ -313,13 +338,17 @@ const AddVoter = () => {
               isClosable: true,
             });
             cleanUp();
+            setIsSubmitting(false);
           })
           .catch((err) => {
             toast.show({
               render: () => {
                 return (
                   <ToastAlert
-                    title={err?.response?.detail || err?.message}
+                    title={Object.keys(err?.response?.data)[0] || err?.code}
+                    description={
+                      Object.values(err?.response?.data)[0] || err?.message
+                    }
                     id={"addvoterfailed"}
                     toast={toast}
                     status={"error"}
@@ -330,8 +359,10 @@ const AddVoter = () => {
               id: "addvoterfailed",
               isClosable: true,
             });
+            setIsSubmitting(false);
+            console.log(err);
           })
-      : console.log("Validation Failed");
+      : (setIsSubmitting(false), console.log("Validation Failed"));
   };
   const GetEnums = () => {
     ApiService.getEnums().then((e) => {
@@ -363,13 +394,14 @@ const AddVoter = () => {
   const cleanUp = () => {
     setErrors({});
     setName("");
-    setAge(null);
+    setAge("");
     setCaste("");
     setCategory("");
-    setContact(null);
+    setGender("");
+    setContact("");
     setEpicNumber("");
     setPoliticalInclination("");
-    setPollingBooth(null);
+    setPollingBooth("");
     setStaunchSupporter("No");
   };
 
@@ -533,8 +565,8 @@ const AddVoter = () => {
                 setValue={setCategory}
                 items={[
                   {
-                    label: "General",
-                    value: "General",
+                    label: "GENERAL",
+                    value: "GENERAL",
                   },
                   {
                     label: "OBC",
@@ -555,6 +587,45 @@ const AddVoter = () => {
               {"voter_category" in errors ? (
                 <FormControl.ErrorMessage>
                   {errors.voter_category}
+                </FormControl.ErrorMessage>
+              ) : (
+                <FormControl.HelperText>
+                  {/* Caste should contain atleast 3 character. */}
+                </FormControl.HelperText>
+              )}
+            </FormControl>
+            <FormControl isRequired isInvalid={"gender" in errors}>
+              <FormControl.Label htmlFor="gender">
+                <Text fontWeight={"semibold"} fontSize="14">
+                  Gender
+                </Text>
+              </FormControl.Label>
+              <CustomDropDownPicker
+                open={openGenders}
+                setOpen={setOpenGenders}
+                value={gender}
+                setValue={setGender}
+                items={[
+                  {
+                    label: "MALE",
+                    value: "MALE",
+                  },
+                  {
+                    label: "FEMALE",
+                    value: "FEMALE",
+                  },
+
+                  {
+                    label: "THIRD",
+                    value: "THIRD",
+                  },
+                ]}
+                placeholder="Select Gender"
+                onChangeValue={(value) => setGender(value)}
+              />
+              {"gender" in errors ? (
+                <FormControl.ErrorMessage>
+                  {errors.gender}
                 </FormControl.ErrorMessage>
               ) : (
                 <FormControl.HelperText>
@@ -682,6 +753,7 @@ const AddVoter = () => {
               px="1"
               fontSize="16"
               bottom={2}
+              isLoading={isSubmitting}
             >
               Submit
             </Button>

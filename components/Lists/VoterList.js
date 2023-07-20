@@ -13,7 +13,7 @@ import { Platform, Linking } from "react-native";
 // import UserAvatar from "react-native-user-avatar";
 import { SwipeListView } from "react-native-swipe-list-view";
 import {
-  Entypo,
+  // Entypo,
   // MaterialIcons,
   SimpleLineIcons,
   Feather,
@@ -21,11 +21,11 @@ import {
 const VoterList = ({ data }) => {
   // const [listData, setListData] = useState(data);
 
-  const closeRow = (rowMap, rowKey) => {
-    if (rowMap[rowKey]) {
-      rowMap[rowKey].closeRow();
-    }
-  };
+  // const closeRow = (rowMap, rowKey) => {
+  //   if (rowMap[rowKey]) {
+  //     rowMap[rowKey].closeRow();
+  //   }
+  // };
   const makePhoneCall = (number) => {
     if (number !== "NA" || number !== "Not added" || number === null) {
       if (Platform.OS === "android") {
@@ -35,13 +35,6 @@ const VoterList = ({ data }) => {
       }
     }
   };
-  // const deleteRow = (rowMap, rowKey) => {
-  //   closeRow(rowMap, rowKey);
-  //   const newData = [...listData];
-  //   const prevIndex = listData.findIndex((item) => item.key === rowKey);
-  //   newData.splice(prevIndex, 1);
-  //   setListData(newData);
-  // };
 
   const onRowDidOpen = (rowKey) => {
     console.log("This row opened", rowKey);
@@ -77,9 +70,9 @@ const VoterList = ({ data }) => {
                   size={"lg"}
                   name={
                     item?.gender === "MALE"
-                      ? "user-female"
-                      : item?.gender === "FEMALE"
                       ? "user"
+                      : item?.gender === "FEMALE"
+                      ? "user-female"
                       : "star"
                   }
                   variant={"outline"}
@@ -129,13 +122,13 @@ const VoterList = ({ data }) => {
                 _dark={{
                   color: "warmGray.50",
                 }}
-                alignSelf="flex-start"
+                alignSelf="flex-end"
               >
                 {item?.epic_number}
               </Text>
 
-              {/* <HStack>
-                <Icon
+              <HStack>
+                {/* <Icon
                   as={SimpleLineIcons}
                   size={"xs"}
                   name={"phone"}
@@ -144,18 +137,18 @@ const VoterList = ({ data }) => {
                   _dark={{
                     color: "warmGray.50",
                   }}
-                />
+                /> */}
                 <Text
                   fontSize="xs"
                   color="primary.800"
                   _dark={{
                     color: "warmGray.50",
                   }}
-                  alignSelf="flex-start"
+                  alignSelf="flex-end"
                 >
                   {item?.contact_number ? item?.contact_number : "NA"}
                 </Text>
-              </HStack> */}
+              </HStack>
             </VStack>
           </HStack>
         </Box>
@@ -165,7 +158,7 @@ const VoterList = ({ data }) => {
 
   const renderHiddenItem = (data, rowMap) => (
     <HStack flex="1" pl="2">
-      <Pressable
+      {/* <Pressable
         w="70"
         ml="auto"
         cursor="pointer"
@@ -186,9 +179,10 @@ const VoterList = ({ data }) => {
             More
           </Text>
         </VStack>
-      </Pressable>
+      </Pressable> */}
       <Pressable
         w="70"
+        ml="auto"
         cursor="pointer"
         bg={
           data?.item?.contact_number === "NA" ||
@@ -241,12 +235,15 @@ const VoterList = ({ data }) => {
         data={data}
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
-        rightOpenValue={-130}
+        rightOpenValue={-80}
         previewRowKey={"0"}
         previewOpenValue={-40}
         previewOpenDelay={3000}
         onRowDidOpen={onRowDidOpen}
         key={1}
+        // ref={swipeListViewRef}
+        // onEndReached={handleLoadMore}
+        // onEndReachedThreshold={0.1}
         // ListHeaderComponent={props.ListHeaderComponent}
       />
     </Box>

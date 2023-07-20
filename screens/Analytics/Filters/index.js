@@ -35,8 +35,12 @@ const Filters = ({ screenWidth, route, navigation }) => {
   const [show, setShow] = useState(false);
   const [results, setResults] = useState([]);
   const [enums, setEnums] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const { filter } = route.params;
   const [isLoaded, setIsLoaded] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
   const toast = useToast();
   const filterOn =
     filter === "age-range"
@@ -58,27 +62,31 @@ const Filters = ({ screenWidth, route, navigation }) => {
     const apidata = {
       filters: JSON.stringify(formData),
     };
-    ApiService.filterVoters(apidata)
+    ApiService.filterVoters(apidata, 1)
       .then((res) => {
         setIsLoaded(true);
-        !res.data?.results.length > 0
-          ? toast.show({
-              render: () => {
-                return (
-                  <ToastAlert
-                    title="No result found for the query!"
-                    description="Try searching another."
-                    toast={toast}
-                    id={"filternotfound"}
-                    isClosable={true}
-                  />
-                );
-              },
-              placement: "top-right",
-              id: "filternotfound",
-              isClosable: true,
-            })
-          : setResults(res.data?.results);
+        if (!res.data?.results.length > 0) {
+          toast.show({
+            render: () => {
+              return (
+                <ToastAlert
+                  title="No result found for the query!"
+                  description="Try searching another."
+                  toast={toast}
+                  id={"filternotfound"}
+                  isClosable={true}
+                />
+              );
+            },
+            placement: "top-right",
+            id: "filternotfound",
+            isClosable: true,
+          });
+        } else {
+          setResults(res.data?.results);
+          setTotalPages(res.data?.total);
+          setCurrentPage(1);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -114,6 +122,64 @@ const Filters = ({ screenWidth, route, navigation }) => {
   const onResetFilter = () => {
     setResults([]);
     setFormData({});
+  };
+  const handleLoadMore = () => {
+    if (currentPage < totalPages) {
+      setIsLoadingMore(true);
+      const nextPage = currentPage + 1;
+      const apidata = {
+        filters: JSON.stringify(formData),
+      };
+      ApiService.filterVoters(apidata, nextPage)
+        .then((res) => {
+          if (!res.data?.results.length > 0) {
+            toast.show({
+              render: () => {
+                return (
+                  <ToastAlert
+                    title="No result found for the query!"
+                    description="Try searching another."
+                    toast={toast}
+                    id={"filternotfound"}
+                    isClosable={true}
+                  />
+                );
+              },
+              placement: "top-right",
+              id: "filternotfound",
+              isClosable: true,
+            });
+            setIsLoadingMore(false);
+          } else {
+            const newData = res.data?.results;
+            setResults((prevResults) => [...prevResults, ...newData]);
+            setCurrentPage(nextPage);
+            setIsLoadingMore(false);
+          }
+        })
+        .catch((err) => {
+          toast.show({
+            render: () => {
+              return (
+                <ToastAlert
+                  title={Object.keys(err?.response?.data)[0] || err?.code}
+                  description={
+                    Object.values(err?.response?.data)[0] || err?.message
+                  }
+                  status="error"
+                  toast={toast}
+                  id={"filtersomethingwentwrong2"}
+                  isClosable={true}
+                />
+              );
+            },
+            placement: "top-right",
+            id: "filtersomethingwentwrong2",
+            isClosable: true,
+          });
+          setIsLoadingMore(false);
+        });
+    }
   };
   useFocusEffect(
     useCallback(() => {
@@ -329,6 +395,21 @@ const Filters = ({ screenWidth, route, navigation }) => {
             </Button>
           </HStack>
           <VoterList data={results} />
+          {results.length > 0 && currentPage < totalPages && (
+            <HStack w={"100%"} justifyContent={"center"}>
+              <Button
+                onPress={handleLoadMore}
+                isLoading={isLoadingMore}
+                // mt={4}
+                // colorScheme="primary"
+                bg={"transparent"}
+                variant={"ghost"}
+                isLoadingText="Loading"
+              >
+                Load More Results
+              </Button>
+            </HStack>
+          )}
         </VStack>
       )}
     </View>

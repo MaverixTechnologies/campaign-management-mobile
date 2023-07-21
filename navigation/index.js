@@ -3,32 +3,7 @@
 //  * https://reactnavigation.org/docs/getting-started
 //  *
 //  */
-// import React from "react";
-// // routing
-// import AuthNavigator from "./AuthNavigator";
-// import UnAuthNavigator from "./UnAuthNavigator";
-// import { useSelector } from "react-redux";
 
-// export default function Navigator({ theme }) {
-//   const { user, token } = useSelector((state) => state.auth);
-//   console.log("Navv");
-//   return (
-//     <>
-//       {user && token ? (
-//         // Authenticated users rooting
-//         <AuthNavigator theme={theme} />
-//       ) : (
-//         // NOT authenticated users rooting
-//         <UnAuthNavigator theme={theme} />
-//       )}
-//     </>
-//   );
-// }
-/**
- * If you are not familiar with React Navigation, refer to the "Fundamentals" guide:
- * https://reactnavigation.org/docs/getting-started
- *
- */
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";

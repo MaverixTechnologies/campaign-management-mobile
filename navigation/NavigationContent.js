@@ -26,7 +26,7 @@ export default function NavigationContent(props) {
     await AsyncStorage.removeItem("refreshToken");
     dispatch(logout());
   };
-  // console.log("props  - ", props);
+  // console.log("props  - ", userProfile?.role?.toUpperCase());
   return (
     <Box flex={1} p={0} m={0}>
       <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1 }}>
@@ -55,7 +55,9 @@ export default function NavigationContent(props) {
               fontWeight="500"
               textTransform={"uppercase"}
             >
-              {userProfile?.role}
+              {userProfile?.role?.toUpperCase() === "MLA"
+                ? "VIDHANSABHA INCHARGE"
+                : userProfile?.role}
             </Text>
           </VStack>
         </HStack>

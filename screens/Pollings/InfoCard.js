@@ -1,92 +1,307 @@
 import React from "react";
-import { Box, Stack, Heading, Text, HStack, Divider } from "native-base";
-const InfoCard = ({ screenWidth }) => {
+import { Box, VStack, Heading, Text, HStack, Divider } from "native-base";
+import PhoneCall from "../../components/Cards/PhoneCall";
+const InfoCard = ({ screenWidth, data }) => {
   return (
     <Box
       w={screenWidth > 800 ? "800" : screenWidth - 20}
-      rounded="lg"
       overflow="scroll"
-      borderColor="coolGray.200"
+      borderColor="primary.200"
       borderWidth="1"
+      borderBottomRadius={8}
+      borderTopRightRadius={8}
       _dark={{
-        borderColor: "coolGray.600",
-        backgroundColor: "gray.700",
+        backgroundColor: "primary.700",
       }}
       _web={{
-        shadow: 2,
+        shadow: 1,
         borderWidth: 0,
       }}
       _light={{
-        backgroundColor: "coolGray.50",
-        borderColor: "coolGray.200",
+        backgroundColor: "white",
       }}
-      px="2"
     >
-      <HStack alignItems={"center"}>
-        <Stack px="4" py="4" space={2} alignItems={"flex-start"} w={"50%"}>
+      <VStack>
+        <HStack
+          px="4"
+          py="4"
+          justifyContent={"space-between"}
+          space={2}
+          alignItems={"center"}
+        >
           <Heading
             size="xs"
-            ml="-1"
             _light={{
-              color: "gray.500",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
             }}
           >
-            Vidhansabha
+            Booth
           </Heading>
           <Text
-            fontSize="xl"
+            fontSize="md"
             _light={{
-              color: "gray.800",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
             }}
             fontWeight="500"
-            ml="-0.5"
-            mt="-1"
           >
-            Sanchi
+            {data?.pollingbooth_name}
           </Text>
-        </Stack>
+        </HStack>
         <Divider
-          orientation="vertical"
+          orientation="horizontal"
           thickness={"0.5"}
-          h={"80%"}
           alignSelf={"center"}
-          mr={2}
+          w={"90%"}
+          // mr={2}
         />
-        <Stack px="4" py="4" space={2} alignItems={"flex-start"} w={"48%"}>
+        <HStack
+          px="4"
+          py="4"
+          justifyContent={"space-between"}
+          space={2}
+          alignItems={"center"}
+        >
           <Heading
             size="xs"
-            ml="-1"
             _light={{
-              color: "gray.500",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
             }}
           >
-            MLA
+            BLA
           </Heading>
           <Text
-            fontSize="xl"
+            fontSize="md"
             _light={{
-              color: "gray.800",
+              color: "primary.800",
             }}
             _dark={{
               color: "gray.50",
             }}
             fontWeight="500"
-            ml="-0.5"
-            mt="-1"
           >
-            Some MLA
+            {data?.bla_name ? data?.bla_name : "Not added"}
           </Text>
-        </Stack>
-      </HStack>
+        </HStack>
+        <Divider
+          orientation="horizontal"
+          thickness={"0.5"}
+          alignSelf={"center"}
+          w={"90%"}
+          // mr={2}
+        />
+        <HStack
+          px="4"
+          py="4"
+          justifyContent={"space-between"}
+          space={2}
+          alignItems={"center"}
+        >
+          <Heading
+            size="xs"
+            _light={{
+              color: "primary.800",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+          >
+            BLA Contact
+          </Heading>
+          <PhoneCall
+            number={data?.bla_contact ? data?.bla_contact : "Not added"}
+          />
+        </HStack>
+        <Divider
+          orientation="horizontal"
+          thickness={"0.5"}
+          alignSelf={"center"}
+          w={"90%"}
+          // mr={2}
+        />
+        <HStack
+          px="4"
+          py="4"
+          justifyContent={"space-between"}
+          space={2}
+          alignItems={"center"}
+        >
+          <Heading
+            size="xs"
+            _light={{
+              color: "primary.800",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+          >
+            Sector
+          </Heading>
+          <Text
+            textTransform={"capitalize"}
+            fontSize="md"
+            _light={{
+              color: "primary.800",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+            fontWeight="500"
+          >
+            {data?.sector_name ? data?.sector_name : "Not added"}
+          </Text>
+        </HStack>
+        <Divider
+          orientation="horizontal"
+          thickness={"0.5"}
+          alignSelf={"center"}
+          w={"90%"}
+          // mr={2}
+        />
+        <HStack
+          px="4"
+          py="4"
+          justifyContent={"space-between"}
+          space={2}
+          alignItems={"center"}
+        >
+          <Heading
+            size="xs"
+            _light={{
+              color: "primary.800",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+          >
+            Sector Incharge
+          </Heading>
+          <Text
+            textTransform={"capitalize"}
+            fontSize="md"
+            _light={{
+              color: "primary.800",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+            fontWeight="500"
+          >
+            {data?.sectorincharge_name
+              ? data?.sectorincharge_name
+              : "Not added"}
+          </Text>
+        </HStack>
+        <Divider
+          orientation="horizontal"
+          thickness={"0.5"}
+          alignSelf={"center"}
+          w={"90%"}
+          // mr={2}
+        />
+        {/* <HStack
+          px="4"
+          py="4"
+          justifyContent={"space-between"}
+          space={2}
+          alignItems={"center"}
+        >
+          <Heading
+            size="xs"
+            _light={{
+              color: "primary.800",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+          >
+            Sector Incharge Contact
+          </Heading>
+          <PhoneCall
+            number={
+              data?.sectorincharge_contact
+                ? data?.sectorincharge_contact
+                : "Not added"
+            }
+          />
+        </HStack> */}
+        <Divider
+          orientation="horizontal"
+          thickness={"0.5"}
+          alignSelf={"center"}
+          w={"90%"}
+          // mr={2}
+        />
+        <HStack
+          px="4"
+          py="4"
+          justifyContent={"space-between"}
+          space={2}
+          alignItems={"center"}
+        >
+          <Heading
+            size="xs"
+            _light={{
+              color: "primary.800",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+          >
+            BLO
+          </Heading>
+          <Text
+            fontSize="md"
+            _light={{
+              color: "primary.800",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+            fontWeight="500"
+            textTransform={"capitalize"}
+          >
+            {data?.blo_name ? data?.blo_name : "Not added"}
+          </Text>
+        </HStack>
+        <Divider
+          orientation="horizontal"
+          thickness={"0.5"}
+          alignSelf={"center"}
+          w={"90%"}
+          // mr={2}
+        />
+        <HStack
+          px="4"
+          py="4"
+          justifyContent={"space-between"}
+          space={2}
+          alignItems={"center"}
+        >
+          <Heading
+            size="xs"
+            _light={{
+              color: "primary.800",
+            }}
+            _dark={{
+              color: "gray.50",
+            }}
+          >
+            BLO Contact
+          </Heading>
+          <PhoneCall
+            number={data?.blo_contact ? data?.blo_contact : "Not added"}
+          />
+        </HStack>
+      </VStack>
     </Box>
   );
 };

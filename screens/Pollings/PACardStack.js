@@ -4,7 +4,7 @@ import TitleCard from "../../components/Cards/TitleCard";
 import StatsCard from "../../components/Cards/StatsCard";
 import InfoCard from "./InfoCard";
 import { useNavigation } from "@react-navigation/native";
-const BLACardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
+const PACardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
   const navigation = useNavigation();
   return (
     <VStack space={"0"} w={"100%"} alignItems={"center"}>
@@ -116,7 +116,7 @@ const BLACardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
           isLoaded={isLoaded}
         />
         <Stack space={1} w={screenWidth > 800 ? "800" : screenWidth - 20}>
-          {data?.last_5_voters_added.map((item, i) => {
+          {data?.last_5_voters_added_by_agent.map((item, i) => {
             return (
               <Box
                 borderWidth={2}
@@ -194,4 +194,4 @@ const BLACardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
   );
 };
 
-export default BLACardsStack;
+export default PACardsStack;

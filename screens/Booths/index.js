@@ -4,6 +4,8 @@ import React from "react";
 import BoothDashboard from "./BoothDashboard";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AddBLA from "./AddBLA";
+import AllBLAs from "./AllBLAs";
+import AllPAs from "../Pollings/AllAgents";
 const Stack = createNativeStackNavigator();
 
 const Booths = () => {
@@ -14,6 +16,22 @@ const Booths = () => {
         component={AllBooths}
         headerShown={false}
         options={{ headerMode: "none", headerShown: false }}
+      />
+      <Stack.Screen
+        name="AllBLAs"
+        component={AllBLAs}
+        options={{
+          headerShown: false,
+          title: "All BLA",
+        }}
+      />
+      <Stack.Screen
+        name="AllPAs"
+        component={AllPAs}
+        options={{
+          headerShown: false,
+          title: "All PA",
+        }}
       />
       <Stack.Screen
         name="BoothDashboard"

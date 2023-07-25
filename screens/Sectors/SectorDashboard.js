@@ -5,9 +5,9 @@ import {
   HStack,
   IconButton,
   Text,
-  Heading,
-  Icon,
-  Pressable,
+  // Heading,
+  // Icon,
+  // Pressable,
   Spinner,
 } from "native-base";
 // import { PieChart } from "react-native-chart-kit";
@@ -30,23 +30,6 @@ const SectorDashboard = ({ route, navigation }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const { itemId } = route.params;
   const { goBack } = navigation;
-  // const data = [
-  //   {
-  //     name: "Remaining Voters",
-  //     // population: 2898 - sectorInfo?.total_voters_added,
-  //     population: 2898 - 1,
-  //     color: "rgba(131, 167, 234, 1)",
-  //     legendFontColor: "#7F7F7F",
-  //     legendFontSize: 15,
-  //   },
-  //   {
-  //     name: "Voters Added",
-  //     population: 1,
-  //     color: "green",
-  //     legendFontColor: "#7F7F7F",
-  //     legendFontSize: 15,
-  //   },
-  // ];
   const GetSector = () => {
     ApiService.getSectorDashboard(itemId)
       .then((e) => {
@@ -109,7 +92,7 @@ const SectorDashboard = ({ route, navigation }) => {
             isLoaded={isLoaded}
             data={sectorInfo}
           />
-          {sectorInfo?.sectorincharge_name ? null : (
+          {/* {sectorInfo?.sectorincharge_name ? null : (
             <Center>
               <Pressable
                 onPress={() => {
@@ -151,7 +134,7 @@ const SectorDashboard = ({ route, navigation }) => {
                 </HStack>
               </Pressable>
             </Center>
-          )}
+          )} */}
         </Center>
       ) : (
         <Center h={screenHeight - 80}>

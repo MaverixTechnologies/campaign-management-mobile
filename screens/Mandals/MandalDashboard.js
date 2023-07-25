@@ -6,47 +6,24 @@ import {
   // VStack,
   IconButton,
   Text,
-  Heading,
-  Icon,
+  // Heading,
+  // Icon,
   Spinner,
-  Pressable,
+  // Pressable,
 } from "native-base";
-// import { PieChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
-// import { chartConfig } from "../../components/Charts/chartConfig";
-// import InfoCard from "./InfoCard";
-// import GraphCard from "../../components/Cards/GraphCard";
 import CardsStack from "./CardsStack";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import { ApiService } from "../../lib/axios";
-// import InfoCard from "./InfoCard";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const MandalDashboard = ({ route, navigation }) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  // const navigation = useNavigation();
   const [mandalInfo, setMandalInfo] = useState();
   const { itemId } = route.params;
   const { goBack } = navigation;
-  // const data = [
-  //   {
-  //     name: "Remaining Voters",
-  //     population: 8877 - 1,
-  //     color: "rgba(131, 167, 234, 1)",
-  //     legendFontColor: "#7F7F7F",
-  //     legendFontSize: 15,
-  //   },
-  //   {
-  //     name: "Voters Added",
-  //     // population: mandalInfo?.total_voters_added,
-  //     population: 1,
-  //     color: "green",
-  //     legendFontColor: "#7F7F7F",
-  //     legendFontSize: 15,
-  //   },
-  // ];
   const GetMandal = () => {
     ApiService.getMandalDashboard(itemId)
       .then((e) => {
@@ -73,7 +50,6 @@ const MandalDashboard = ({ route, navigation }) => {
   );
   return (
     <ScrollView>
-      {/* <VStack alignSelf={"center"} p={2} space={4} maxWidth={"800"}> */}
       <HStack
         space={2}
         p={1}
@@ -112,7 +88,7 @@ const MandalDashboard = ({ route, navigation }) => {
             isLoaded={isLoaded}
             data={mandalInfo}
           />
-          {mandalInfo?.mandalincharge_name ? null : (
+          {/* {mandalInfo?.mandalincharge_name ? null : (
             <Center>
               <Pressable
                 onPress={() => {
@@ -154,7 +130,7 @@ const MandalDashboard = ({ route, navigation }) => {
                 </HStack>
               </Pressable>
             </Center>
-          )}
+          )} */}
         </Center>
       ) : (
         <Center h={screenHeight - 80}>

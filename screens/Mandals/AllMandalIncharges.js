@@ -1,163 +1,163 @@
 import React, { useCallback, useState } from "react";
 import {
   Text,
-  // Heading,
-  Box,
-  FlatList,
-  VStack,
   HStack,
-  // Avatar,
-  Spacer,
+  IconButton,
+  Spinner,
+  Center,
+  View,
+  Input,
 } from "native-base";
-import UserAvatar from "react-native-user-avatar";
 import { ApiService } from "../../lib/axios";
-import { useFocusEffect } from "@react-navigation/native";
-// import { Text } from "react-native";
-
-const AllMandalIncharges = () => {
+import { useFocusEffect, CommonActions } from "@react-navigation/native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Dimensions } from "react-native";
+import { groupedImages } from "../../lib/images";
+import AgentsList from "../../components/Lists/AgentsList";
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
+let imageIndex = 0;
+const AllMandalIncharges = ({ navigation }) => {
   const [lists, setLists] = useState();
-  // const data = [
-  //   {
-  //     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-  //     fullName: "Aafreen Khan",
-  //     timeStamp: "12:47 PM",
-  //     recentText: "Good Day!",
-  //     avatarUrl:
-  //       "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  //   },
-  //   {
-  //     id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-  //     fullName: "Sujitha Mathur",
-  //     timeStamp: "11:11 PM",
-  //     recentText: "Cheer up, there!",
-  //     avatarUrl:
-  //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyEaZqT3fHeNrPGcnjLLX1v_W4mvBlgpwxnA&usqp=CAU",
-  //   },
-  //   {
-  //     id: "58694a0f-3da1-471f-bd96-145571e29d72",
-  //     fullName: "Anci Barroco",
-  //     timeStamp: "6:22 PM",
-  //     recentText: "Good Day!",
-  //     avatarUrl: "https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg",
-  //   },
-  //   {
-  //     id: "68694a0f-3da1-431f-bd56-142371e29d72",
-  //     fullName: "Aniket Kumar",
-  //     timeStamp: "8:56 PM",
-  //     recentText: "All the best",
-  //     avatarUrl:
-  //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr01zI37DYuR8bMV5exWQBSw28C1v_71CAh8d7GP1mplcmTgQA6Q66Oo--QedAN1B4E1k&usqp=CAU",
-  //   },
-  //   {
-  //     id: "28694a0f-3da1-471f-bd96-142456e29d72",
-  //     fullName: "Kiara",
-  //     timeStamp: "12:47 PM",
-  //     recentText: "I will call today.",
-  //     avatarUrl:
-  //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU",
-  //   },
-  // ];
-  const GetMandalIncharges = () => {
-    ApiService.getMandalIncharges().then((e) => {
-      // console.log(e);
-      setLists(e.data);
-    });
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredLists, setFilteredLists] = useState([]);
+
+  // const { goBack } = navigation;
+  const goBack = () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Dashboard" }],
+      })
+    );
+  };
+
+  const getRandomAvatar = () => {
+    const totalImages = groupedImages.male.length;
+    const avatarUrl = groupedImages.male[imageIndex];
+
+    // Increment the image index and reset to 0 if it exceeds the total number of images
+    imageIndex = (imageIndex + 1) % totalImages;
+
+    return avatarUrl;
+  };
+
+  const GetMandals = async () => {
+    const e = await ApiService.getMandals();
+    const updatedDataArray = e?.data
+      ?.filter((item) => item?.mandalincharge)
+      ?.map((item) => {
+        const avatarUrl = getRandomAvatar();
+        const role = "Mandal Incharge"; // Replace this with your desired fixed role.
+        return {
+          id: item?.id,
+          name: item?.mandalincharge?.full_name,
+          role: role,
+          avatarUrl: avatarUrl,
+          contact_number: item?.mandalincharge?.contact_number,
+          zone: item?.name,
+        };
+      })
+      .filter((item) => item)
+      .sort((a, b) => a.name.localeCompare(b.name));
+    setLists(updatedDataArray);
+    setIsLoaded(true);
   };
 
   useFocusEffect(
     useCallback(() => {
       // Do something when the screen is focused
-      GetMandalIncharges();
+      GetMandals();
+
       return () => {
         // Do something when the screen is unfocused
         // Useful for cleanup functions
       };
     }, [])
   );
+
+  // Function to handle search and update the filtered list
+  const handleSearch = useCallback(
+    (query) => {
+      setIsLoaded(false);
+      setSearchQuery(query);
+      const filteredData = lists.filter((item) =>
+        item?.name.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredLists(filteredData);
+      setIsLoaded(true);
+    },
+    [lists]
+  );
+  // Use the filtered list for rendering
+  const dataToRender = searchQuery ? filteredLists : lists;
+
   return (
-    <Box>
-      {/* <Heading fontSize="xl" p="4" pb="3">
-        Inbox
-      </Heading> */}
-      <FlatList
-        data={lists}
-        space="4"
-        renderItem={({ item }) => (
-          <Box
-            borderBottomWidth="1"
-            _dark={{
-              borderColor: "muted.50",
-            }}
-            borderColor="muted.800"
-            pl={["4", "6"]}
-            pr={["4", "6"]}
-            py="2"
-            // borderRadius={"full"}
-          >
-            <HStack space={[2, 3]} justifyContent="space-between">
-              {/* <Avatar
-                size="48px"
-                source={{
-                  uri: item.avatarUrl,
-                }}
-              /> */}
-              <UserAvatar size={48} name={item.name} />
-              <VStack>
-                <Text
-                  _dark={{
-                    color: "warmGray.50",
-                  }}
-                  color="coolGray.800"
-                  bold
-                >
-                  {item.name}
-                </Text>
-                <Text
-                  color="coolGray.600"
-                  _dark={{
-                    color: "warmGray.200",
-                  }}
-                >
-                  {item.age}-{item.voter_category}
-                </Text>
-              </VStack>
-              <Spacer />
-              {/* <Text
-                fontSize="xs"
-                _dark={{
-                  color: "warmGray.50",
-                }}
-                color="coolGray.800"
-                alignSelf="flex-start"
-              >
-                {item.timeStamp}
-              </Text> */}
-              <VStack alignItems={"flex-end"}>
-                <Text
-                  fontSize="xs"
-                  _dark={{
-                    color: "warmGray.50",
-                  }}
-                  color="coolGray.800"
-                  // alignSelf="flex-start"
-                >
-                  {item.political_inclination}
-                </Text>
-                <Text
-                  color="coolGray.600"
-                  _dark={{
-                    color: "warmGray.200",
-                  }}
-                >
-                  {item.contact_number}
-                </Text>
-              </VStack>
-            </HStack>
-          </Box>
-        )}
-        keyExtractor={(item, i) => i}
-      />
-    </Box>
+    <View bgColor={"primary.50"} maxH={"full"}>
+      <HStack
+        space={2}
+        p={1}
+        bgColor={"secondary.50"}
+        alignItems={"center"}
+        justifyContent={"flex-start"}
+        borderBottomColor={"primary.100"}
+        borderBottomWidth={1}
+        w={screenWidth > 800 ? "800" : screenWidth}
+      >
+        <IconButton
+          size={"md"}
+          variant="ghost"
+          _icon={{
+            as: MaterialIcons,
+            name: "arrow-back",
+          }}
+          onPress={() => goBack()}
+          title="Go back"
+        />
+        <Text
+          color="coolGray.600"
+          _dark={{
+            color: "warmGray.200",
+          }}
+          bold
+        >
+          Go back
+        </Text>
+      </HStack>
+
+      {/* Sticky search bar */}
+      <HStack
+        space={2}
+        p={1}
+        bgColor={"secondary.50"}
+        alignItems={"center"}
+        justifyContent={"flex-start"}
+        borderBottomColor={"primary.100"}
+        borderBottomWidth={1}
+        w={screenWidth > 800 ? "800" : screenWidth}
+        zIndex={1}
+      >
+        <Input
+          placeholder="Search Mandal Incharge"
+          value={searchQuery}
+          onChangeText={handleSearch}
+          size="md"
+          width="100%"
+          bg="white"
+          borderRadius={8}
+          px={2}
+          maxLength={10}
+        />
+      </HStack>
+      {isLoaded && dataToRender.length > 0 ? (
+        <AgentsList data={dataToRender} />
+      ) : (
+        <Center h={screenHeight - 80}>
+          <Spinner size={"lg"} />
+        </Center>
+      )}
+    </View>
   );
 };
 

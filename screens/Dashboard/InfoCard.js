@@ -9,6 +9,7 @@ const InfoCard = ({ screenWidth, data }) => {
   return (
     <Box
       w={screenWidth > 800 ? "800" : screenWidth - 20}
+      // w={"100%"}
       mt={2}
       rounded="lg"
       overflow="scroll"

@@ -61,8 +61,6 @@ const AddSectorIncharge = ({ route, navigation }) => {
     validate()
       ? ApiService.addSectorIncharge(newFormData)
           .then(() => {
-            // console.log(res);
-            // console.log("Submitted");
             toast.show({
               title: "Voter Added",
               placement: "top-right",
@@ -151,39 +149,6 @@ const AddSectorIncharge = ({ route, navigation }) => {
             </FormControl.HelperText>
           )}
         </FormControl>
-        {/* <FormControl isRequired>
-          <FormControl.Label htmlFor="political_inclination">
-            <Text fontWeight={"semibold"} fontSize="14">
-              Political Inclination
-            </Text>
-          </FormControl.Label>
-          <Select
-            id="political_inclination"
-            name="political_inclination"
-            value={formData.politicalInclination}
-            accessibilityLabel="Choose Party"
-            placeholder="Choose Party"
-            _selectedItem={{
-              bg: "teal.600",
-            }}
-            mt="1"
-            onChangeText={(value) =>
-              setFormData({ ...formData, political_inclination: value })
-            }
-            width="100%"
-            borderRadius="4"
-            py="3"
-            px="1"
-            fontSize="16"
-          >
-            {lists.map((item, i) => {
-              return (
-                <Select.Item key={i} label={item.name} value={item.name} />
-              );
-            })}
-          </Select>
-        </FormControl> */}
-
         <Button
           onPress={onSubmit}
           mt="5"

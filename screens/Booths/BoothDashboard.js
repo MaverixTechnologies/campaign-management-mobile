@@ -3,50 +3,22 @@ import {
   Center,
   ScrollView,
   HStack,
-  // VStack,
   IconButton,
   Text,
-  // Heading,
-  // Icon,
-  // Pressable,
   Spinner,
 } from "native-base";
-// import { PieChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
-// import { chartConfig } from "../../components/Charts/chartConfig";
-// import InfoCard from "./InfoCard";
-// import GraphCard from "../../components/Cards/GraphCard";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import { ApiService } from "../../lib/axios";
-// import InfoCard from "./InfoCard";
 import BLACardsStack from "./BLACardsStack";
 const screenWidth = Dimensions.get("window").width;
-// const screenHeight = Dimensions.get("window").height;
 
 const BoothDashboard = ({ route, navigation }) => {
-  // const navigation = useNavigation();
   const [boothInfo, setBoothInfo] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
   const { itemId } = route.params;
   const { goBack } = navigation;
-  // const data = [
-  //   {
-  //     name: "Remaining Voters",
-  //     population: 478 - 1,
-  //     color: "rgba(131, 167, 234, 1)",
-  //     legendFontColor: "#7F7F7F",
-  //     legendFontSize: 15,
-  //   },
-  //   {
-  //     name: "Voters Added",
-  //     // population: boothInfo?.total_voters_added,
-  //     population: 1,
-  //     color: "green",
-  //     legendFontColor: "#7F7F7F",
-  //     legendFontSize: 15,
-  //   },
-  // ];
   const GetBooth = () => {
     ApiService.getBoothDashboard(itemId)
       .then((e) => {

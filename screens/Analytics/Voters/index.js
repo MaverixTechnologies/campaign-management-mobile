@@ -111,98 +111,6 @@ const Voters = ({ route, navigation }) => {
         return "65+";
     }
   };
-  // const data = [
-  //   {
-  //     name: "Male",
-  //     count: 80568,
-  //     color: "#5095D9",
-  //     legendFontColor: "#5095D9",
-  //     legendFontSize: 15,
-  //   },
-  //   {
-  //     name: "Female",
-  //     count: 70568,
-  //     color: "#FFB59F",
-  //     legendFontColor: "##FFB59F",
-  //     legendFontSize: 15,
-  //   },
-  //   {
-  //     name: "Others",
-  //     count: 5568,
-  //     color: "#a855f7",
-  //     legendFontColor: "#a855f7",
-  //     legendFontSize: 15,
-  //   },
-  // ];
-
-  // const ageData = [
-  //   {
-  //     name: "18-24",
-  //     count: 26615,
-  //     label: "18-24",
-  //     value: 26615,
-  //     color: "#5095D9",
-  //     frontColor: "#bae6fd",
-  //     gradientColor: "#5095D9",
-  //     legendFontColor: "#5095D9",
-  //     legendFontSize: 15,
-  //   },
-  //   {
-  //     name: "25-34",
-  //     count: 43473,
-  //     label: "25-34",
-  //     value: 43473,
-  //     color: "#FFB59F",
-  //     legendFontColor: "##FFB59F",
-  //     legendFontSize: 15,
-  //     frontColor: "#ffe4e6",
-  //     gradientColor: "#FFB59F",
-  //   },
-  //   {
-  //     name: "35-44",
-  //     count: 37146,
-  //     label: "35-44",
-  //     value: 37146,
-  //     color: "#facc15",
-  //     legendFontColor: "#facc15",
-  //     legendFontSize: 15,
-  //     frontColor: "#fefce8",
-  //     gradientColor: "#facc15",
-  //   },
-  //   {
-  //     name: "44-54",
-  //     count: 26996,
-  //     label: "44-54",
-  //     value: 26996,
-  //     color: "#a855f7",
-  //     legendFontColor: "#a855f7",
-  //     legendFontSize: 15,
-  //     frontColor: "#f3e8ff",
-  //     gradientColor: "#a855f7",
-  //   },
-  //   {
-  //     name: "55-64",
-  //     count: 14346,
-  //     label: "55-64",
-  //     value: 14346,
-  //     color: "#10b981",
-  //     legendFontColor: "#10b981",
-  //     legendFontSize: 15,
-  //     frontColor: "#dcfce7",
-  //     gradientColor: "#10b981",
-  //   },
-  //   {
-  //     name: "65+",
-  //     count: 12964,
-  //     label: "65+",
-  //     value: 12964,
-  //     color: "#f43f5e",
-  //     legendFontColor: "#f43f5e",
-  //     legendFontSize: 15,
-  //     frontColor: "#ffe4e6",
-  //     gradientColor: "#f43f5e",
-  //   },
-  // ];
   const GetVotersStats = () => {
     const data = {
       filters: JSON.stringify({
@@ -247,6 +155,18 @@ const Voters = ({ route, navigation }) => {
           legendFontColor: colors[index % colors.length],
           legendFontSize: 15,
         }));
+      const otherCasteCount =
+        totalCount - chartData.reduce((sum, entry) => sum + entry.count, 0);
+      const otherCastePercentage = (otherCasteCount / totalCount) * 100;
+
+      chartData.push({
+        name: "Others",
+        count: otherCasteCount,
+        percentage: otherCastePercentage.toFixed(2),
+        color: "#9E9E9E",
+        legendFontColor: "black",
+        legendFontSize: 15,
+      });
       setCasteData(chartData);
 
       // political inclination data

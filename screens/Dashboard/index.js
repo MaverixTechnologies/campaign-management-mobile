@@ -4,11 +4,9 @@ import MLACardsStack from "./CardsStack";
 import MICardsStack from "../Mandals/CardsStack";
 import SICardsStack from "../Sectors/CardsStack";
 import BLACardsStack from "../Booths/BLACardsStack";
+import PACardsStack from "../Pollings/PACardStack";
 import { Dimensions } from "react-native";
 import MLAInfoCard from "./InfoCard";
-// import MIInfoCard from "../Mandals/InfoCard";
-// import SIInfoCard from "../Sectors/InfoCard";
-// import BLAInfoCard from "../Booths/InfoCard";
 const screenWidth = Dimensions.get("window").width;
 import { useFocusEffect } from "@react-navigation/native";
 import { ApiService } from "../../lib/axios";
@@ -56,6 +54,11 @@ const Dashboard = () => {
     useCallback(() => {
       // Do something when the screen is focused
       // GetProfile();
+      // navigation.reset({
+      //   index: 0,
+      //   key: null,
+      //   routes: [{ name: "Dashboard" }],
+      // });
       GetDashboard();
       return () => {
         // Do something when the screen is unfocused
@@ -70,7 +73,7 @@ const Dashboard = () => {
           alignSelf={"center"}
           w={"100%"}
           space={2}
-          maxWidth={"800"}
+          // maxWidth={"800"}
           pb={8}
         >
           <Center p={0}>
@@ -80,26 +83,7 @@ const Dashboard = () => {
                 screenWidth={screenWidth}
                 data={dashboardData}
               />
-            ) : // userProfile?.role === "MANDAL_INCHARGE" ? (
-            //   <MIInfoCard
-            //     isLoaded={isLoaded}
-            //     screenWidth={screenWidth}
-            //     data={dashboardData}
-            //   />
-            // ) : userProfile?.role === "SECTOR_INCHARGE" ? (
-            //   <SIInfoCard
-            //     isLoaded={isLoaded}
-            //     screenWidth={screenWidth}
-            //     data={dashboardData}
-            //   />
-            // ) : userProfile?.role === "BOOTH_LEVEL_AGENT" ? (
-            //   <BLAInfoCard
-            //     isLoaded={isLoaded}
-            //     screenWidth={screenWidth}
-            //     data={dashboardData}
-            //   />
-            // ) :
-            null}
+            ) : null}
           </Center>
           <Center w={"100%"}>
             {userProfile?.role === "MLA" || userProfile?.role === "ADMIN" ? (
@@ -123,6 +107,12 @@ const Dashboard = () => {
               />
             ) : userProfile?.role === "BOOTH_LEVEL_AGENT" ? (
               <BLACardsStack
+                isLoaded={isLoaded}
+                screenWidth={screenWidth}
+                data={dashboardData}
+              />
+            ) : userProfile?.role === "POLLING_AGENT" ? (
+              <PACardsStack
                 isLoaded={isLoaded}
                 screenWidth={screenWidth}
                 data={dashboardData}

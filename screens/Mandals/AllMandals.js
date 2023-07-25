@@ -122,7 +122,7 @@ const AllMandals = ({ navigation: { goBack } }) => {
               Mandal Incharge -
             </Text>
             <Text
-              color="coolGray.700"
+              color="secondary.600"
               _dark={{
                 color: "warmGray.50",
               }}

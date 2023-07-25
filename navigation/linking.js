@@ -16,6 +16,7 @@ export const linking = {
       // Mandal
       Mandals: "mandals",
       AllMandals: "all-mandals",
+      AllMandalIncharges: "all-mandal-incharges",
       Mandal: "mandal",
       MandalDashboard: "mandal-info",
       AddMandalIncharge: "add-mandal-incharge",
@@ -25,8 +26,12 @@ export const linking = {
       SectorIncharges: "sector-incharges",
       SectorDashboard: "sector-info",
       AddSectorIncharge: "add-sector-incharge",
+      AllSectorIncharges: "all-sector-incharges",
+
       // Booth
       Booths: "booths",
+      AllBLAs: "all-bla",
+      AllPAs: "all-pa",
       // Voter
       AddVoter: "add-voter",
       AllVoters: "all-voters",

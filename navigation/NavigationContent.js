@@ -33,9 +33,9 @@ export default function NavigationContent(props) {
         <HStack
           space={4}
           px={4}
-          py={3}
+          py={2}
           alignItems={"center"}
-          borderBottomWidth={1}
+          // borderBottomWidth={1}
           borderBottomColor={"primary.100"}
           // backgroundColor={"primary.600"}
         >

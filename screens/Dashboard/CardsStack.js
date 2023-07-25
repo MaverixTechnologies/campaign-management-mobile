@@ -1,7 +1,16 @@
 import React from "react";
-import { VStack, Stack } from "native-base";
+import {
+  VStack,
+  Stack,
+  Box,
+  Text,
+  Heading,
+  Flex,
+  // HStack,
+  // Divider,
+} from "native-base";
 import StatsCard from "../../components/Cards/StatsCard";
-import StatsCardT2 from "../../components/Cards/StatsCardT2";
+import StatsCardT3 from "../../components/Cards/StatsCardT3";
 import { PieChart } from "react-native-chart-kit";
 import { chartConfig } from "../../components/Charts/chartConfig";
 import GraphCard from "../../components/Cards/GraphCard";
@@ -73,15 +82,21 @@ const CardsStack = ({ screenWidth, data, chartData, isLoaded }) => {
           width={screenWidth > 800 ? 800 : screenWidth - 20}
           isLoaded={isLoaded}
         >
-          <PieChart
-            data={chartData}
-            width={screenWidth > 800 ? 800 : screenWidth - 40}
-            height={200}
-            chartConfig={chartConfig}
-            accessor={"population"}
-            backgroundColor={"transparent"}
-            paddingLeft={"15"}
-          />
+          {chartData?.length < 1 ? (
+            <Box>
+              <Text>No Data to Show, add some voters to see analytics</Text>
+            </Box>
+          ) : (
+            <PieChart
+              data={chartData}
+              width={screenWidth > 800 ? 800 : screenWidth - 40}
+              height={200}
+              chartConfig={chartConfig}
+              accessor={"population"}
+              backgroundColor={"transparent"}
+              paddingLeft={"15"}
+            />
+          )}
         </GraphCard>
       </VStack>
       <VStack
@@ -92,7 +107,7 @@ const CardsStack = ({ screenWidth, data, chartData, isLoaded }) => {
             end: [0, 1],
           },
         }}
-        space={"4"}
+        space={"2"}
         pt={4}
         pb={6}
         w={"100%"}
@@ -108,68 +123,158 @@ const CardsStack = ({ screenWidth, data, chartData, isLoaded }) => {
 
           // isMore={true}
         />
-        <Stack
-          flexDirection={screenWidth > 300 ? "row" : "column"}
-          justifyContent={screenWidth > 300 ? "space-between" : "center"}
-          alignItems={screenWidth > 300 ? "space-between" : "center"}
-          space={6}
-          w={screenWidth > 800 ? "800" : screenWidth - 20}
-        >
-          <StatsCardT2
-            heading={"Mandal Incharges"}
-            subheading={"Mandals"}
-            text={data?.total_mics}
-            text2={data?.total_mandals}
-            onClick={() => navigation.navigate("Mandals")}
-            width={
-              screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
-            }
-            isLoaded={isLoaded}
-          />
-          <StatsCardT2
-            heading={"Sector Incharges"}
-            subheading={"Sectors"}
-            text={data?.total_sics}
-            text2={data?.total_sectors}
-            onClick={() => navigation.navigate("Sectors")}
-            width={
-              screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
-            }
-            isLoaded={isLoaded}
-          />
-        </Stack>
 
-        <Stack
-          flexDirection={screenWidth > 300 ? "row" : "column"}
-          justifyContent={screenWidth > 300 ? "space-between" : "center"}
-          alignItems={screenWidth > 300 ? "space-between" : "center"}
-          space={6}
+        <VStack
           w={screenWidth > 800 ? "800" : screenWidth - 20}
+          borderRadius={"2xl"}
+          space={0}
+          borderWidth={2}
+          borderColor={"secondary.100"}
         >
-          <StatsCardT2
-            heading={"BLAs"}
-            subheading={"Booths"}
-            text={data?.total_blas}
-            text2={data?.total_polling_booths}
-            onClick={() => navigation.navigate("Booths")}
-            width={
-              screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
-            }
-            isLoaded={isLoaded}
-          />
-          <StatsCardT2
-            // heading={"Pollings"}
-            heading={"PAs"}
-            onClick={() => navigation.navigate("Booths")}
-            // text={data?.total_polling_booths}
-            text={data?.total_pas * 2}
-            width={
-              screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
-            }
-            isLoaded={isLoaded}
-          />
-        </Stack>
+          <Flex bgColor={"secondary.100"} py={2} px={2}>
+            <Heading fontWeight={"medium"} size={"xs"}>
+              Mandals
+            </Heading>
+          </Flex>
+          <Stack
+            flexDirection={screenWidth > 300 ? "row" : "column"}
+            justifyContent={screenWidth > 300 ? "space-between" : "center"}
+            alignItems={screenWidth > 300 ? "space-between" : "center"}
+            w={screenWidth > 800 ? "800" : screenWidth - 20}
+            space={6}
+            p={2}
+          >
+            <StatsCardT3
+              heading={"Total Mandals"}
+              text={data?.total_mandals}
+              onClick={() => navigation.navigate("Mandals")}
+              width={
+                screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
+              }
+              isLoaded={isLoaded}
+            />
+            <StatsCardT3
+              heading={"Mandal Incharges"}
+              text={data?.total_mics}
+              onClick={() =>
+                navigation.navigate("Mandals", {
+                  screen: "AllMandalIncharges",
+                  initial: false,
+                })
+              }
+              width={
+                screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
+              }
+              isLoaded={isLoaded}
+            />
+          </Stack>
+        </VStack>
+        <VStack
+          w={screenWidth > 800 ? "800" : screenWidth - 20}
+          borderRadius={"2xl"}
+          space={0}
+          borderWidth={2}
+          borderColor={"secondary.100"}
+        >
+          <Flex bgColor={"secondary.100"} py={2} px={2}>
+            <Heading fontWeight={"medium"} size={"xs"}>
+              Sectors
+            </Heading>
+          </Flex>
+          <Stack
+            flexDirection={screenWidth > 300 ? "row" : "column"}
+            justifyContent={screenWidth > 300 ? "space-between" : "center"}
+            alignItems={screenWidth > 300 ? "space-between" : "center"}
+            space={6}
+            p={2}
+          >
+            <StatsCardT3
+              heading={"Total Sectors"}
+              text={data?.total_sectors}
+              onClick={() => navigation.navigate("Sectors")}
+              width={
+                screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
+              }
+              isLoaded={isLoaded}
+            />
+            <StatsCardT3
+              heading={"Sector Incharges"}
+              text={data?.total_sics}
+              onClick={() =>
+                navigation.navigate("Sectors", { screen: "AllSectorIncharges" })
+              }
+              width={
+                screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
+              }
+              isLoaded={isLoaded}
+            />
+          </Stack>
+        </VStack>
+
+        <VStack
+          w={screenWidth > 800 ? "800" : screenWidth - 20}
+          borderRadius={"2xl"}
+          space={0}
+          borderWidth={2}
+          borderColor={"secondary.100"}
+        >
+          <Flex bgColor={"secondary.100"} py={2} px={2}>
+            <Heading fontWeight={"medium"} size={"xs"}>
+              Polling Booths
+            </Heading>
+          </Flex>
+          <Stack
+            flexDirection={screenWidth > 300 ? "row" : "column"}
+            justifyContent={screenWidth > 300 ? "space-between" : "center"}
+            alignItems={screenWidth > 300 ? "space-between" : "center"}
+            space={1}
+            p={2}
+          >
+            <StatsCardT3
+              heading={"Total Booths"}
+              text={data?.total_polling_booths}
+              onClick={() => navigation.navigate("Booths")}
+              width={
+                screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
+              }
+              isLoaded={isLoaded}
+            />
+            <StatsCardT3
+              heading={"BLAs"}
+              text={data?.total_blas}
+              onClick={() =>
+                navigation.navigate("Booths", { screen: "AllBLAs" })
+              }
+              width={
+                screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
+              }
+              isLoaded={isLoaded}
+            />
+          </Stack>
+          <Stack
+            flexDirection={screenWidth > 300 ? "row" : "column"}
+            justifyContent={screenWidth > 300 ? "space-between" : "center"}
+            alignItems={screenWidth > 300 ? "space-between" : "center"}
+            space={1}
+            p={2}
+            mt={1}
+          >
+            <StatsCardT3
+              // heading={"Pollings"}
+              heading={"PAs"}
+              onClick={() =>
+                navigation.navigate("Booths", { screen: "AllPAs" })
+              }
+              text={data?.total_pas * 2}
+              width={
+                screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
+              }
+              isLoaded={isLoaded}
+            />
+          </Stack>
+        </VStack>
       </VStack>
+
       <VStack
         bg={{
           linearGradient: {

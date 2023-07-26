@@ -44,19 +44,18 @@ const AllMandalIncharges = ({ navigation }) => {
   };
 
   const GetMandals = async () => {
-    const e = await ApiService.getMandals();
+    const e = await ApiService.getMandalIncharges();
+    const role = "Mandal Incharge"; // Replace this with your desired fixed role.
     const updatedDataArray = e?.data
-      ?.filter((item) => item?.mandalincharge)
       ?.map((item) => {
         const avatarUrl = getRandomAvatar();
-        const role = "Mandal Incharge"; // Replace this with your desired fixed role.
         return {
           id: item?.id,
-          name: item?.mandalincharge?.full_name,
+          name: item?.full_name,
           role: role,
           avatarUrl: avatarUrl,
-          contact_number: item?.mandalincharge?.contact_number,
-          zone: item?.name,
+          contact_number: item?.contact_number,
+          zone: item?.mandal,
         };
       })
       .filter((item) => item)

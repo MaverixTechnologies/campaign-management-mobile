@@ -17,12 +17,12 @@ import AgentsList from "../../components/Lists/AgentsList";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 let imageIndex = 0;
-const AllBLAs = ({ navigation }) => {
+const AllBLAs = ({ route, navigation }) => {
   const [lists, setLists] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredLists, setFilteredLists] = useState([]);
-
+  const { zone_id, zone } = route.params;
   const goBack = () => {
     navigation.dispatch(
       CommonActions.reset({
@@ -42,21 +42,20 @@ const AllBLAs = ({ navigation }) => {
   };
 
   const GetBLAs = async () => {
-    const e = await ApiService.getBooths();
+    const e = await ApiService.getBoothLevelAgents(zone, zone_id);
     // const e = await ApiService.getMandalIncharges();
     // const newData = getRandomAvatar(e.data);
+    const role = "BLA"; // Replace this with your desired fixed role.
     const updatedDataArray = e?.data
-      ?.filter((item) => item?.boothlevelagent)
       ?.map((item) => {
         const avatarUrl = getRandomAvatar();
-        const role = "BLA"; // Replace this with your desired fixed role.
         return {
           id: item?.id,
-          name: item?.boothlevelagent?.full_name,
+          name: item?.full_name,
           role: role,
           avatarUrl: avatarUrl,
-          contact_number: item?.boothlevelagent?.contact_number,
-          zone: item?.name,
+          contact_number: item?.contact_number,
+          zone: item?.polling_booth,
         };
       })
       .filter((item) => item)

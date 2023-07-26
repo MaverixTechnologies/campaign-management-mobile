@@ -17,12 +17,13 @@ import AgentsList from "../../components/Lists/AgentsList";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 let imageIndex = 0;
-const AllSectorIncharges = ({ navigation }) => {
+const AllSectorIncharges = ({ route, navigation }) => {
   const [lists, setLists] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredLists, setFilteredLists] = useState([]);
-
+  const { zone_id, zone } = route.params;
+  // console.log("ZONE  ", route.params);
   const goBack = () => {
     navigation.dispatch(
       CommonActions.reset({
@@ -42,22 +43,21 @@ const AllSectorIncharges = ({ navigation }) => {
   };
 
   const GetSectorIncharges = async () => {
-    const e = await ApiService.getSectors();
+    const e = await ApiService.getSectorIncharges(zone, zone_id);
     // const e = await ApiService.getMandalIncharges();
     // const newData = getRandomAvatar(e.data);
     const updatedDataArray = e?.data
-      ?.filter((item) => item?.sectorincharge)
       ?.map((item) => {
         const avatarUrl = getRandomAvatar();
         const role = "Sector Incharge"; // Replace this with your desired fixed role.
 
         return {
           id: item?.id,
-          name: item?.sectorincharge?.full_name,
+          name: item?.full_name,
           role: role,
           avatarUrl: avatarUrl,
-          contact_number: item?.sectorincharge?.contact_number,
-          zone: item?.name,
+          contact_number: item?.contact_number,
+          zone: item?.sector,
         };
       })
       .filter((item) => item)
@@ -91,6 +91,7 @@ const AllSectorIncharges = ({ navigation }) => {
     },
     [lists]
   );
+
   // Use the filtered list for rendering
   const dataToRender = searchQuery ? filteredLists : lists;
 

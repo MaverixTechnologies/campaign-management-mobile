@@ -41,7 +41,7 @@ const InfoCard = ({ screenWidth, data }) => {
               color: "gray.50",
             }}
           >
-            Mandalam
+            Mandal
           </Heading>
           <Text
             textTransform={"capitalize"}

@@ -24,7 +24,7 @@ import AgentsList from "../../components/Lists/AgentsList";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 let imageIndex = 0;
-const AllAgents = ({ navigation }) => {
+const AllAgents = ({ route, navigation }) => {
   const [lists, setLists] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,6 +32,7 @@ const AllAgents = ({ navigation }) => {
   // const [isDragging, setIsDragging] = useState(false);
   // const [isAtEndOfList, setIsAtEndOfList] = useState(false);
   // const navigation = useNavigation();
+  const { zone_id, zone } = route.params;
   const goBack = () => {
     navigation.dispatch(
       CommonActions.reset({
@@ -54,22 +55,25 @@ const AllAgents = ({ navigation }) => {
   };
 
   const GetPollingAgents = async () => {
-    const e = await ApiService.getPollingAgents();
+    const e = await ApiService.getPollingAgents(zone, zone_id);
     // const e = await ApiService.getMandalIncharges();
     // const newData = getRandomAvatar(e.data);
-    const updatedDataArray = e?.data?.map((item) => {
-      const avatarUrl = getRandomAvatar();
-      const role = "Mandal Incharge"; // Replace this with your desired fixed role.
-
-      return {
-        id: item?.id,
-        name: item?.full_name,
-        role: role,
-        avatarUrl: avatarUrl,
-        contact_number: item?.contact_number,
-        zone: item?.polling_booth,
-      };
-    });
+    const role = "Polling Agent";
+    const updatedDataArray = e?.data
+      ?.map((item) => {
+        const avatarUrl = getRandomAvatar();
+        // Replace this with your desired fixed role.
+        return {
+          id: item?.id,
+          name: item?.full_name,
+          role: role,
+          avatarUrl: avatarUrl,
+          contact_number: item?.contact_number,
+          zone: item?.polling_booth,
+        };
+      })
+      .filter((item) => item)
+      .sort((a, b) => a.name.localeCompare(b.name));
     setLists(updatedDataArray);
     setIsLoaded(true);
   };

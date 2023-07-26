@@ -151,7 +151,10 @@ const CardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
               heading={"Sector Incharges"}
               text={data?.total_sics}
               onClick={() =>
-                navigation.navigate("Sectors", { screen: "AllSectorIncharges" })
+                navigation.navigate("Sectors", {
+                  screen: "AllSectorIncharges",
+                  params: { zone: "mandal_id", zone_id: itemId },
+                })
               }
               width={
                 screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
@@ -193,7 +196,10 @@ const CardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
               heading={"BLAs"}
               text={data?.total_blas}
               onClick={() =>
-                navigation.navigate("Booths", { screen: "AllBLAs" })
+                navigation.navigate("Booths", {
+                  screen: "AllBLAs",
+                  params: { zone: "mandal_id", zone_id: itemId },
+                })
               }
               width={
                 screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
@@ -209,11 +215,14 @@ const CardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
             p={2}
             mt={1}
           >
-            <StatsCard
+            <StatsCardT3
               // heading={"Pollings"}
               heading={"PAs"}
               onClick={() =>
-                navigation.navigate("Booths", { screen: "AllPAs" })
+                navigation.navigate("Booths", {
+                  screen: "AllPAs",
+                  params: { zone: "mandal_id", zone_id: itemId },
+                })
               }
               // text={data?.total_polling_booths}
               text={data?.total_pas * 2}

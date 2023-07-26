@@ -3,7 +3,7 @@ import AllMandals from "./AllMandals";
 import MandalDashboard from "./MandalDashboard";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AddMandalIncharge from "./AddMandalIncharge";
-import AllMandalIncharges from "./AllMandalIncharges";
+// import AllMandalIncharges from "./AllMandalIncharges";
 const Stack = createNativeStackNavigator();
 
 const Mandals = () => {
@@ -15,14 +15,14 @@ const Mandals = () => {
         headerShown={false}
         options={{ headerMode: "none", headerShown: false }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="AllMandalIncharges"
         component={AllMandalIncharges}
         options={{
           headerShown: false,
           title: "All Mandal Incharges",
         }}
-      />
+      /> */}
       <Stack.Screen
         name="MandalDashboard"
         component={MandalDashboard}

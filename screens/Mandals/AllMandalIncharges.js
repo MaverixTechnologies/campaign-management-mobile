@@ -9,7 +9,7 @@ import {
   Input,
 } from "native-base";
 import { ApiService } from "../../lib/axios";
-import { useFocusEffect, CommonActions } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Dimensions } from "react-native";
 import { groupedImages } from "../../lib/images";
@@ -23,15 +23,15 @@ const AllMandalIncharges = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredLists, setFilteredLists] = useState([]);
 
-  // const { goBack } = navigation;
-  const goBack = () => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: "Dashboard" }],
-      })
-    );
-  };
+  const { goBack } = navigation;
+  // const goBack = () => {
+  //   navigation.dispatch(
+  //     CommonActions.reset({
+  //       index: 0,
+  //       routes: [{ name: "Dashboard" }],
+  //     })
+  //   );
+  // };
 
   const getRandomAvatar = () => {
     const totalImages = groupedImages.male.length;

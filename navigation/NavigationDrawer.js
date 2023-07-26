@@ -16,6 +16,10 @@ import Voters from "../screens/Analytics/Voters";
 import Zone from "../screens/Analytics/Zone";
 import Previous from "../screens/Analytics/Previous";
 import Filters from "../screens/Analytics/Filters";
+import AllAgents from "../screens/Pollings/AllAgents";
+import AllBLAs from "../screens/Booths/AllBLAs";
+import AllMandalIncharges from "../screens/Mandals/AllMandalIncharges";
+import AllSectorIncharges from "../screens/Sectors/AllSectorIncharges";
 // import Pollings from "../screens/Pollings";
 import { useSelector } from "react-redux";
 // import { Platform } from "react-native";
@@ -121,6 +125,34 @@ export default function NavigationDrawer() {
             <Drawer.Screen name="Voters Analytics" component={Voters} />
             <Drawer.Screen name="Zone Analytics" component={Zone} />
             <Drawer.Screen name="Previous Result" component={Previous} />
+            <Drawer.Screen
+              name="AllSectorIncharges"
+              component={AllSectorIncharges}
+              options={() => ({
+                headerTitle: "Sector Incharges",
+              })}
+            />
+            <Drawer.Screen
+              name="AllMandalIncharges"
+              component={AllMandalIncharges}
+              options={() => ({
+                headerTitle: "Mandal Incharges",
+              })}
+            />
+            <Drawer.Screen
+              name="AllPAs"
+              component={AllAgents}
+              options={() => ({
+                headerTitle: "PAs",
+              })}
+            />
+            <Drawer.Screen
+              name="AllBLAs"
+              component={AllBLAs}
+              options={() => ({
+                headerTitle: "BLAs",
+              })}
+            />
           </>
         ) : null}
         <Drawer.Screen name="Add Voter" component={AddVoter} />

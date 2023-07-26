@@ -157,10 +157,9 @@ const CardsStack = ({ screenWidth, data, chartData, isLoaded }) => {
               heading={"Mandal Incharges"}
               text={data?.total_mics}
               onClick={() =>
-                navigation.navigate("Mandals", {
-                  screen: "AllMandalIncharges",
-                  initial: false,
-                  params: { zone: null, zone_id: null },
+                navigation.navigate("AllMandalIncharges", {
+                  zone: null,
+                  zone_id: null,
                 })
               }
               width={
@@ -202,9 +201,9 @@ const CardsStack = ({ screenWidth, data, chartData, isLoaded }) => {
               heading={"Sector Incharges"}
               text={data?.total_sics}
               onClick={() =>
-                navigation.navigate("Sectors", {
-                  screen: "AllSectorIncharges",
-                  params: { zone: null, zone_id: null },
+                navigation.navigate("AllSectorIncharges", {
+                  zone: null,
+                  zone_id: null,
                 })
               }
               width={
@@ -247,9 +246,9 @@ const CardsStack = ({ screenWidth, data, chartData, isLoaded }) => {
               heading={"BLAs"}
               text={data?.total_blas}
               onClick={() =>
-                navigation.navigate("Booths", {
-                  screen: "AllBLAs",
-                  params: { zone: null, zone_id: null },
+                navigation.navigate("AllBLAs", {
+                  zone: null,
+                  zone_id: null,
                 })
               }
               width={
@@ -270,12 +269,12 @@ const CardsStack = ({ screenWidth, data, chartData, isLoaded }) => {
               // heading={"Pollings"}
               heading={"PAs"}
               onClick={() =>
-                navigation.navigate("Booths", {
-                  screen: "AllPAs",
-                  params: { zone: null, zone_id: null },
+                navigation.navigate("AllPAs", {
+                  zone: null,
+                  zone_id: null,
                 })
               }
-              text={data?.total_pas * 2}
+              text={data?.total_pas}
               width={
                 screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
               }

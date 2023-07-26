@@ -1,6 +1,6 @@
 import React from "react";
 import AllSectors from "./AllSectors";
-import AllSectorIncharges from "./AllSectorIncharges";
+// import AllSectorIncharges from "./AllSectorIncharges";
 import SectorDashboard from "./SectorDashboard";
 import AddSectorIncharge from "./AddSectorIncharge";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -16,7 +16,7 @@ const Sectors = () => {
         headerShown={false}
         options={{ headerMode: "none", headerShown: false }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="AllSectorIncharges"
         component={AllSectorIncharges}
         headerShown={false}
@@ -24,7 +24,7 @@ const Sectors = () => {
           headerShown: false,
           title: "All Sector Incharges",
         }}
-      />
+      /> */}
       <Stack.Screen
         name="SectorDashboard"
         component={SectorDashboard}

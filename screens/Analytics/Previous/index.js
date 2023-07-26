@@ -144,7 +144,7 @@ const Previous = ({ screenWidth, data, chartData }) => {
             heading={"Pollings"}
             subheading={"PAs"}
             text={data?.total_polling_booths}
-            text2={data?.total_pas * 2}
+            text2={data?.total_pas}
             width={
               screenWidth > 800 ? "380" : screenWidth > 300 ? "48%" : "full"
             }

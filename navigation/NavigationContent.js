@@ -68,7 +68,11 @@ export default function NavigationContent(props) {
                 name !== "Filter Voters" &&
                 name !== "Voters Analytics" &&
                 name !== "Zone Analytics" &&
-                name !== "Previous Result" ? (
+                name !== "Previous Result" &&
+                name !== "AllSectorIncharges" &&
+                name !== "AllPAs" &&
+                name !== "AllBLAs" &&
+                name !== "AllMandalIncharges" ? (
                   <Pressable
                     key={index}
                     px="5"

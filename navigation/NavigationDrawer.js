@@ -36,9 +36,21 @@ export default function NavigationDrawer() {
 
     switch (routeName) {
       case "AllMandalIncharges":
-        return "All Mandal Incharges";
+        return "Mandal Incharges";
       case "MandalDashboard":
         return "Mandal Dashboard";
+      case "SectorDashboard":
+        return "Sector Dashboard";
+      case "AllSectorIncharges":
+        return "Sector Incharges";
+      case "AllBLAs":
+        return "BLAs";
+      case "BoothDashboard":
+        return "Booth Dashboard";
+      case "AllPAs":
+        return "PAs";
+      default:
+        routeName;
     }
   }
   const screenOptions = {

@@ -25,7 +25,7 @@ const CasteFilter = ({ formData, setFormData, filterOn, options }) => {
           setOpen={setOpenCastes}
           value={caste}
           setValue={setCaste}
-          items={options}
+          items={options.sort((a, b) => a.label.localeCompare(b.label))}
           placeholder="Select Caste"
           searchable={true}
           searchPlaceholder="Search Caste here..."

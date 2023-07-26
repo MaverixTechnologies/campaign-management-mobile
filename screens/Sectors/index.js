@@ -20,19 +20,28 @@ const Sectors = () => {
         name="AllSectorIncharges"
         component={AllSectorIncharges}
         headerShown={false}
-        options={{ headerMode: "none", headerShown: false }}
+        options={{
+          headerShown: false,
+          title: "All Sector Incharges",
+        }}
       />
       <Stack.Screen
         name="SectorDashboard"
         component={SectorDashboard}
         headerShown={false}
-        options={{ headerMode: "none", headerShown: false }}
+        options={{
+          headerShown: false,
+          title: "Sector Dashboard",
+        }}
       />
       <Stack.Screen
         name="AddSectorIncharge"
         component={AddSectorIncharge}
         headerShown={false}
-        options={{ headerMode: "none", headerShown: false }}
+        options={{
+          headerShown: false,
+          title: "Add Sector Incharge",
+        }}
       />
     </Stack.Navigator>
   );

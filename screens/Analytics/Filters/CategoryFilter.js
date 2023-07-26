@@ -1,18 +1,17 @@
-import React from "react";
-import { VStack, Text, FormControl, Select, CheckIcon } from "native-base";
+import React, { useState } from "react";
+import { VStack, Text, FormControl } from "native-base";
 // import DropDownPicker from "react-native-dropdown-picker";
-
+import CustomDropDownPicker from "../../../components/CustomDropDownPicker";
 const CategoryFilter = ({
   // filter,
   formData,
   setFormData,
-  // show,
-  // setShow,
-  // errors,
-  // setErrors,
   filterOn,
   options,
 }) => {
+  const [openCategories, setOpenCategories] = useState(false);
+  const [category, setCategory] = useState("");
+
   return (
     <VStack
       width="90%"
@@ -28,40 +27,26 @@ const CategoryFilter = ({
             Filter voters on {filterOn}
           </Text>
         </FormControl.Label>
-        {/* <DropDownPicker
-          items={options}
-          defaultValue={formData?.caste}
-          containerStyle={{ height: 40 }}
-          style={{ backgroundColor: "#fafafa" }}
-          placeholder={`Select ${filterOn}`}
-          itemStyle={{ justifyContent: "flex-start" }}
-          dropDownStyle={{ backgroundColor: "#fafafa" }}
-          searchable={true} // Enable search functionality
-          searchablePlaceholder="Search for an option"
-          searchablePlaceholderTextColor="gray"
-          searchableError={() => <Text>Option not found</Text>} // Custom error message for search
-          onChangeItem={(item) =>
-            setFormData({ ...formData, caste: item.value })
+        <CustomDropDownPicker
+          open={openCategories}
+          setOpen={setOpenCategories}
+          value={category}
+          setValue={setCategory}
+          items={options.sort((a, b) => {
+            if (a.label !== "NA" && b.label !== "NA") {
+              return a.label.localeCompare(b.label);
+            } else if (a.label === "NA") {
+              return 1;
+            } else {
+              return -1;
+            }
+          })}
+          placeholder="Select Category"
+          // onChangeValue={(value) => setCategory(value)}
+          onSelectItem={(item) =>
+            setFormData({ ...formData, category: item.value })
           }
-        /> */}
-        <Select
-          selectedValue={formData?.category}
-          minWidth="200"
-          accessibilityLabel={`Select ${filterOn}`}
-          placeholder={`Select ${filterOn}`}
-          _selectedItem={{
-            bg: "primary.600",
-            endIcon: <CheckIcon size="5" />,
-          }}
-          mt={1}
-          onValueChange={(itemValue) =>
-            setFormData({ ...formData, category: itemValue })
-          }
-        >
-          {options.map((option, i) => (
-            <Select.Item key={i} label={option?.label} value={option?.value} />
-          ))}
-        </Select>
+        />
       </FormControl>
     </VStack>
   );

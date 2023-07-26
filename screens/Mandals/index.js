@@ -37,7 +37,10 @@ const Mandals = () => {
         name="AddMandalIncharge"
         component={AddMandalIncharge}
         headerShown={false}
-        options={{ headerMode: "none", headerShown: false }}
+        options={{
+          headerShown: false,
+          title: "Add Mandal Incharge",
+        }}
       />
     </Stack.Navigator>
   );

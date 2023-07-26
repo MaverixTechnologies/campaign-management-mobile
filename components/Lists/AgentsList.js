@@ -33,7 +33,7 @@ const AgentsList = ({
   const [modalData, setModalData] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isAtEndOfList, setIsAtEndOfList] = useState(false);
-
+  // const [isImageLoading, setIsImageLoading] = useState(false);
   const handleModalClose = () => {
     setModalVisible(false);
     setModalData(null);
@@ -48,17 +48,17 @@ const AgentsList = ({
     }
   };
   const handleModal = (item) => {
+    // setIsImageLoading(true);
     setModalData(item);
     setModalVisible(true);
   };
   const handleScrollEnd = () => {
     setIsDragging(true);
   };
-  const RenderItemComponent = React.memo(({ item }) => {
+  const RenderItemComponent = React.memo(({ item, index }) => {
     return (
-      <Box key={item.id} px={4}>
+      <Box key={item?.id ? item?.id : index} px={4}>
         <Box
-          key={item.id}
           _dark={{
             bg: "coolGray.800",
           }}
@@ -74,18 +74,18 @@ const AgentsList = ({
               space={3}
             >
               <HStack alignItems="center" space={3}>
-                <Pressable onPress={() => handleModal(item)}>
-                  {item?.avatarUrl ? (
+                {item?.avatarUrl ? (
+                  <Pressable onPress={() => handleModal(item)}>
                     <Avatar
                       source={{ uri: item?.avatarUrl }}
                       // source={item?.avatarUrl}
                       alt="User Profile"
                       size={12}
                     />
-                  ) : (
-                    <UserAvatar name={item?.name} size={64} />
-                  )}
-                </Pressable>
+                  </Pressable>
+                ) : (
+                  <UserAvatar name={item?.name} size={64} />
+                )}
                 <VStack>
                   <Text
                     fontSize="md"
@@ -154,7 +154,13 @@ const AgentsList = ({
   const modalContent = useMemo(() => {
     if (modalData) {
       // Replace the following line with your desired modal content component
-      return <AgentCard modalData={modalData} makePhoneCall={makePhoneCall} />;
+      return (
+        <AgentCard
+          // setIsImageLoading={setIsImageLoading}
+          modalData={modalData}
+          makePhoneCall={makePhoneCall}
+        />
+      );
     } else {
       return (
         <Center h={screenHeight - 80}>
@@ -183,6 +189,11 @@ const AgentsList = ({
           <Spinner size="lg" />
         </Center>
       ) : null}
+      {/* {isImageLoading ? (
+        <Center bg={"transparent"} h={screenHeight - 80}>
+          <Spinner size={"lg"} />
+        </Center>
+      ) : null} */}
       <Modal
         isOpen={modalVisible}
         onRequestClose={handleModalClose}

@@ -19,9 +19,10 @@ const AgentCard = ({ modalData, makePhoneCall }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  // const handleLoad = () => {
-  //   setIsLoading(false);
-  // };
+  const handleLoad = () => {
+    setIsLoading(false);
+    // setIsImageLoading(false);
+  };
 
   const handleLoadError = () => {
     setIsLoading(false);
@@ -58,8 +59,8 @@ const AgentCard = ({ modalData, makePhoneCall }) => {
                 cache="reload"
                 fallbackSource={FallbackImg}
                 alt="image"
-                // onLoad={handleLoad}
-                onLoadEnd={() => setIsLoading(false)}
+                onLoadEnd={handleLoad}
+                // onLoadEnd={() => setIsLoading(false)}
                 onError={handleLoadError}
               />
             ) : (

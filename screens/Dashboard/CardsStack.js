@@ -294,7 +294,7 @@ const CardsStack = ({ screenWidth, data, chartData, isLoaded }) => {
           borderColor={"teal.400"}
           icon={"filter"}
           iconColor={"teal.400"}
-          heading={"Filter Voters"}
+          heading={"Filter/Search Voters"}
           subheading={`Filter voters of the constituency`}
         />
         <Stack

@@ -1,27 +1,19 @@
 import React, { useState } from "react";
 import { HStack, Text, Input, FormControl } from "native-base";
 // import { MaterialIcons } from "@expo/vector-icons";
-
-const AgeRangeInput = ({
-  // filter,
-  formData,
-  setFormData,
-  // show,
-  // setShow,
-  // errors,
-  // setErrors,
-  // filterOn,
-}) => {
+const AgeRangeInput = ({ formData, setFormData }) => {
   const [start, setStart] = useState();
   const [end, setEnd] = useState();
-  const onChangeAge = (label, value) => {
-    label === "start" ? setStart(value) : setEnd(value);
-    let tempAges = {
-      ...(label === "start" && { age_min: start }),
-      ...(label === "end" && { age_max: end }),
-    };
+  const [error, setError] = useState(null);
 
-    setFormData({ ...formData, ...tempAges });
+  const validateAges = () => {
+    if (start < 18) {
+      setError({ age: "Age must be above 18 to be a valid voter." });
+    } else if (start > end) {
+      setError({ age: "Start age should be less than the End age." });
+    } else {
+      setError(null);
+    }
   };
   return (
     <HStack
@@ -34,7 +26,7 @@ const AgeRangeInput = ({
       justifyContent={"space-between"}
       overflow={"scroll"}
     >
-      <FormControl isRequired>
+      <FormControl isInvalid={error?.age}>
         <FormControl.Label htmlFor="start_age">
           <Text fontWeight={"semibold"} fontSize="14">
             Enter the Start & End Age
@@ -46,20 +38,27 @@ const AgeRangeInput = ({
             width="120px"
             keyboardType="numeric"
             value={start}
-            onChangeText={(value) =>
-              setFormData({ ...formData, ...{ age_min: value } })
-            }
+            onChangeText={(value) => {
+              setStart(value);
+              setFormData({ ...formData, ...{ age_min: value } });
+              validateAges();
+            }}
           />
           <Input
             placeholder="End Age"
             width="120px"
             keyboardType="numeric"
             value={end}
-            onChangeText={(value) =>
-              setFormData({ ...formData, ...{ age_max: value } })
-            }
+            onChangeText={(value) => {
+              setEnd(value);
+              setFormData({ ...formData, ...{ age_max: value } });
+              validateAges();
+            }}
           />
         </HStack>
+        {/* {error && (
+          <FormControl.ErrorMessage>{error.age}</FormControl.ErrorMessage>
+        )} */}
       </FormControl>
     </HStack>
   );

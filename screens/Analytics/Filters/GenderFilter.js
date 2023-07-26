@@ -1,5 +1,6 @@
-import React from "react";
-import { VStack, Text, FormControl, Select, CheckIcon } from "native-base";
+import React, { useState } from "react";
+import { VStack, Text, FormControl } from "native-base";
+import CustomDropDownPicker from "../../../components/CustomDropDownPicker";
 
 const GenderFilter = ({
   // filter,
@@ -11,6 +12,9 @@ const GenderFilter = ({
   // setErrors,
   filterOn,
 }) => {
+  const [openGenders, setOpenGenders] = useState(false);
+  const [gender, setGender] = useState("");
+
   const options = [
     { label: "MALE", value: "MALE" },
     { label: "FEMALE", value: "FEMALE" },
@@ -26,49 +30,22 @@ const GenderFilter = ({
       alignItems="center"
     >
       <FormControl isRequired>
-        <FormControl.Label htmlFor="voter_category">
+        <FormControl.Label htmlFor="gender">
           <Text fontWeight={"semibold"} fontSize="14">
             Filter voters on {filterOn}
           </Text>
         </FormControl.Label>
-        {/* <DropDownPicker
+        <CustomDropDownPicker
+          open={openGenders}
+          setOpen={setOpenGenders}
+          value={gender}
+          setValue={setGender}
           items={options}
-          // value={value}
-          value={formData?.caste}
-          // containerStyle={{ height: 40 }}
-          style={{ backgroundColor: "#fafafa" }}
-          itemStyle={{ justifyContent: "flex-start" }}
-          dropDownStyle={{ backgroundColor: "#fafafa" }}
-          searchable={true} // Enable search functionality
-          searchablePlaceholder="Search for an option"
-          searchablePlaceholderTextColor="gray"
-          placeholder={`Select ${filterOn}`}
-          searchableError={() => <Text>Option not found</Text>} // Custom error message for search
-          onChangeItem={(item) =>
-            setFormData({ ...formData, caste: item.value })
+          placeholder="Select Gender"
+          onSelectItem={(item) =>
+            setFormData({ ...formData, gender: item.value })
           }
-          dropDownContainerStyle={{
-            backgroundColor: "#dfdfdf",
-          }}
-        /> */}
-        <Select
-          selectedValue={formData?.gender}
-          minWidth="200"
-          accessibilityLabel={`Select ${filterOn}`}
-          placeholder={`Select ${filterOn}`}
-          _selectedItem={{
-            bg: "primary.600",
-            endIcon: <CheckIcon size="5" />,
-          }}
-          mt={1}
-          onValueChange={(itemValue) =>
-            setFormData({ ...formData, gender: itemValue })
-          }
-        >
-          {options.map((option, i) => (
-            <Select.Item key={i} label={option?.label} value={option?.value} />
-          ))}
-        </Select>
+        />
       </FormControl>
     </VStack>
   );

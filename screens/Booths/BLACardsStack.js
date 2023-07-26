@@ -3,9 +3,11 @@ import { VStack, Stack, Spacer, Text, HStack, Box } from "native-base";
 import TitleCard from "../../components/Cards/TitleCard";
 import StatsCard from "../../components/Cards/StatsCard";
 import InfoCard from "./InfoCard";
+import PhoneCall from "../../components/Cards/PhoneCall";
 import { useNavigation } from "@react-navigation/native";
 const BLACardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
   const navigation = useNavigation();
+  console.log("DATA : ", data);
   return (
     <VStack space={"0"} w={"100%"} alignItems={"center"}>
       <VStack
@@ -90,6 +92,69 @@ const BLACardsStack = ({ screenWidth, data, itemId, isLoaded }) => {
             bg="white"
             isLoaded={isLoaded}
           />
+        </Stack>
+      </VStack>
+      <VStack
+        bg={{
+          linearGradient: {
+            colors: ["secondary.50", "secondary.100"],
+            start: [0, 0],
+            end: [0, 1],
+          },
+        }}
+        space={"4"}
+        pt={4}
+        pb={6}
+        w={"100%"}
+        alignItems={"center"}
+      >
+        <TitleCard
+          bg={"secondary.50"}
+          borderColor={"secondary.400"}
+          icon={"map-pin"}
+          iconColor={"secondary.400"}
+          heading={"Polling Agents"}
+          subheading={`List of agents in the booth`}
+          isLoaded={isLoaded}
+        />
+        <Stack space={1} w={screenWidth > 800 ? "800" : screenWidth - 20}>
+          {data?.pollingagents?.map((item, i) => (
+            <HStack
+              key={i}
+              alignItems="center"
+              space={3}
+              justifyContent={"space-between"}
+              w={screenWidth > 800 ? "800" : screenWidth - 20}
+              borderWidth={2}
+              borderColor={"gray.100"}
+              borderBottomRadius={8}
+              borderTopRightRadius={8}
+              p="2"
+              bg="secondary.50"
+            >
+              <VStack space={1}>
+                <Text
+                  color="coolGray.800"
+                  _dark={{
+                    color: "warmGray.50",
+                  }}
+                  bold
+                >
+                  {item?.name}
+                </Text>
+                <Text
+                  color="coolGray.600"
+                  _dark={{
+                    color: "warmGray.200",
+                  }}
+                >
+                  Voters Added - {item?.voters_added}
+                </Text>
+              </VStack>
+              <Spacer />
+              <PhoneCall number={item?.contact ? item?.contact : "Not added"} />
+            </HStack>
+          ))}
         </Stack>
       </VStack>
       <VStack

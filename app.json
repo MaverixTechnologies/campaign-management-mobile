@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "campaign-management-mobile",
+    "name": "Campaign Management Mobile",
     "slug": "campaign-management-mobile",
     "version": "1.0.1",
     "orientation": "portrait",
@@ -13,7 +13,7 @@
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/d4e34379-ad80-4c4c-98b9-52707095ec49"
+      "url": "https://u.expo.dev/652ea6e0-7b22-45ef-afb2-ef12a2a5ec87"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -24,7 +24,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.anuparashar0507.campaignmanagementmobile",
+      "package": "com.maverixtech.campaignmanagementmobile",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#0061A3"
@@ -35,11 +35,12 @@
     },
     "extra": {
       "eas": {
-        "projectId": "d4e34379-ad80-4c4c-98b9-52707095ec49"
+        "projectId": "652ea6e0-7b22-45ef-afb2-ef12a2a5ec87"
       }
     },
     "runtimeVersion": {
       "policy": "sdkVersion"
-    }
+    },
+    "owner": "maverixtech"
   }
 }

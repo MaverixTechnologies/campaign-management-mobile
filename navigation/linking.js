@@ -43,6 +43,7 @@ export const linking = {
       ZoneAnalytics: "Zone-analytics",
       PreviousResults: "Previous-results",
       FilterVoters: "filter-voters",
+      UploadForm17C: "upload-form-17C",
     },
   },
 };

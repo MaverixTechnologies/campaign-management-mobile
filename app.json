@@ -11,6 +11,11 @@
       "resizeMode": "cover",
       "backgroundColor": "#0061A3"
     },
+    "plugins": [
+      [
+        "expo-image-picker"
+      ]
+    ],
     "updates": {
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/652ea6e0-7b22-45ef-afb2-ef12a2a5ec87"

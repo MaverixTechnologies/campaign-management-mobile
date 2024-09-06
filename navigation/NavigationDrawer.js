@@ -20,6 +20,7 @@ import AllAgents from "../screens/Pollings/AllAgents";
 import AllBLAs from "../screens/Booths/AllBLAs";
 import AllMandalIncharges from "../screens/Mandals/AllMandalIncharges";
 import AllSectorIncharges from "../screens/Sectors/AllSectorIncharges";
+import UploadForm17C from "../screens/ImageUpload/UploadForm17C";
 // import Pollings from "../screens/Pollings";
 import { useSelector } from "react-redux";
 // import { Platform } from "react-native";
@@ -53,6 +54,8 @@ export default function NavigationDrawer() {
         return "Booth Dashboard";
       case "AllPAs":
         return "PAs";
+      case "UploadForm17C":
+        return "Upload Form 17C";
       default:
         routeName;
     }
@@ -156,6 +159,7 @@ export default function NavigationDrawer() {
           </>
         ) : null}
         <Drawer.Screen name="Add Voter" component={AddVoter} />
+        <Drawer.Screen name="Upload Form 17C" component={UploadForm17C} />
       </Drawer.Navigator>
     </Box>
   );

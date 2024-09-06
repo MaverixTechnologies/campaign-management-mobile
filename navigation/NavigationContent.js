@@ -164,6 +164,8 @@ const getIcon = (screenName) => {
       return "account-plus-outline";
     case "Search Voters":
       return "account-search-outline";
+    case "Upload Form 17C":
+      return "cloud-upload";
     default:
       return undefined;
   }
